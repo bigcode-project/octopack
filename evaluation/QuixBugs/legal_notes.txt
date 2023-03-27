@@ -1,0 +1,33 @@
+tl, dr: You have as much permission to use the QuixBugs dataset as possible given the complexity of IP rights during bankruptcy.
+
+Quixey is dead. At time of writing (8/12/2017), according to sources formerly in the company, no-one is buying rights to the source code, and certainly not the Quixey Challenge, which was a short-lived interview tool. The creator, Liron Shapira, retains ownership of the code; the rights formerly assigned to the company will by default revert to the public domain. Liron has given his blessing for release of these benchmarks. This is all based on conversation with a non-lawyer who worked on Quixey's IP team; nothing here is legal advice.
+
+Although there is currently no-one who is the ultimate arbiter of this dataset who can give the green light, at this stage, you are more likely to get sued for wearing a red shirt than for using this benchmark set.
+
+Attached below is my E-mail exchange with Liron Shapira, cofounder and former CTO of Quixey, and creator and owner of the Quixey Challenge.
+
+--James Koppel
+August 12th, 2017
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+On Fri, Aug 11, 2017 at 10:47 PM, Liron Shapira <wiseguy@gmail.com> wrote:
+
+Jimmy,
+
+That's a cool benchmark! I'm not sure how the IP rights are structured, but I'm personally happy to support your use of this data.
+
+--
+Liron Shapira
+wiseguy@gmail.com
+
+On Fri, Aug 11, 2017 at 7:24 PM, James Koppel <darmanithird@gmail.com> wrote:
+Hello Liron,
+
+I talked with <redacted> today. My understanding is that you still have a say in what happens to the Quixey Challenge. I'd really appreciate an E-mail from you explicitly giving whatever permission you can to use this dataset.
+
+In case you're curious, I've attached the extended abstract about the work we've done with the Quixey Challenge dataset. The goal is to create a benchmark set for automated program repair tools that will sit on program-repair.org/benchmarks.html . This is evolved from work we did with the Quixey Challenge dataset several years back to create the Quixey Challenger, which automatically solves Quixey Challenge problems.
+
+
+Best of luck,
+Jimmy K

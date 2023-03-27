@@ -1,0 +1,47 @@
+bitcount.py
+bucketsort.py
+find_first_in_sorted.py
+find_in_sorted.py
+flatten.py
+gcd.py
+get_factors.py
+hanoi.py
+is_valid_parenthesization.py
+kheapsort.py
+knapsack.py
+kth.py
+lcs_length.py
+levenshtein.py
+lis.py
+longest_common_subsequence.py
+max_sublist_sum.py
+mergesort.py
+next_palindrome.py
+next_permutation.py
+pascal.py
+possible_change.py
+powerset.py
+quicksort.py
+rpn_eval.py
+shunting_yard.py
+sieve.py
+sqrt.py
+subsequences.py
+to_base.py
+wrap.py
+
+check for explicit relative imports
+check Java version is in fact buggy
+check tester works for each
+check py3 prints well
+check that the hardcoded tests are correct in each folder
+
+breadth_first_search.py * python, java
+depth_first_search.py * python, java
+detect_cycle.py * python, java
+minimum_spanning_tree.py * python, java (Java is not buggy)
+reverse_linked_list.py * python, java
+shortest_path_length.py * java (no Python yet)
+shortest_path_lengths.py * python, java
+shortest_paths.py * python, java
+topological_ordering.py * python, java
