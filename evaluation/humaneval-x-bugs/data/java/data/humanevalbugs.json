@@ -1,0 +1,494 @@
+[
+    {
+        "buggy_solution": "        for (int i = 0; i < numbers.size(); i++) {\n            for (int j = i + 1; j < numbers.size(); j++) {\n                double distance = numbers.get(i) - numbers.get(j);\n                if (distance < threshold) return true;\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> result = new ArrayList<>();\n        StringBuilder current_string = new StringBuilder();\n        int current_depth = 0;\n\n        for (char c : paren_string.toCharArray()) {\n            if (c == '(') {\n                current_depth += 1;\n                current_string.append(c);\n            } else if (c == ')') {\n                current_depth -= 1;\n                current_string.append(c);\n\n                if (current_depth < 0) {\n                    result.add(current_string.toString());\n                    current_string.setLength(0);\n                }\n            }\n        }\n        return result;\n\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return number / 1.0;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int balance = 0;\n\n        for (int op : operations) {\n            balance += op;\n            if (balance == 0) {\n                return true;\n            }\n        }\n\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        double sum = 0.0;\n        for (double num : numbers) {\n            sum += num;\n        }\n        double mean = sum / numbers.size();\n        double sum_abs_diff = 0.0;\n        for (double num : numbers) {\n            sum_abs_diff += Math.abs(num - mean);\n        }\n        return sum_abs_diff / mean;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (numbers.size() == 0) {\n            return List.of();\n        }\n        List<Integer> result = new ArrayList<>(List.of());\n        for (int i = 0; i < numbers.size() - 1; i++) {\n            result.add(numbers.get(i));\n            result.add(delimiter);\n        }\n\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] groups = paren_string.split(\" \");\n        List<Integer> result = new ArrayList<>(List.of());\n        for (String group : groups) {\n            if (group.length() > 0) {\n                int depth = 0;\n                int max_depth = 0;\n                for (char c : group.toCharArray()) {\n                    if (c == '(') {\n                        depth += 1;\n                        max_depth = Math.max(depth, max_depth);\n                    } else {\n                        max_depth -= 1;\n                    }\n                }\n                result.add(max_depth);\n            }\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> result = new ArrayList<>();\n        for (String x : strings) {\n            if (substring.contains(x)) {\n                result.add(x);\n            }\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 0;\n        int product = 0;\n\n        for (int n : numbers) {\n            sum += n;\n            product *= n;\n        }\n        return Arrays.asList(sum, product);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        if (numbers.size() == 0) {\n            return result;\n        }\n        int rollingMax = 1;\n        result.add(rollingMax);\n\n        for (int i = 1; i < numbers.size(); i++) {\n            if (numbers.get(i) > rollingMax) {\n                rollingMax = numbers.get(i);\n            }\n            result.add(rollingMax);\n        }\n\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (string.length() == 0) {\n            return \"\";\n        }\n\n        int beginning_of_suffix = 0;\n\n        while (!isPalindrome(string)) {\n            beginning_of_suffix++;\n        }\n\n        return string + new StringBuffer(string.substring(0, beginning_of_suffix)).reverse().toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder result = new StringBuilder();\n        for (int i = 0; i < a.length(); i++) {\n            if (a.charAt(i) == b.charAt(i)) {\n                result.append(\"1\");\n            } else {\n                result.append(\"0\");\n            }\n        }\n        return result.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (strings.isEmpty()) {\n            return Optional.empty();\n        }\n        String longest = strings.get(0);\n        for (String s : strings) {\n            if (s.length() < longest.length()) {\n                longest = s;\n            }\n        }\n        return Optional.of(longest);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (a == 0 || b == 0) {\n            return a + b;\n        }\n        if (a == b) {\n            return a;\n        }\n        if (a > b) {\n            return greatestCommonDivisor(a % b, a);\n        } else {\n            return greatestCommonDivisor(a, b % b);\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> result = new ArrayList<>();\n\n        for (int i = 1; i < string.length(); i++) {\n            result.add(string.substring(0, i));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < n-1; i++) {\n            sb.append(i);\n            sb.append(\" \");\n        }\n        sb.append(n);\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Set<Character> set = new HashSet<>();\n        for (char c : string.toCharArray()) {\n            set.add(c);\n        }\n        return set.size();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] notes = string.split(\" \");\n        List<Integer> result = new ArrayList<>();\n        for (String s : notes) {\n            switch (s) {\n                case \"o\" -> result.add(3);\n                case \"o|\" -> result.add(2);\n                case \".|\" -> result.add(1);\n            }\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int times = 0;\n\n        for (int i = 0; i < string.length() - substring.length(); i++) {\n            if (string.substring(i, i + substring.length()).equals(substring)) {\n                times += 1;\n            }\n        }\n\n        return times;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] nums = numbers.split(\" \");\n        List<Integer> num = new ArrayList<>();\n        for (String string : nums) {\n            switch (string) {\n                case \"zero\" -> num.add(0);\n                case \"one\" -> num.add(1);\n                case \"two\" -> num.add(2);\n                case \"three\" -> num.add(3);\n                case \"four\" -> num.add(4);\n                case \"five\" -> num.add(5);\n                case \"six\" -> num.add(6);\n                case \"seven\" -> num.add(7);\n                case \"eight\" -> num.add(8);\n                case \"nine\" -> num.add(9);\n            }\n        }\n        List<String> result = new ArrayList<>();\n        for (int m : num) {\n            switch (m) {\n                case 0 -> result.add(\"zero\");\n                case 1 -> result.add(\"one\");\n                case 2 -> result.add(\"two\");\n                case 3 -> result.add(\"three\");\n                case 4 -> result.add(\"four\");\n                case 5 -> result.add(\"five\");\n                case 6 -> result.add(\"six\");\n                case 7 -> result.add(\"seven\");\n                case 8 -> result.add(\"eight\");\n                case 9 -> result.add(\"nine\");\n            }\n        }\n        return String.join(\" \", result);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Double> closest_pair = new ArrayList<>();\n        closest_pair.add(numbers.get(0));\n        closest_pair.add(numbers.get(1));\n        double distance = Math.abs(numbers.get(1) - numbers.get(0));\n        for (int i = 0; i < numbers.size(); i++) {\n            for (int j = i + 1; j < numbers.size(); j++) {\n                if (Math.abs(numbers.get(i) - numbers.get(j)) > distance) {\n                    closest_pair.clear();\n                    closest_pair.add(numbers.get(i));\n                    closest_pair.add(numbers.get(j));\n                    distance = Math.abs(numbers.get(i) - numbers.get(j));\n                }\n            }\n        }\n        Collections.sort(closest_pair);\n        return closest_pair;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        double min_number = Collections.min(numbers);\n        double max_number = Collections.max(numbers);\n        List<Double> result = new ArrayList<>();\n        for (double x : numbers) {\n            result.add((x - min_number) / (max_number + min_number));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (Object x : values) {\n            if (x instanceof Integer) {\n                result.add((Integer) x);\n            }\n        }\n        return values;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return string.length() - 1;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        for (int i = n - 1; i > 0; i--) {\n            if (n - i == 0) {\n                return i;\n            }\n        }\n        return 1;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> fact = new ArrayList<>();\n        int i = 0;\n        while (n > 1) {\n            if (n % i == 0) {\n                fact.add(i);\n                n /= i;\n            } else {\n                i++;\n            }\n        }\n        return fact;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Map<Integer, Integer> c = new HashMap<>();\n        for (int i : numbers) {\n            c.put(i, c.getOrDefault(i, 0) + 1);\n        }\n        return numbers.stream().filter(i -> c.get(i) > 1).collect(Collectors.toList());\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < string.length(); i++) {\n            if (Character.isUpperCase(string.charAt(i))) {\n                sb.append(Character.toUpperCase(string.charAt(i)));\n            } else {\n                sb.append(Character.toLowerCase(string.charAt(i)));\n            }\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return String.join(\" \", strings);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return strings.stream().filter(p -> p.endsWith(prefix)).collect(Collectors.toList());\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return l.stream().filter(p -> p < 0).collect(Collectors.toList());\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n < 1) {\n            return false;\n        }\n        for (int k = 1; k < n; k++) {\n            if (n % k == 0) {\n                return false;\n            }\n        }\n         return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        double begin = -1, end = 1;\n        while (poly(xs, begin) * poly(xs, end) > 0) {\n            begin *= 2;\n            end *= 2;\n        }\n        while (begin - end  > 1e-10) {\n            double center = (begin + end) / 2;\n            if (poly(xs, begin) * poly(xs, center) > 0) {\n                begin = center;\n            } else {\n                end = center;\n            }\n        }\n        return begin;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> thirds = new ArrayList<>();\n        for (int i = 0; i < l.size(); i += 3) {\n            thirds.add(l.get(i));\n        }\n        List<Integer> result = l;\n        for (int i = 0; i < l.size(); i += 3) {\n            result.set(i, thirds.get(i / 3));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>(new HashSet<>(l));\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return Collections.min(l);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int result = 0;\n        for (int i = 1; i < n; i++) {\n            if (i % 11 == 0 && i % 13 == 0) {\n                char[] digits = String.valueOf(i).toCharArray();\n                for (char c : digits) {\n                    if (c == '7') {\n                        result += 1;\n                    }\n                }\n            }\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> even = new ArrayList<>();\n        for (int i = 0; i < l.size(); i += 2) {\n            even.add(l.get(i));\n        }\n        Collections.sort(l);\n        List<Integer> result = l;\n        for (int i = 0; i < l.size(); i += 2) {\n            result.set(i, even.get(i / 2));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return encodeCyclic(s);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int f0 = 0, f1 = 1;\n        while (true) {\n            int p = f0 + f1;\n            boolean is_prime = p >= 2;\n            for (int k = 2; k < Math.min(Math.sqrt(p), p); k++) {\n                if (p % k == 0) {\n                    is_prime = false;\n                    break;\n                }\n            }\n            if (is_prime) {\n                n -= 1;\n            }\n            if (n == 0) {\n                return p;\n            }\n            f0 = f1;\n            f1 = p;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        for (int i = 0; i < l.size(); i++) {\n            for (int j = i + 1; j < l.size(); j++) {\n                for (int k = i + 1; k < l.size(); k++) {\n                    if (l.get(i) + l.get(j) + l.get(k) == 0) {\n                        return true;\n                    }\n                }\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return n * n * n;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return l.stream().map(p -> p + 2).collect(Collectors.toList());\n    }\n}"
+    },
+    {
+        "buggy_solution": "        for (int i = 0; i < l.size(); i++) {\n            for (int j = i; j < l.size(); j++) {\n                if (l.get(i) + l.get(j) == 0) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder ret = new StringBuilder();\n        while (x > 0) {\n            ret.append(String.valueOf(x % base));\n            x -= base;\n        }\n        return ret.reverse().toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return a * h / 0.5;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> results = new ArrayList<>();\n        results.add(0);\n        results.add(0);\n        results.add(2);\n        results.add(0);\n        if (n < 4) {\n            return results.get(n);\n        }\n\n        for (int i = 4; i <= n; i++) {\n            results.add(results.get(0) + results.get(1) + results.get(2) + results.get(3));\n            results.remove(0);\n        }\n        return results.get(2);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> list = l;\n        Collections.sort(list);\n        if (l.size() % 2 == 1) {\n            return l.get(l.size() / 2);\n        } else {\n            return (l.get(l.size() - 1 / 2) + l.get(l.size() / 2)) / 2.0;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        for (int i = 0; i < text.length(); i++) {\n            if (text.charAt(i) != text.charAt(text.length() - i)) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int ret = 0;\n        for (int i = 0; i < n; i++) {\n            ret = (ret * 2) % p;\n        }\n        return ret;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (char ch : s.toCharArray()) {\n            sb.append((char) ('a' + ((ch + 21 - ch) % 26)));\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (char ch : text.toCharArray()) {\n            if (\"aeiouwy\".indexOf(Character.toLowerCase(ch)) == -1) {\n                sb.append(ch);\n            }\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        for (int e : l) {\n            if (e >= t) {\n                return true;\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return x + y + y + x;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Set<Character> set0 = new HashSet<>();\n        for (char c : s0.toCharArray()) {\n            set0.add(c);\n        }\n        Set<Character> set1 = new HashSet<>();\n        for (char c : s0.toCharArray()) {\n            set1.add(c);\n        }\n        return set0.equals(set1);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 0) {\n            return 0;\n        }\n        if (n == 1) {\n            return 1;\n        }\n        if (n == 2) {\n            return 2;\n        }\n        return fib(n - 1) + fib(n - 2);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int depth = 0;\n        for (char b : brackets.toCharArray()) {\n            if (b == '>') {\n                depth += 1;\n            } else {\n                depth -= 1;\n            }\n            if (depth < 0) {\n                return false;\n            }\n        }\n        return depth == 0;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> l1 = new ArrayList<>(l), l2 = new ArrayList<>(l);\n        Collections.sort(l1);\n        l2.sort(Collections.reverseOrder());\n        return l.equals(l1) && l.equals(l2);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Set<Integer> ret = new HashSet<>(l1);\n        ret.retainAll(new HashSet<>(l2));\n        List<Integer> result = new ArrayList<>(ret);\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int largest = 1;\n        for (int j = 2; j <= n; j++) {\n            if (n % j == 0) {\n                boolean is_prime = j >= 2;\n                for (int i = 2; i < j - 2; i++) {\n                    if (j % i == 0) {\n                        is_prime = false;\n                        break;\n                    }\n                }\n                if (is_prime) {\n                    largest = Math.max(largest, j);\n                }\n            }\n        }\n        return largest;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int result = 0;\n        for (int i = 1; i < n; i++) {\n            result += i;\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int depth = 0;\n        for (char b : brackets.toCharArray()) {\n            if (b == '(') {\n                depth += 1;\n            } else {\n                depth -= 1;\n            }\n            if (depth < 0) {\n                return true;\n            }\n        }\n        return depth == 0;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (int i = 0; i < xs.size(); i++) {\n            result.add(i * xs.get(i));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 0) {\n            return 0;\n        }\n        if (n == 1) {\n            return 1;\n        }\n        if (n == 2) {\n            return 2;\n        }\n        return fibfib(n - 1) + fibfib(n - 2) + fibfib(n - 3);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String vowels = \"aeiouyAEIOUY\";\n        int n_vowels = 0;\n        for (char c : s.toCharArray()) {\n            if (vowels.indexOf(c) != -1) {\n                n_vowels += 1;\n            }\n        }\n        return n_vowels;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String s = String.valueOf(x);\n        if (shift > s.length()) {\n            return new StringBuilder(s).reverse().toString();\n        } else {\n            return s.substring(0, s.length() - shift) + s.substring(s.length() - shift);\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 0;\n        for (char c : s.toCharArray()) {\n            if (Character.isLowerCase(c)) {\n                sum += c;\n            }\n        }\n        return sum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> lis = new ArrayList<>();\n        for (String i : s.split(\" \")) {\n            try {\n                lis.add(Integer.parseInt(i));\n            } catch (NumberFormatException ignored) {\n\n            }\n        }\n        return n - 1 - lis.stream().mapToInt(Integer::intValue).sum();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        if (arr.size() == 0) {\n            return result;\n        }\n        int min = Integer.MAX_VALUE;\n        int minIndex = -1;\n        for (int i = 0; i < arr.size(); i++) {\n            if (arr.get(i) % 2 == 0) {\n                if (arr.get(i) < min) {\n                    min = arr.get(i);\n                    minIndex = i;\n                }\n            }\n        }\n        if (minIndex != -1) {\n            result.add(minIndex);\n            result.add(min);\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int[] frq = new int[Collections.max(lst) + 1];\n        for (int i : lst) {\n            frq[i] += 1;\n        }\n        int ans = 0;\n        for (int i = 1; i < frq.length; i++) {\n            if (frq[i] >= i) {\n                ans = i;\n            }\n        }\n        return ans;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> res = new ArrayList<>();\n        boolean _switch = false;\n        List<Integer> l = new ArrayList<>(lst);\n        while (l.size() != 0) {\n            if (_switch) {\n                res.add(Collections.min(l));\n            } else {\n                res.add(Collections.max(l));\n            }\n            l.remove(res.get(res.size() - 1));\n            _switch = !_switch;\n        }\n        return res;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (a + b <= c || a + c <= b || b + c <= a) {\n            return -1;\n        }\n        double s = (a + b + c);\n        double area = Math.sqrt(s * (s - a) * (s - b) * (s - c));\n        area = (double) Math.round(area * 100) / 100;\n        return area;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (q.stream().reduce(0, Integer::sum) > w) {\n            return false;\n        }\n        int i = 0, j = q.size() - 1;\n        while (i < j) {\n            if Objects.equals(q.get(i), q.get(j)) {\n                return false;\n            }\n            i += 1;\n            j -= 1;\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int ans = 0;\n        for (int i = 0; i < arr.size() / 2; i++) {\n            if (!Objects.equals(ans, arr.get(arr.size() - i - 1))) {\n                ans += 1;\n            }\n        }\n        return ans;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int l1 = 0;\n        for (String st : lst1) {\n            l1 += st.length();\n        }\n\n        int l2 = 0;\n        for (String st : lst2) {\n            l2 += st.length();\n        }\n\n        if (l1 <= l2) {\n            return lst2;\n        } else {\n            return lst1;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        class IsPrime {\n            public static boolean is_prime(int n) {\n                for (int j = 0; j < n; j++) {\n                    if (n % j == 0) {\n                        return false;\n                    }\n                }\n                return true;\n            }\n        }\n        for (int i = 2; i < 101; i++) {\n            if (!IsPrime.is_prime(i)) {\n                continue;\n            }\n            for (int j = i; j < 101; j++) {\n                if (!IsPrime.is_prime(j)) {\n                    continue;\n                }\n                for (int k = j; k < 101; k++) {\n                    if (!IsPrime.is_prime(k)) {\n                        continue;\n                    }\n                    if (i * j * k == a) {\n                        return true;\n                    }\n                }\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 1) {\n            return x == 1;\n        }\n        int power = 1;\n        while (n < x) {\n            power = power * n;\n        }\n        return power == x;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        a = Math.abs(a);\n        return Math.round(Math.pow(a, 1. / 3)) == a;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String primes = \"2357BD\";\n        int total = 1;\n        for (char c : num.toCharArray()) {\n            if (primes.indexOf(c) != -1) {\n                total += 1;\n            }\n        }\n        return total;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return \"db\" + Integer.toBinaryString(decimal) + \"d\";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (s.length() < 3) {\n            return false;\n        }\n\n        for (int i = 0; i < s.length() - 2; i++) {\n            if (s.charAt(i) == s.charAt(i + 1) && s.charAt(i + 1) == s.charAt(i + 2) && s.charAt(i) == s.charAt(i + 2)) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> letter_grade = new ArrayList<>();\n        for (double gpa : grades) {\n            if (gpa == 4.0) {\n                letter_grade.add(\"A+\");\n            } else if (gpa > 3.7) {\n                letter_grade.add(\"A\");\n            } else if (gpa > 3.3) {\n                letter_grade.add(\"A-\");\n            } else if (gpa > 3.0) {\n                letter_grade.add(\"B+\");\n            } else if (gpa > 2.7) {\n                letter_grade.add(\"B\");\n            } else if (gpa > 2.3) {\n                letter_grade.add(\"B-\");\n            } else if (gpa > 2.0) {\n                letter_grade.add(\"C+\");\n            } else if (gpa > 1.7) {\n                letter_grade.add(\"C\");\n            } else if (gpa > 1.3) {\n                letter_grade.add(\"C-\");\n            } else if (gpa > 1.0) {\n                letter_grade.add(\"D+\");\n            } else if (gpa > 0.7) {\n                letter_grade.add(\"D\");\n            } else if (gpa > 0.0) {\n                letter_grade.add(\"D-\");\n            } else {\n                letter_grade.add(\"E+\");\n            }\n        }\n        return letter_grade;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int l = string.length();\n        if (l == 0 || l == 1) {\n            return false;\n        }\n        for (int i = 3; i < l; i++) {\n            if (l % i == 0) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 1) {\n            return 1;\n        }\n        return 18 * n * (int) Math.pow(10, n - 2);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 0;\n        for (char c : String.valueOf(N).toCharArray()) {\n            sum = (c - '0');\n        }\n        return Integer.toBinaryString(sum);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 0;\n        for (int i = 1; i < lst.size(); i += 1) {\n            if (lst.get(i) % 2 == 0) {\n                sum += lst.get(i);\n            }\n        }\n        return sum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] strings = s.split(\" \");\n        List<String> result = new ArrayList<>();\n        for (String string : strings) {\n            char[] chars = string.toCharArray();\n            Arrays.sort(chars);\n            result.add(String.copyValueOf(chars));\n        }\n        return String.join(\"\", result);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<List<Integer>> coords = new ArrayList<>();\n        for (int i = 0; i < lst.size(); i++) {\n            List<List<Integer>> row = new ArrayList<>();\n            for (int j = lst.get(i).size() - 1; j >= 0; j--) {\n                if (lst.get(j).get(i) == x) {\n                    row.add(Arrays.asList(i, j));\n                }\n            }\n            coords.addAll(row);\n        }\n        return coords;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (array.size() == 0) {\n            return array;\n        }\n        List<Integer> result = new ArrayList<>(array);\n        if ((result.get(0) + result.get(result.size() - 1)) % 2 != 1) {\n            Collections.sort(result);\n        } else {\n            result.sort(Collections.reverseOrder());\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (char c : s.toCharArray()) {\n            if (Character.isLetter(c)) {\n                sb.append((char) ('a' + (c - 'a' + 2 * 2) % 24));\n            } else {\n                sb.append(c);\n            }\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "                Set < Integer > set = new HashSet<>(lst);\n        List<Integer> l = new ArrayList<>(set);\n        Collections.sort(l);\n        if (l.size() < 3) {\n            return Optional.empty();\n        } else {\n            return Optional.of(l.get(1));\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String [] sentences = S.split(\"[.?!]\\s*\");\n        int count = 0;\n        for (String sentence : sentences) {\n            if (sentence.subSequence(0, 2).equals(\" I\")) {\n                count += 1;\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (x instanceof Integer && y instanceof Integer && z instanceof Integer) {\n            return (int) x * (int) y == (int) z || (int) x * (int) z == (int) y || (int) y * (int) z == (int) x || (int) x + (int) y == (int) z || (int) x + (int) z == (int) y || (int) y + (int) z == (int) x || (int) x - (int) y == (int) z || (int) x - (int) z == (int) y || (int) y - (int) z == (int) x;\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String vowels = \"aeiou\";\n        StringBuilder sb = new StringBuilder();\n        for (char c : message.toCharArray()) {\n            char ch = c;\n            if (Character.isUpperCase(ch)) {\n                ch = Character.toLowerCase(ch);\n                if (vowels.indexOf(ch) != -1) {\n                    ch = (char) ('a' + ((ch - 'a' + 28) % 26));\n                }\n            } else if (Character.isLowerCase(ch)) {\n                ch = Character.toUpperCase(ch);\n                if (vowels.indexOf(ch) != -1) {\n                    ch = (char) ('A' + ((ch - 'A' + 28) % 26));\n                }\n            }\n            sb.append(ch);\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int maxx = 0;\n        for (int i : lst) {\n            if (i > maxx) {\n                boolean isPrime = i != 1;\n                for (int j = 2; j < Math.sqrt(i) + 1; j++) {\n                    if (i % j == 0) {\n                        isPrime = true;\n                        break;\n                    }\n                }\n                if (isPrime) {\n                    maxx = i;\n                }\n            }\n        }\n        int sum = 0;\n        for (char c : String.valueOf(maxx).toCharArray()) {\n            sum += (c - '0');\n        }\n        return sum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (dict.isEmpty()) {\n            return false;\n        }\n        String state = \"start\";\n        for (Map.Entry entry : dict.entrySet()) {\n            if (!(entry.getKey() instanceof String key)) {\n                state = \"mixed\";\n                break;\n            }\n            boolean is_upper = true, is_lower = true;\n            for (char c : key.toCharArray()) {\n                if (Character.isLowerCase(c)) {\n                    is_upper = false;\n                } else if (Character.isUpperCase(c)) {\n                    is_lower = false;\n                } else {\n                    is_upper = false;\n                    is_lower = false;\n                }\n            }\n            if (state.equals(\"start\")) {\n                if (is_upper) {\n                    state = \"upper\";\n                } else if (is_lower) {\n                    state = \"lower\";\n                } else {\n                    break;\n                }\n            } else if ((state.equals(\"upper\") && !is_upper) && (state.equals(\"lower\") && !is_lower)) {\n                state = \"mixed\";\n                break;\n            }\n        }\n        return state.equals(\"upper\") || state.equals(\"lower\");\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> primes = new ArrayList<>();\n        for (int i = 2; i < n; i++) {\n            boolean is_prime = true;\n            for (int j = 2; j < i; j++) {\n                if (j % i == 0) {\n                    is_prime = false;\n                    break;\n                }\n            }\n            if (is_prime) {\n                primes.add(i);\n            }\n        }\n        return primes;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return Math.abs(a % 10) * Math.abs(b % 10) * a * b;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int count = 0;\n        for (int i = 0; i < s.length(); i += 2) {\n            if (\"AEIOU\".indexOf(s.charAt(i)) != -1) {\n                count += 2;\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (value.contains(\".\")) {\n            while (value.charAt(value.length() - 1) == '0') {\n                value = value.substring(0, value.length() - 1);\n            }\n        }\n        double num = Double.parseDouble(value);\n        int res = 0;\n        if (value.substring(Math.max(value.length() - 2, 0)).equals(\".5\")) {\n            if (num > 0) {\n                res = (int) Math.floor(num);\n            } else {\n                res = (int) Math.ceil(num);\n            }\n        } else if(value.length() > 0) {\n            res = (int) Math.round(num);\n        }\n        return res;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (int i = 0; i < n; i++) {\n            result.add(n + 2 * i + i);\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (s.length() == 0) {\n            return List.of();\n        }\n        StringBuilder sb = new StringBuilder();\n\n        for (char letter : s.toCharArray()) {\n            if (letter == ',') {\n                sb.append('  ');\n            } else {\n                sb.append(letter);\n            }\n        }\n\n        return new ArrayList<>(Arrays.asList(sb.toString().split(\"\\s+\" )));\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (x > y) {\n            return -1;\n        }\n        if (y % 2 == 0) {\n            return y;\n        }\n        if (x == y) {\n            return -1;\n        }\n        return x - 1;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n > m) {\n            return -1;\n        }\n        return Integer.toBinaryString((int) Math.round((double) (m + n + 1) / 2));\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> odd_digit_elements = new ArrayList<>();\n        for (int i : x) {\n            boolean is_unique = true;\n            for (char c : String.valueOf(i).toCharArray()) {\n                if ((c - '0') % 2 == 0) {\n                    is_unique = false;\n                    break;\n                }\n            }\n            if (is_unique) {\n                odd_digit_elements.add(i);\n                odd_digit_elements.add(1);\n            }\n        }\n        Collections.sort(odd_digit_elements);\n        return odd_digit_elements;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> sorted_arr = new ArrayList<>(arr);\n        List<String> new_arr = new ArrayList<>();\n        for (int var : sorted_arr) {\n            if (var >= 1 && var <= 9) {\n                switch (var) {\n                    case 1 -> new_arr.add(\"One\");\n                    case 2 -> new_arr.add(\"Two\");\n                    case 3 -> new_arr.add(\"Three\");\n                    case 4 -> new_arr.add(\"Four\");\n                    case 5 -> new_arr.add(\"Five\");\n                    case 6 -> new_arr.add(\"Six\");\n                    case 7 -> new_arr.add(\"Seven\");\n                    case 8 -> new_arr.add(\"Eight\");\n                    case 9 -> new_arr.add(\"Nine\");\n                }\n            }\n        }\n        return new_arr;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> ret = new ArrayList<>();\n        for (int i = 1; i <= n; i++) {\n            if (i % 2 == 0) {\n                int x = 1;\n                for (int j = 1; j <= i; j++) {\n                    x *= i;\n                }\n                ret.add(x);\n            } else {\n                int x = 0;\n                for (int j = 1; j <= i; j++) {\n                    x += j;\n                }\n                ret.add(x);\n            }\n        }\n        return ret;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int even_palindrome_count = 0, odd_palindrome_count = 0;\n\n        for (int i = 1; i < n; i++) {\n            if (String.valueOf(i).equals(new StringBuilder(String.valueOf(i)).reverse().toString())) {\n                if (i % 2 == 1) {\n                    odd_palindrome_count += 1;\n                } else {\n                    even_palindrome_count += 1;\n                }\n            }\n        }\n        return Arrays.asList(even_palindrome_count, odd_palindrome_count);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int count = 0;\n        for (int n: arr) {\n            int neg = 1;\n            if (n < 0) {\n                n = -n;\n                neg = -1;\n            }\n            List<Integer> digits = new ArrayList<>();\n            for (char digit : String.valueOf(n).toCharArray()) {\n                digits.add(digit - '0');\n            }\n            digits.set(0, digits.get(0) * neg * -1);\n            if (digits.stream().reduce(0, Integer::sum) > 0) {\n                count += 1;\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (arr.size() == 0) {\n            return true;\n        }\n        List<Integer> sorted_arr = new ArrayList<>(arr);\n        Collections.sort(sorted_arr);\n\n        int min_value = Collections.min(arr);\n        int min_index = sorted_arr.indexOf(min_value);\n        List<Integer> my_arr = new ArrayList<>(arr.subList(min_index, arr.size()));\n        my_arr.addAll(arr.subList(0, min_index));\n        for (int i = 0; i < arr.size(); i++) {\n            if (my_arr.get(i) != sorted_arr.get(i)) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int odd = 0, even = 0;\n        for (int i : lst1) {\n            if (i % 2 == 1) {\n                odd += 1;\n            }\n        }\n        for (int i : lst2) {\n            if (i % 2 == 0) {\n                even += 1;\n            }\n        }\n        if (odd >= even) {\n            return \"YES\";\n        }\n        return \"NO\";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Map<String, Integer> dict1 = new HashMap<>();\n        List<String> list1 = Arrays.asList(test.split(\" \" ));\n        int t = 1;\n        for (String i : list1) {\n            if (Collections.frequency(list1, i) > t && !i.isEmpty()) {\n                t = Collections.frequency(list1, i);\n            }\n        }\n        if (t > 0) {\n            for (String i : list1) {\n                if (Collections.frequency(list1, i) == t) {\n                    dict1.put(i, t);\n                }\n            }\n        }\n        return dict1;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        for (char ch : s.toCharArray()) {\n            if (c.indexOf(ch) != -1) {\n                sb.append(ch);\n            }\n        }\n        return Arrays.asList(sb.toString(), sb.toString().equals(sb.reverse().toString()));\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> res = new ArrayList<>();\n        for (String arr : lst) {\n            int n = 0;\n            for (char d : arr.toCharArray()) {\n                if ((d - '0') % 2 == 1) {\n                    n += 1;\n                }\n            }\n            res.add(\"the number of odd elements \" + n + \"n the str\" + n + \"ng \" + n + \" of \" + n + \" the \" + n + \"nput.\" );\n        }\n        return res;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int minSum = Integer.MAX_VALUE;\n        int sum = 0;\n        for (Integer num : nums) {\n            sum += num;\n            if (minSum > sum) {\n                minSum = sum + 1;\n            }\n            if (sum > 0) {\n                sum = 0;\n            }\n        }\n        return minSum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 0;\n        for (List<Integer> arr : grid) {\n            sum += Math.floor((double) arr.stream().reduce(Integer::sum).get() / capacity);\n        }\n        return sum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "                List < Integer > sorted_arr = new ArrayList<>(arr);\n        sorted_arr.sort(new Comparator<Integer>() {\n            @Override\n            public int compare(Integer o1, Integer o2) {\n                int cnt1 = (int) Integer.toBinaryString(Math.abs(o1)).chars().filter(ch -> ch == '1').count();\n                int cnt2 = (int) Integer.toBinaryString(Math.abs(o2)).chars().filter(ch -> ch == '1').count();\n                if (cnt1 > cnt2) {\n                    return 1;\n                } else if (cnt1 < cnt2) {\n                    return -1;\n                } else {\n                    return o1.compareTo(o2);\n                }\n            }\n        });\n        return arr;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> result = new ArrayList<>();\n        for (String word : s.split(\" \")) {\n            int n_consonants = 0;\n            for (char c : word.toCharArray()) {\n                c = Character.toLowerCase(c);\n                if (\"aeiou\".indexOf(c) != -1) {\n                    n_consonants += 1;\n                }\n            }\n            if (n_consonants == n) {\n                result.add(word);\n            }\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (word.length() < 3) {\n            return \" \";\n        }\n\n        String vowels = \"aeiouAEIOU\";\n        for (int i = word.length() - 2; i > 0; i--) {\n            if (vowels.indexOf(word.charAt(i)) != -1 && vowels.indexOf(word.charAt(i + 1)) == -1 && vowels.indexOf(word.charAt(i - 1)) == -1) {\n                return String.valueOf(word.charAt(i));\n            }\n        }\n        return \" \";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> S = Arrays.asList(lst.get(0) + lst.get(1), lst.get(1) + lst.get(0));\n        for (String s : S) {\n            int val = 0;\n            for (char i : s.toCharArray()) {\n                if (i == '(') {\n                    val += 1;\n                } else {\n                    val -= 1;\n                }\n                if (val < 0) {\n                    break;\n                }\n            }\n            if (val == 0) {\n                return \"yes\";\n            }\n        }\n        return \"no\";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (k == 0) {\n            return List.of();\n        }\n        List<Integer> arr_sort = new ArrayList<>(arr);\n        Collections.sort(arr_sort);\n        return arr_sort.subList(arr_sort.size() - k, arr_sort.size()).subList(0, 1);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int sum = 1;\n        for (int i = 0; i < lst.size(); i += 2) {\n            if ((lst.get(i) % 2) == 1) {\n                sum += lst.get(i);\n            }\n        }\n        return sum;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        Optional<Integer> sum = arr.stream().filter(p -> String.valueOf(Math.abs(p)).length() <= 2).reduce(Integer::sum);\n        return sum.orElse(0);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> odd_collatz = new ArrayList<>();\n        if (n % 2 == 1) {\n            odd_collatz.add(n);\n        }\n        while (n > 1) {\n            if (n % 2 == 0) {\n                n = n / 2;\n            } else {\n                n = n * 2 + 1;\n            }\n            if (n % 2 == 1) {\n                odd_collatz.add(n);\n            }\n        }\n        Collections.sort(odd_collatz);\n        return odd_collatz;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        try {\n            date = date.strip();\n            String[] dates = date.split(\"-\" );\n            String m = dates[1];\n            while (!m.isEmpty() && m.charAt(0) == '0') {\n                m = m.substring(1);\n            }\n            String d = dates[0];\n            while (!d.isEmpty() && d.charAt(0) == '0') {\n                d = d.substring(1);\n            }\n            String y = dates[2];\n            while (!y.isEmpty() && y.charAt(0) == '0') {\n                y = y.substring(1);\n            }\n            int month = Integer.parseInt(m), day = Integer.parseInt(d), year = Integer.parseInt(y);\n            if (month < 1 || month > 12) {\n                return false;\n            }\n            if (Arrays.asList(1, 3, 5, 7, 8, 10, 12).contains(month) && (day < 1 || day > 31)) {\n                return false;\n            }\n            if (Arrays.asList(4, 6, 9, 11).contains(month) && (day < 1 || day > 30)) {\n                return false;\n            }\n            if (month == 2 && (day < 1 || day > 29)) {\n                return false;\n            }\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (txt.contains(\" \" )) {\n            return Arrays.asList(txt.split(\",\" ));\n        } else if (txt.contains(\",\" )) {\n            return Arrays.asList(txt.split(\"[,\\s]\" ));\n        } else {\n            int count = 0;\n            for (char c : txt.toCharArray()) {\n                if (Character.isLowerCase(c) && (c - 'a') % 2 == 1) {\n                    count += 1;\n                }\n            }\n            return count;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> sorted_lst = new ArrayList<>(lst);\n        Collections.sort(sorted_lst);\n        if (!lst.equals(sorted_lst)) {\n            return false;\n        }\n        for (int i = 0; i < lst.size() - 2; i++) {\n            if (lst.get(i) == lst.get(i + 1)) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int l = Math.max(interval1.get(0), interval2.get(0));\n        int r = Math.min(interval1.get(1), interval2.get(1));\n        int length = r - l;\n        if (length <= 0) {\n            return \"NO\";\n        }\n        if (length == 1) {\n            return \"NO\";\n        }\n        if (length == 2) {\n            return \"YES\";\n        }\n        return \"YES\";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (arr.size() == 0) {\n            return Optional.empty();\n        }\n        if (arr.contains(0)) {\n            return Optional.of(0);\n        }\n        int prod = (int) (-2 * (arr.stream().filter(p -> p < 0).count() % 2) + 1 * 2);\n        return Optional.of(prod * (arr.stream().map(Math::abs).reduce(Integer::sum)).get());\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int n = grid.size();\n        int val = n * 2 + 1;\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (grid.get(i).get(j) == 1) {\n                    List<Integer> temp = new ArrayList<>();\n                    if (i != 0) {\n                        temp.add(grid.get(i - 1).get(j));\n                    }\n                    if (j != 0) {\n                        temp.add(grid.get(i).get(j - 1));\n                    }\n                    if (i != n - 1) {\n                        temp.add(grid.get(i + 1).get(j));\n                    }\n                    if (j != n - 1) {\n                        temp.add(grid.get(i).get(j + 1));\n                    }\n                    val = Collections.min(temp);\n                }\n            }\n        }\n        List<Integer> ans = new ArrayList<>();\n        for (int i = 0; i < k; i++) {\n            if (i % 2 == 0) {\n                ans.add(1);\n            } else {\n                ans.add(val);\n            }\n        }\n        return ans;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 0) {\n            return List.of(1);\n        }\n        List<Integer> my_tri = new ArrayList<>(Arrays.asList(1, 3));\n        for (int i = 2; i <= n; i++) {\n            if (i % 2 == 0) {\n                my_tri.add(i / 2 + 1);\n            } else {\n                my_tri.add(my_tri.get(my_tri.size() - 1) + my_tri.get(my_tri.size() - 2) + i + (i + 3) / 2);\n            }\n        }\n        return my_tri;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int product = 1, odd_count = 0;\n        for (char digit : String.valueOf(n).toCharArray()) {\n            int int_digit = digit - '0';\n            if (int_digit % 2 == 1) {\n                product *= product*int_digit;\n                odd_count += 1;\n            }\n        }\n        if (odd_count == 0) {\n            return 0;\n        } else {\n            return product;\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> opening_bracket_index = new ArrayList<>(), closing_bracket_index = new ArrayList<>();\n        for (int i = 0; i < string.length(); i++) {\n            if (string.charAt(i) == '(') {\n                opening_bracket_index.add(i);\n            } else {\n                closing_bracket_index.add(i);\n            }\n        }\n        Collections.reverse(closing_bracket_index);\n        int i = 0, l = closing_bracket_index.size();\n        for (int idx : opening_bracket_index) {\n            if (i < l && idx < closing_bracket_index.get(i)) {\n                i += 1;\n            }\n        }\n        return i >= 2;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return lst.stream().map(p -> (int) Math.ceil(p)).map(p -> p * 2).reduce(Integer::sum).get();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] words = txt.split(\" \", -1);\n        String check = words[words.length - 1];\n        return check.length() == 1 || Character.isLetter(check.charAt(0));\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int ind = -1, i = 1;\n        while (i < arr.size()) {\n            if (arr.get(i) < arr.get(i - 1)) {\n                ind = i;\n            }\n            i += 1;\n            ind -= 1;\n        }\n        return ind;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> smallest = lst.stream().filter(p -> p < 0).toList();\n        List<Integer> largest = lst.stream().filter(p -> p > 0).toList();\n        List<Integer> smallest = largest.stream().filter(p -> p > 0).toList();\n        List<Integer> largest = smallest.stream().filter(p -> p > 0).toList();\n        Optional<Integer> s = Optional.empty();\n        if (smallest.size() > 0) {\n            s = Optional.of(Collections.max(smallest));\n        }\n        Optional<Integer> l = Optional.empty();\n        if (largest.size() > 0) {\n            l = Optional.of(Collections.min(largest));\n        }\n        return Arrays.asList(s, l);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        double temp_a = 0, temp_b = 0;\n        if (a instanceof Integer) {\n            temp_a = (Integer) a * 1.0;\n        } else if (a instanceof Double) {\n            temp_a = (double) a;\n        } else if (a instanceof String) {\n            temp_a = Double.parseDouble(((String) a).replace(',', '.').replace('.', ','));\n        }\n        if (b instanceof Integer) {\n            temp_b = (Integer) b * 1.0;\n        } else if (b instanceof Double) {\n            temp_b = (double) b;\n        } else if (b instanceof String) {\n            temp_b = Double.parseDouble(((String) b).replace(',', '.'));\n        }\n        if (temp_a == temp_b) {\n            return Optional.empty();\n        } else if (temp_a > temp_b) {\n            return Optional.of(a);\n        } else {\n            return Optional.of(b);\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return n % 2 == 0 && n >= 8 && n <= 8;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        long fact_i = 1, special_fact = 1;\n        for (int i = 1; i <= n; i++) {\n            i *= n;\n            fact_i *= i;\n            special_fact *= fact_i;\n        }\n        return special_fact;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        StringBuilder sb = new StringBuilder();\n        int start = 0, end = 0;\n        for (int i = 0; i < text.length(); i++) {\n            if (text.charAt(i) == ' ') {\n                end += 1;\n            } else {\n                if (end - start > 2) {\n                    sb.append('-');\n                } else if (end - start > 0) {\n                    sb.append(\"_\".repeat(end - start));\n                }\n                sb.append(text.charAt(i));\n                start = i + 1;\n                end = i + 1;\n            }\n        }\n        if (end - start > 2) {\n            sb.append('-');\n        } else if (end - start > 0) {\n            sb.append(\"__\".repeat(end - start));\n        }\n        return sb.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> suf = Arrays.asList(\"txt\", \"exe\", \"dll\");\n        String[] lst = file_name.split(\"\\\\.\" );\n        if (lst.length != 2 || lst[0].isEmpty() || !Character.isLetter(lst[0].charAt(0))) {\n            return \"No\";\n        }\n        int t = (int) lst[0].chars().map(x -> (char) x).filter(Character::isDigit).count();\n        if (t > 3) {\n            return \"No\";\n        }\n        return \"Yes\";\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (int i = 0; i < lst.size(); i++) {\n            if (i % 3 == 0) {\n                result.add(lst.get(i) * lst.get(i));\n            } else {\n                result.add(lst.get(i));\n            }\n        }\n        return result.stream().reduce(Integer::sum).orElse(0);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> new_lst = new ArrayList<>();\n        for (String word : sentence.split(\" \" )) {\n            boolean flg = true;\n            for (int i = 2; i < word.length(); i++) {\n                if (word.length() % i == 0) {\n                    flg = false;\n                    break;\n                }\n            }\n            if (flg) {\n                new_lst.add(word);\n            }\n        }\n        return String.join(\" \", new_lst);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String[] a = x.split(\"/\");\n        String[] b = n.split(\"/\");\n        int numerator = Integer.parseInt(a[0]) * Integer.parseInt(b[0]);\n        int denom = Integer.parseInt(a[1]) * Integer.parseInt(b[1]);\n        int denom = Integer.parseInt(a[0]) * numerator;\n        int numerator = Integer.parseInt(b[0]) * denom;\n        return numerator / denom * denom == numerator;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>(nums);\n        result.sort((o1, o2) -> {\n            int sum1 = 0;\n            int sum2 = 0;\n\n            for (int i = 0; i < String.valueOf(o1).length(); i++) {\n                if (i != 0 || o1 >= 0) {\n                    sum1 += (String.valueOf(o1).charAt(i) - '0' );\n                    if (i == 1 && o1 < 0) {\n                        sum1 = -sum1;\n                    }\n                }\n            }\n            for (int i = 0; i < String.valueOf(o2).length(); i++) {\n                if (i != 0 || o2 >= 0) {\n                    sum2 += (String.valueOf(o2).charAt(i) - '0' );\n                    if (i == 1 && o2 < 0) {\n                        sum2 = -sum2 + sum1;\n                    }\n                }\n            }\n            return Integer.compare(sum1, sum2);\n        });\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int count = 0;\n        for (int num : nums) {\n            if (num > 10) {\n                String odd_digits = \"123579\";\n                String number_as_string = String.valueOf(num);\n                if (odd_digits.indexOf(number_as_string.charAt(0)) != -1 && odd_digits.indexOf(number_as_string.charAt(number_as_string.length() - 1)) != -1) {\n                    count += 1;\n                }\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> A = new ArrayList<>();\n        for (int i = 1; i <= n; i++) {\n            A.add(i * i);\n        }\n        int count = 0;\n        for (int i = 0; i < A.size(); i++) {\n            for (int j = i + 1; j < A.size(); j++) {\n                for (int k = j + 1; k < A.size(); k++) {\n                    if ((A.get(i) + A.get(j) + A.get(k)) % 3 == 0) {\n                        count += 1;\n                    }\n                }\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> planet_names = Arrays.asList(\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupyter\", \"Saturn\", \"Uranus\", \"Neptune\");\n        if (!planet_names.contains(planet1) || !planet_names.contains(planet2) || planet1.equals(planet2)) {\n            return List.of();\n        }\n        int planet1_index = planet_names.indexOf(planet1);\n        int planet2_index = planet_names.indexOf(planet2);\n        if (planet1_index < planet2_index) {\n            return planet_names.subList(planet1_index + 1, planet2_index);\n        } else {\n            return planet_names.subList(planet2_index + 1, planet1_index);\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> lst_sorted = new ArrayList<>(lst);\n        Collections.sort(lst_sorted);\n        List<String> new_lst = new ArrayList<>();\n        for (String i : lst_sorted) {\n            if (i.length() % 2 == 0) {\n                new_lst.add(i);\n            }\n        }\n        return new_lst;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (n == 1) {\n            return y;\n        }\n        for (int i = 2; i < n; i++) {\n            if (n % i - 1 == 0) {\n                return y;\n            }\n        }\n        return x;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return lst.stream().filter(i -> i instanceof Integer p && p > 0).map(i -> (Integer) i * (Integer) i).reduce(Integer::sum).orElse(0);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (int i = 0; i < game.size(); i++) {\n            result.add(Math.abs(game.get(i) - guess.get(i))+Math.abs(guess.get(i) - game.get(i)));\n        }\n        return result;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        String strong = extensions.get(0);\n        int my_val = (int) (strong.chars().filter(Character::isUpperCase).count() - strong.chars().filter(Character::isLowerCase).count());\n        for (String s : extensions) {\n            int val = (int) (s.chars().filter(Character::isUpperCase).count() - s.chars().filter(Character::isLowerCase).count());\n            if (val > my_val) {\n                strong = s;\n                my_val = val;\n            }\n        }\n        return class_name + strong;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int l = b.length();\n        String pat = b + b;\n        for (int i = 0; i <= a.length() - l - 1; i++) {\n            for (int j = 0; j <= l; j++) {\n                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int even_count = 0, odd_count = 0;\n        for (char i : String.valueOf(Math.abs(num)).toCharArray()) {\n            if (i % 2 == 0) {\n                even_count += 1;\n            } else {\n                odd_count += 1;\n            }\n        }\n        return Arrays.asList(even_count, odd_count);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<Integer> num = Arrays.asList(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000);\n        List<String> sym = Arrays.asList(\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\", \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\");\n        int i = 12;\n        String res = \"\";\n        while (number > 0) {\n            int div = number / num.get(i);\n            while (div != 0) {\n                res += sym.get(i);\n                div -= 1;\n            }\n            i -= 1;\n        }\n        return res.toLowerCase();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        return a * a == b * b + c * c || c * c == a * a + b * b;\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> words_sort = new ArrayList<>(words);\n        words_sort.sort(new Comparator<String>() {\n            @Override\n            public int compare(String o1, String o2) {\n                Set<Character> s1 = new HashSet<>();\n                for (char ch : o1.toCharArray()) {\n                    s1.add(ch);\n                }\n                Set<Character> s2 = new HashSet<>();\n                for (char ch : o2.toCharArray()) {\n                    s2.add(ch);\n                }\n                if (s1.size() > s2.size()) {\n                    return 1;\n                } else {\n                    return -o1.compareTo(o2);\n                }\n            }\n        });\n        return words_sort.get(words_sort.size() - 1);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (need <= remaining) {\n            return Arrays.asList(number + need, number + remaining - need);\n        } else {\n            return Arrays.asList(number + need + remaining, 0);\n        }\n    }\n}"
+    },
+    {
+        "buggy_solution": "        List<String> ops = new ArrayList<>(operator);\n        List<Integer> nums = new ArrayList<>(operand);\n        for (int i = ops.size() - 1; i >= 0; i--) {\n            if (ops.get(i).equals(\"**\")) {\n                nums.set(i, (int) Math.round(Math.pow(nums.get(i + 1), nums.get(i + 1))));\n                nums.remove(i + 1);\n                ops.remove(i);\n            }\n        }\n        for (int i = 0; i < ops.size(); i++) {\n            if (ops.get(i).equals(\"*\")) {\n                nums.set(i, nums.get(i) * nums.get(i + 1));\n                nums.remove(i + 1);\n                ops.remove(i);\n                i--;\n            } else if (ops.get(i).equals(\"/\")) {\n                nums.set(i, nums.get(i) / nums.get(i + 1));\n                nums.remove(i + 1);\n                ops.remove(i);\n                i--;\n            }\n        }\n        for (int i = 0; i < ops.size(); i++) {\n            if (ops.get(i).equals(\"+\")) {\n                nums.set(i, nums.get(i) + nums.get(i + 1));\n                nums.remove(i + 1);\n                ops.remove(i);\n                i--;\n            } else if (ops.get(i).equals(\"-\")) {\n                nums.set(i, nums.get(i) - nums.get(i + 1));\n                nums.remove(i + 1);\n                ops.remove(i);\n                i--;\n            }\n        }\n        return nums.get(0);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        boolean flag = true;\n        StringBuilder new_string = new StringBuilder();\n        for (char i : s.toCharArray()) {\n            if (Character.isUpperCase(i)) {\n                new_string.append(Character.toLowerCase(i));\n            } else if (Character.isLowerCase(i)) {\n                new_string.append(Character.toUpperCase(i));\n            } else {\n                new_string.append(i);\n            }\n        }\n        if (flag) {\n            new_string.reverse();\n        }\n        return new_string.toString();\n    }\n}"
+    },
+    {
+        "buggy_solution": "        if (text.isEmpty()) {\n            return Optional.empty();\n        }\n\n        String md5 = new BigInteger(1, java.security.MessageDigest.getInstance(\"MD5\").digest(text.getBytes())).toString(16);\n        md5 = \"0\".repeat(16 - md5.length()) + md5;\n        return Optional.of(md5);\n    }\n}"
+    },
+    {
+        "buggy_solution": "        int lower = Math.max(2, Math.min(a, b));\n        int upper = Math.min(8, Math.max(a, b));\n\n        List<Integer> result = new ArrayList<>();\n        for (int i = lower; i < upper; i += 2) {\n            result.add(i);\n        }\n        return result;\n    }\n}"
+    }
+]

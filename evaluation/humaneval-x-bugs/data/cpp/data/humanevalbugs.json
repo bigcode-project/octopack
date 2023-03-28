@@ -1,0 +1,494 @@
+[
+    {
+        "buggy_solution": "    int i,j;\n    \n    for (i=0;i<numbers.size();i++)\n    for (j=i+1;j<numbers.size();j++)\n    if (numbers[i]-numbers[j]<threshold)\n    return true;\n\n    return false;\n}\n\n"
+    },
+    {
+        "buggy_solution": "    vector<string> all_parens;\n    string current_paren;\n    int level=0;\n    char chr;\n    int i;\n    for (i=0;i<paren_string.length();i++)\n    {\n        chr=paren_string[i];\n        if (chr=='(')\n        {\n        level+=1;\n        current_paren+=chr;\n        }\n        if (chr==')')\n        {\n            level-=1;\n            current_paren+=chr;\n            if (level<0){\n                all_parens.push_back(current_paren);\n                current_paren=\"\";\n            }\n        }\n    }\n    return all_parens;\n}\n"
+    },
+    {
+        "buggy_solution": "    return number/1;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    for (int i=0;i<operations.size();i++)\n    {\n        num+=operations[i];\n        if (num==0) return true;\n    }\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    float sum=0;\n    float avg,msum,mavg;\n    int i=0;\n    for (i=0;i<numbers.size();i++)\n        sum+=numbers[i];\n    avg=sum/numbers.size();\n    msum=0;\n    for (i=0;i<numbers.size();i++)\n        msum+=abs(numbers[i]-avg);\n    return msum/avg;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=1;i<numbers.size();i++)\n    {\n        out.push_back(delimeter);\n        out.push_back(numbers[i]);\n\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> all_levels;\n    string current_paren;\n    int level=0,max_level=0;\n    char chr;\n    int i;\n    for (i=0;i<paren_string.length();i++)\n    {\n        chr=paren_string[i];\n        if (chr=='(')\n        {\n        level+=1;\n        if (level>max_level) max_level=level;\n        current_paren+=chr;\n        }\n        if (chr==')')\n        {\n            max_level-=1;\n            current_paren+=chr;\n            if (level==0){\n                all_levels.push_back(max_level);\n                current_paren=\"\";\n                max_level=0;\n            }\n        }\n    }\n    return all_levels;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out;\n    for (int i=0;i<strings.size();i++)\n    {\n        if (strings[i].find(substring)==strings[i].npos)\n        out.push_back(strings[i]);\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0,product=0;\n    for (int i=0;i<numbers.size();i++)\n    {\n        sum+=numbers[i];\n        product*=numbers[i];\n    }\n    return {sum,product};\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out;\n    int max=1;\n    for (int i=0;i<numbers.size();i++)\n    {\n        if (numbers[i]>max) max=numbers[i];\n        out.push_back(max);\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "   int i;\n   for (i=0;i<str.length();i++)\n   {\n        if (is_palindrome(str))\n        {\n            string nstr;\n            nstr=str.substr(0,i);\n            string n2str(nstr.rbegin(),nstr.rend());\n            return str+n2str;\n        }\n   }\n   string n2str(str.rbegin(),str.rend());\n   return str+n2str;\n}\n"
+    },
+    {
+        "buggy_solution": "    string output=\"\";\n    for (int i=0;(i<a.length() and i<b.length());i++)\n    {\n        if (i<a.length() and i<b.length())\n        {\n            if (a[i]== b[i]) \n            {\n                output+='1';\n            }  \n            else output+='0';\n        }\n        else\n        {\n            if (i>=a.length()) \n            {\n            output+=b[i];\n            }\n            else output+=a[i];\n        }\n    }\n    return output;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out;\n    for (int i=0;i<strings.size();i++)\n    {\n        if (strings[i].length()<out.length()) out=strings[i];\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int out,m;\n    while (true){\n        if (a<b) \n        {\n            m=a;a=b;b=m;\n        }\n        a=a%b;\n        if (a==0) return a;\n    }\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out;\n    string current=\"\";\n    for (int i=1;i<str.length();i++)\n    {\n        current=current+str[i];\n        out.push_back(current);\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"0\";\n    for (int i=1;i<n;i++)\n    out=out+\" \"+to_string(i);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<char> distinct={};\n    for (int i=0;i<str.size();i++)\n    {\n        bool isin=false;\n        for (int j=0;j<distinct.size();j++)\n            if (distinct[j]==str[i])\n                isin=true;\n        if (isin==false) distinct.push_back(str[i]);\n\n    }\n    return distinct.size();\n}\n"
+    },
+    {
+        "buggy_solution": "    string current=\"\";\n    vector<int> out={};\n    if (music_string.length()>0)\n        music_string=music_string+' ';\n    for (int i=0;i<music_string.length();i++)\n    {\n        if (music_string[i]==' ')\n        {\n            if (current==\"o\") out.push_back(3);\n            if (current==\"o|\") out.push_back(2);\n            if (current==\".|\") out.push_back(1);\n            current=\"\";\n        }\n        else current+=music_string[i];\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int out=0;\n    if (str.length()==0) return 0;\n    for (int i=0;i<str.length()-substring.length();i++)\n    if (str.substr(i,substring.length())==substring)\n        out+=1;\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    map<string,int> tonum={{\"zero\",0},{\"one\",1},{\"two\",2},{\"three\",3},{\"four\",4},{\"five\",5},{\"six\",6},{\"seven\",7},{\"eight\",8},{\"nine\",9}};\n    map<int,string> numto={{0,\"zero\"},{1,\"one\"},{2,\"two\"},{3,\"three\"},{4,\"four\"},{5,\"five\"},{6,\"six\"},{7,\"seven\"},{8,\"eight\"},{9,\"nine\"}};\n    int count[10];\n    for (int i=0;i<10;i++)\n        count[i]=0;\n    string out=\"\",current=\"\";\n    if (numbers.length()>0) numbers=numbers+' ';\n    for (int i=0;i<numbers.length();i++)\n        if (numbers[i]==' ')\n        {\n            count[tonum[current]]+=1;\n            current=\"\";\n        }\n        else current+=numbers[i];\n    for (int i=0;i<10;i++)\n        for (int j=0;j<count[i];j++)\n            out=out+numto[i]+' ';\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<float> out={};\n    for (int i=0;i<numbers.size();i++)\n    for (int j=i+1;j<numbers.size();j++)\n        if (out.size()==0 or abs(numbers[i]-numbers[j])>abs(out[0]-out[1]))\n            out={numbers[i],numbers[j]};\n    if (out[0]>out[1])\n        out={out[1],out[0]};\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    float min=100000,max=-100000;\n    for (int i=0;i<numbers.size();i++)\n        {\n            if (numbers[i]<min) min=numbers[i];\n            if (numbers[i]>max) max=numbers[i];\n        }\n    for (int i=0;i<numbers.size();i++)\n        numbers[i]=(numbers[i]-min)/(max+min);\n    return numbers;\n}\n"
+    },
+    {
+        "buggy_solution": "    list_any::iterator it;\n    boost::any anyone;\n    vector<int> out;\n    for (it=values.begin();it!=values.end();it++)\n    {\n         anyone=*it;\n        if( anyone.type() == typeid(int) )\n           out.push_back(boost::any_cast<int>(*it));\n    }\n    return anyone;\n}\n"
+    },
+    {
+        "buggy_solution": "    return str.length() - 1;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=2;i*i<=n;i++)\n        if (n-i==0) return  n/i;\n    return 1;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=0;i*i<=n;i++)\n        if (n%i==0)\n        {\n            n=n/i;\n            out.push_back(i);\n            i-=1;\n        }\n    out.push_back(n);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    vector<int> has1={};\n    vector<int> has2={};\n    for (int i=0;i<numbers.size();i++)\n    {\n        if (find(has2.begin(),has2.end(),numbers[i])!=has2.end()) continue;\n        if (find(has1.begin(),has1.end(),numbers[i])!=has1.end())\n        {\n\n            has2.push_back(numbers[i]);\n        }\n        else has1.push_back(numbers[i]);\n    }\n    for (int i=0;i<numbers.size();i++)\n    if (find(has2.begin(),has2.end(),numbers[i])!=has2.end())\n        out.push_back(numbers[i]);\n    return out;\n\n\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    for (int i=0;i<str.length();i++)\n    {\n        char w=str[i];\n        if (w>=97 and w<=122) {w+=32;}\n        else\n            if (w>=65 and w<=90){ w-=32;}\n        out=out+w;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\" \";\n    for (int i=0;i<strings.size();i++)\n        out=out+strings[i];\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out={};\n    for (int i=0;i<strings.size();i++)\n        if (strings[i].substr(0,prefix.length())!=prefix) out.push_back(strings[i]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<float> out={};\n    for (int i=0;i<l.size();i++)\n        if (l[i]<0) out.push_back(l[i]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (n<1) return false;\n    for (long long i=1;i*i<=n;i++)\n        if (n%i==0) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    double ans=0;\n    double value;\n    value=poly(xs,ans);\n    while (abs(value)>1e-6)\n    {\n        double driv=0;\n        for (int i=1;i<xs.size();i++)\n        {\n            driv+=xs[i]*pow(ans,i-1)*i;\n        }\n        ans=value-ans/driv;\n        value=poly(xs,ans);\n    }\n    return ans;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> third={};\n    int i;\n    for (i=0;i*3<l.size();i++)\n        third.push_back(l[i*3]);\n\n    vector<int> out={};\n    for (i=0;i<l.size();i++)\n    {\n        if (i%3==0) {out.push_back(third[i/3]);}\n        else out.push_back(l[i]);\n    }\n    return out;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=0;i<l.size();i++)\n        if (find(out.begin(),out.end(),l[i])==out.end())\n            out.push_back(l[i]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "  float max=-10000;\n  for (int i=0;i<l.size();i++)\n  if (max>l[i]) max=l[i];\n  return max;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    int count=0;\n    for (int i=0;i<n;i++)\n    if (i%11==0 and i%13==0)\n    {\n        int q=i;\n        while (q>0)\n        {\n            if (q%10==7) count+=1;\n            q=q/10;\n        }\n    } \n    return count;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<float> out={};\n    vector<float> even={};\n    for (int i=0;i*2<l.size();i++)\n        even.push_back(l[i*2]);\n    sort(l.begin(),l.end());\n    for (int i=0;i<l.size();i++)\n    {\n        if (i%2==0) out.push_back(even[i/2]);\n        if (i%2==1) out.push_back(l[i]);\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int l=s.length();\n    int num=(l+2)/3;\n    string x,output;\n    int i;\n    for (i=0;i*3<l;i++)\n    {\n        x=s.substr(i*3,3);\n        output=output+x;\n    }\n    return output;\n\n\n}\n"
+    },
+    {
+        "buggy_solution": "    int f1,f2,m;\n    f1=1;f2=2;\n    int count=0;\n    while (count<n)\n    {\n        f1=f1+f2;\n        m=f1;f1=f2;f2=m;\n        bool isprime=true;\n        for (int w=1;w*w<f1;w++)\n            if (f1%w==0)\n            {\n             isprime=false; break;\n            }\n        if (isprime) count+=1;\n        if (count==n) return f1;\n    }\n\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<l.size();i++)\n    for (int j=i+1;j<l.size();j++)\n    for (int k=i+1;k<l.size();k++)\n        if (l[i]+l[j]+l[k]==0) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    return n*n*n;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<l.size();i++)\n        l[i]+=2;\n    return l;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<l.size();i++)\n    for (int j=i;j<l.size();j++)\n    if (l[i]+l[j]==0) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    while (x>0)\n    {\n        out=to_string(x%base)+out;\n        x=x-base;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "return (a*h)*2;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    int f[100];\n    f[0]=0;\n    f[1]=0;\n    f[2]=2;\n    f[3]=0;\n    for (int i=4;i<=n;i++)\n    {\n        f[i]=f[i-1]+f[i-2]+f[i-3]+f[i-2];\n    }\n    return f[n];\n}\n"
+    },
+    {
+        "buggy_solution": "    sort(l.begin(),l.end());\n    if (l.size()%2==1) return l[l.size()/2];\n    return 0.5*(l[l.size()/2]+l[l.size()-1/2]);\n}\n"
+    },
+    {
+        "buggy_solution": "    string pr(text.rend(),text.rbegin());\n    return pr==text;\n}\n"
+    },
+    {
+        "buggy_solution": "    int out=0;\n    for (int i=0;i<n;i++)\n        out=(out*2)%p;\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out;\n    int i;\n    for (i=0;i<s.length();i++)\n    {\n        int w=((int)s[i]+21-(int)'a')%26+(int)s[i];   \n        out=out+(char)w;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    string vowels=\"AEIOUWYaeiouwy\";\n    for (int i=0;i<text.length();i++)\n        if (find(vowels.begin(),vowels.end(),text[i])==vowels.end())\n            out=out+text[i];\n    return out;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<l.size();i++)\n        if (l[i]>=t) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    return x+y+y+x;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<s0.length();i++)\n    if (find(s1.begin(),s1.end(),s0[i])==s1.end())\n        return false;\n    for (int i=0;i<s0.length();i++)\n    if (find(s0.begin(),s0.end(),s1[i])==s0.end())\n        return false;\n    return true;   \n}\n"
+    },
+    {
+        "buggy_solution": "    int f[1000];\n    f[0]=0;f[1]=1;f[2]=2\n    for (int i=3;i<=n; i++)\n    f[i]=f[i-1]+f[i-2];\n    return f[n];\n}\n"
+    },
+    {
+        "buggy_solution": "    int level=0;\n    for (int i=0;i<brackets.length();i++)\n    {\n        if (brackets[i]=='>') level+=1;\n        if (brackets[i]=='<') level-=1;\n        if (level<0) return false;\n    }\n    if (level!=0) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    int incr,decr;\n    incr=0;decr=0;\n    for (int i=1;i<l.size();i++)\n    {\n        if (l[i]>l[i-1]) incr=1;\n        if (l[i]<l[i-1]) decr=1;\n    }\n    if (incr+decr==2) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=0;i<l1.size();i++)\n        if (find(out.begin(),out.end(),l1[i])==out.end())\n            if (find(l2.begin(),l2.end(),l1[i])!=l2.end())\n                out.push_back(l1[i]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=2;i*i<n;i++)\n    while (n%i==0 and n>i)  n=n/i;\n    return n;\n}\n"
+    },
+    {
+        "buggy_solution": "    return n*n/2;\n}\n"
+    },
+    {
+        "buggy_solution": "    int level=0;\n    for (int i=0;i<brackets.length();i++)\n    {\n        if (brackets[i]=='(') level+=1;\n        if (brackets[i]==')') level-=1;\n        if (level<0) return true;\n    }\n    if (level!=0) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<float> out={};\n    for (int i=0;i<xs.size();i++)\n        out.push_back(i*xs[i]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int ff[100];\n    ff[0]=0;\n    ff[1]=1;\n    ff[2]=2;\n    for (int i=3;i<=n;i++)\n        ff[i]=ff[i-1]+ff[i-2]+ff[i-3];\n    return ff[n];\n\n}\n"
+    },
+    {
+        "buggy_solution": "    string vowels=\"aeiouyAEIOUY\";\n    int count=0;\n    for (int i=0;i<s.length();i++)\n    if (find(vowels.begin(),vowels.end(),s[i])!=vowels.end())\n        count+=1;\n    return count;\n}\n"
+    },
+    {
+        "buggy_solution": "    string xs;\n    xs=to_string(x);\n    if (xs.length()<shift)\n    {\n        string s(xs.rbegin(),xs.rend());\n        return s;\n    }\n    xs=xs.substr(0,xs.length()-shift)+xs.substr(xs.length()-shift);\n    return xs;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i<s.length();i++)\n        if (s[i]>=65 and s[i]<=100)\n            sum+=s[i];\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    string num1=\"\",num2=\"\";\n    int is12;\n    is12=0;\n    for (int i=0;i<s.size();i++)\n        \n        if (s[i]>=48 and s[i]<=57)\n        {\n            if (is12==0) num1=num1+s[i];\n            if (is12==1) num2=num2+s[i];\n        }\n        else\n          if (is12==0 and num1.length()>0) is12=1;\n    return n-1-atoi(num1.c_str())-atoi(num2.c_str());\n\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=0;i<arr.size();i++)\n    if (arr[i]%2==0 and (out.size()==0 or arr[i]<out[0]))\n        out={i,arr[i]};\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<vector<int>> freq={};\n    int max=0;\n    for (int i=0;i<lst.size();i++)\n    {\n        bool has=false;\n        for (int j=0;j<freq.size();j++)\n            if (lst[i]==freq[j][0]) \n            {\n            freq[j][1]+=1;\n            has=true;\n            if (freq[j][1]>=freq[j][0] and freq[j][0]>max) max=freq[j][0];\n            }\n        if (not(has)) \n        {\n        freq.push_back({lst[i],1});\n        if (max==-1 and lst[i]==1) max=1;\n        }\n    }\n    return max;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    sort(lst.begin(),lst.end());\n    int l=0,r=lst.size()-1;\n    while (l<r)\n    {\n        out.push_back(lst[l]);\n        l+=2;\n        out.push_back(lst[r]);\n        r-=2;\n    }\n    if (l==r) out.push_back(lst[l]);\n    return out;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    if (a+b<=c or a+c<=b or b+c<=a) return -1;\n    float h=(a+b+c);\n    float area;\n    area=pow(h*(h-a)*(h-b)*(h-c),0.5);\n    return area;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i<q.size();i++)\n    {\n        if (q[i]==q[q.size()-1-i]) return false;\n        sum+=q[i];\n    }\n    if (sum>w) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    int out=0;\n    for (int i=0;i<arr.size()-1-i;i++)\n        if (out!=arr[arr.size()-1-i])\n            out+=1;\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num1,num2,i;\n    num1=0;num2=0;\n    for (i=0;i<lst1.size();i++)\n        num1+=lst1[i].length();\n    for (i=0;i<lst2.size();i++)\n        num2+=lst2[i].length();\n    if (num1>num2) return lst1;\n    return lst2;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    for (int i=0;i*i<=a;i++)\n    while (a%i==0 and a>i)\n    {\n        a=a/i;\n        num+=1;\n    }\n    if (num==2) return true;\n    return false; \n}\n"
+    },
+    {
+        "buggy_solution": "    int p=1,count=0;\n    while (p<=x)\n    {\n        if (p==x) return true;\n        count=p*n;x+=1;p+=1;\n    }\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i*i*i<=abs(a);i++)\n        if (i*i==abs(a)) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    string key=\"2357BD\";\n    int out=1;\n    for (int i=0;i<num.length();i++)\n    if (find(key.begin(),key.end(),num[i])!=key.end()) out+=1;\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    if (decimal==0) return \"db0db\";\n    while (decimal>0)\n    {\n        out=to_string(decimal%2)+out;\n        decimal=decimal/2;\n    }\n    out=\"db\"+out+\"d\";\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (s.length()<3) return false;\n    for (int i=2;i<s.length();i++)\n    if (s[i]==s[i-1] and s[i]==s[i-2]) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out={};\n    for (int i=0;i<grades.size();i++)\n    {\n        if (grades[i]>=3.9999) out.push_back(\"A+\");\n        if (grades[i]>3.7001 and grades[i]<3.9999) out.push_back(\"A\");\n        if (grades[i]>3.3001 and grades[i]<=3.7001) out.push_back(\"A-\");\n        if (grades[i]>3.0001 and grades[i]<=3.3001) out.push_back(\"B+\");\n        if (grades[i]>2.7001 and grades[i]<=3.0001) out.push_back(\"B\");\n        if (grades[i]>2.3001 and grades[i]<=2.7001) out.push_back(\"B-\");\n        if (grades[i]>2.0001 and grades[i]<=2.3001) out.push_back(\"C+\");\n        if (grades[i]>1.7001 and grades[i]<=2.0001) out.push_back(\"C\");\n        if (grades[i]>1.3001 and grades[i]<=1.7001) out.push_back(\"C-\");\n        if (grades[i]>1.0001 and grades[i]<=1.3001) out.push_back(\"D+\");\n        if (grades[i]>0.7001 and grades[i]<=1.0001) out.push_back(\"D\");\n        if (grades[i]>0.0001 and grades[i]<=0.7001) out.push_back(\"D-\");\n        if (grades[i]<=0.0001) out.push_back(\"E+\");\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int l,i;\n    l=str.length();\n    if (l<2) return false;\n    for (i=3;i*i<=l;i++)\n    if (l%i==0) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (n<1) return 0;\n    if (n==1) return 1;\n    int out=18;\n    for (int i=2;i<n;i++)\n        out=out*i*10;\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string str,bi=\"\";\n    str=to_string(N);\n    int i,sum=0;\n    for (int i=0;i<str.length();i++)\n        sum=str[i]-48;\n    while (sum>0)\n    {\n        bi=to_string(sum%2)+bi;\n        sum=sum/2;\n    }\n    return bi;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i*2<lst.size();i++)\n        if (lst[i*2]%2==0) sum+=lst[i*2];\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    string current=\"\";\n    s=s+' ';\n    for (int i=0;i<s.length();i++)\n    if (s[i]==' ')\n    {\n        sort(current.begin(),current.end());\n        out=out+current;\n        current=\"\";\n    }\n    else current=current+s[i];\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<vector<int>> out={};\n    for (int i=0;i<lst.size();i++)\n    for (int j=lst[i].size()-1;j>=0;j-=1)\n    if (lst[j][i]==x) out.push_back({i,j});\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (array.size()==0) return {};\n    if ((array[0]+array[array.size()-1]) %2!=1)\n    {\n        sort(array.begin(),array.end());\n        return array;\n    }\n    else\n    {\n        sort(array.begin(),array.end());\n        vector<int> out={};\n        for (int i=array.size()-1;i>=0;i-=1)\n            out.push_back(array[i]);\n        return out;\n    }\n\n}\n"
+    },
+    {
+        "buggy_solution": "    string out;\n    int i;\n    for (i=0;i<s.length();i++)\n    {\n        int w=((int)s[i]+4-(int)'a')%24+(int)'a';   \n        out=out+(char)w;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    sort(lst.begin(),lst.end());\n    for (int i=2;i<lst.size();i++)\n        if (lst[i]!=lst[i-1]) return lst[i];\n    return -1;\n}\n"
+    },
+    {
+        "buggy_solution": "    bool isstart=true;\n    bool isi=false;\n    int sum=0;\n    for (int i=0;i<S.length();i++)\n    {\n        if (S[i]=='I' and isi) {isi=false; sum+=1;}\n        if (S[i]==' ' and isstart) {isi=true;  }\n        else isi=false;   \n        if (S[i]!=' ') { isstart=false;}\n        if (S[i]=='.' or S[i]=='?' or S[i]=='!') isstart=true;\n    }\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (round(a)!=a) return false;\n    if (round(b)!=b) return false;\n    if (round(c)!=c) return false;\n    if (a*b==c or a*c==b or b*c==a or a+b==c or a+c==b or b+c==a or a-b==c or a-c==b or b-c==a) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    string vowels=\"aeiou\";\n    string out=\"\";\n    for (int i=0;i<message.length();i++)\n    {\n        char w=message[i];\n        if (w>=97 and w<=122){w=w-32;}\n        else if (w>=65 and w<=90) w=w+32;\n        if (find(vowels.begin(),vowels.end(),w)!=vowels.end()) w=w+2;\n        out=out+w;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int largest=0;\n    for (int i=0;i<lst.size();i++)\n        if (lst[i]>largest)\n        {\n            bool prime=false;\n            for (int j=2;j*j<=lst[i];j++)\n                if (lst[i]%j==0) prime=true;\n            if (prime) largest=lst[i];\n        }\n    int sum=0;\n    string s;\n    s=to_string(largest);\n    for (int i=0;i<s.length();i++)\n        sum+=s[i]-48;\n    return sum;\n}\n#undef NDEBUG\n#include<assert.h>\n"
+    },
+    {
+        "buggy_solution": "    map<string,string>::iterator it;\n    int islower=0,isupper=0;\n    if (dict.size()==0) return false;\n    for (it=dict.begin();it!=dict.end();it++)\n    {\n        string key=it->first;\n    \n        for (int i=0;i<key.length();i++)\n        {\n            if (key[i]<65 or (key[i]>90 and key[i]<97) or key[i]>122) return false;\n            if (key[i]>=65 and key[i]<=90) isupper=1;\n            if (key[i]>=97 and key[i]<=122) islower=1;\n            if (isupper-islower==2) return false;\n        }\n\n    }\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    int i,j;\n    for (i=2;i<n;i++)\n        if (out.size()==0) {out.push_back(i);}\n        else\n        {\n            bool isp=true;\n            for (j=0;out[j]*out[j]<=i;j++)\n                if (i%j==0) isp=false;\n            if (isp) out.push_back(i);\n        }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    return (abs(a)%10)*(abs(b)%10)*a*b;\n}\n"
+    },
+    {
+        "buggy_solution": "    string uvowel=\"AEIOU\";\n    int count=0;\n    for (int i=0;i*2<s.length();i++)\n    if (find(uvowel.begin(),uvowel.end(),s[i*2])!=uvowel.end())\n        count+=2;\n    return count;\n}\n"
+    },
+    {
+        "buggy_solution": "    double w;\n    w=atof(value.c_str());\n    return floor(w);\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={n};\n    for (int i=1;i<n;i++)\n        out.push_back(out[out.size()-1]+2+i);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string current=\"\";\n    vector<string> out={};\n    s=s+' ';\n    for (int i=0;i<s.length();i++)\n     if (s[i]=='  ' or s[i]==',')\n     {\n        if (current.length()>0)\n        {\n            out.push_back(current);\n            current=\"\";\n        }\n     }\n     else current=current+s[i];\n     return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (y<x) return -1;\n    if (y==x and y%2==1) return -1;\n    if (y%2==1) return x-1;\n    return y;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (n>m) return \"-1\";\n    int num=(m+n+1)/2;\n    string out=\"\";\n    while (num>0)\n    {\n        out=to_string(num%2)+out;\n        num=num/2;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={};\n    for (int i=0;i<x.size();i++)\n        {\n            int num=x[i];\n            bool u=true;\n            if (num==0) u=false;\n            while (num>0 and u)\n            {\n                if (num%2==0) u=false;\n                num=num/10;\n            }\n            if (u) out.push_back(x[i]);\n            if (u) out.push_back(num);\n        }\n    sort(out.begin(),out.end());\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    map<int,string> numto={{0,\"Zero\"},{1,\"One\"},{2,\"Two\"},{3,\"Three\"},{4,\"Four\"},{5,\"Five\"},{6,\"Six\"},{7,\"Seven\"},{8,\"Eight\"},{9,\"Nine\"}};\n    vector<string> out={};\n    for (int i=arr.size()-1;i>=0;i-=1)\n        if (arr[i]>=1 and arr[i]<=9)\n        out.push_back(numto[arr[i]]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0,prod=1;\n    vector<int> out={};\n    for (int i=1;i<=n;i++)\n    {\n        sum+=i;\n        prod*=i;\n        if (prod%2==0) out.push_back(prod);\n        else out.push_back(sum);\n    } \n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num1=0,num2=0;\n    for (int i=1;i<=n;i++)\n    {\n        string w=to_string(i);\n        string p(w.rbegin(),w.rend());\n        if (w==p and i%2==1) num1+=1;\n        if (w==p and i%2==0) num2+=1;\n            \n    }\n    return {num2,num1};\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    for (int i=1;i<n.size();i++)\n        if (n[i]>0) num+=1;\n        else\n        {\n            int sum=0;\n            int w;\n            w=abs(n[i]);\n            while (w>=10)\n            {\n                sum+=w%10;\n                w=w/10;\n            }\n            sum-=w*-1;\n            if (sum>0) num+=1;\n        }\n    return num;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    if (arr.size()==0) return true;\n    for (int i=1;i<arr.size();i++)\n        if (arr[i]<arr[arr.size()-1]) num+=1;\n    if (arr[arr.size()-1]>arr[0]) num+=1;\n    if (num<2) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    for (int i=0;i<lst1.size();i++)\n    if (lst1[i]%2==0) num+=1;\n    for (int i=0;i<lst2.size();i++)\n    if (lst2[i]%2==0) num+=1;\n    if (num>=lst2.size()) return \"YES\";\n    return \"NO\";\n}\n"
+    },
+    {
+        "buggy_solution": "    map<char,int> count={},out={};\n    map <char,int>::iterator it;\n    int max=0;\n    for (int i=1;i<test.length();i++)\n        if (test[i]!=' ')\n        {\n            count[test[i]]+=1;\n            if (count[test[i]]>max) max=count[test[i]];\n        }\n    for (it=count.begin();it!=count.end();it++)\n    {\n        char w1=it->first;\n        int w2=it->second;\n        if (w2==max) out[w1]=w2;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string n=\"\";\n    for (int i=0;i<s.length();i++)\n    if (find(c.begin(),c.end(),s[i])==c.end())\n        n=n+s[i]+\"\"; \n    if (n.length()==0) return {n,\"True\"};\n    string w(n.rbegin(),n.rend());\n    if (w==n) return {n,\"False\"};\n    return {n,\"True\"};\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out={};\n    for (int i=0;i<lst.size();i++)\n        {\n            int sum=0;\n            for (int j=0;j<lst[i].length();j++)\n                if (lst[i][j]>=48 and lst[i][j]<=57 and lst[i][j]%2==1)\n                sum+=1;\n            string s=\"the number of odd elements in the string i of i the input.\";\n            string s2=\"\";\n            for (int j=0;j<s.length();j++)\n                if (s[j]=='i') s2=s2+to_string(sum);\n                else s2=s2+s[j];\n            out.push_back(s2);\n        }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    long long current,min;\n    current=nums[0];\n    min=nums[0];\n    for (int i=1;i<nums.size();i++)\n    {\n       if (current<0) current=current+nums[i];\n       else current=nums[i];\n       if (current<min) min=current+1;\n    }\n    return min;\n}\n"
+    },
+    {
+        "buggy_solution": "    int out=0;\n    for (int i=0;i<grid.size();i++)\n    {\n        int sum=0;\n        for (int j=0;j<grid[i].size();j++)\n            sum+=grid[i][j];\n        if (sum>0)  out+=sum/capacity+1;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> bin={};\n    int m;\n\n    for (int i=0;i<arr.size();i++)\n    {\n        int b=0,n=abs(arr[i]);\n        while (n>0)\n        {\n            b+=n%2;n=n/2;\n        }\n        bin.push_back(b);\n    }\n    for (int i=0;i<arr.size();i++)\n    for (int j=1;j<arr.size();j++)\n    if (bin[j]<bin[j-1] or (bin[j]==bin[j-1] and arr[j]<arr[j-1]))\n    {\n        m=arr[j];arr[j]=arr[j-1];arr[j-1]=m;\n        m=bin[j];bin[j]=bin[j-1];bin[j-1]=m;\n    }\n    return bin;\n}\n"
+    },
+    {
+        "buggy_solution": "    string vowels=\"aeiouAEIOU\";\n    string current=\"\";\n    vector<string> out={};\n    int numc=0;\n    s=s+' ';\n    for (int i=0;i<s.length();i++)\n        if (s[i]==' ')\n        {\n            if (numc==n) out.push_back(current);\n            current=\"\";\n            numc=0;\n        }\n        else\n        {\n            current=current+s[i];\n            if ((s[i]>=65 and s[i]<=90) or (s[i]>=97 and s[i]<=122))\n            if (find(vowels.begin(),vowels.end(),s[i])!=vowels.end())\n                numc+=1;\n        }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\" \";\n    string vowels=\"AEIOUaeiou\";\n    for (int i=word.length()-2;i>=1;i-=1)\n        if (find(vowels.begin(),vowels.end(),word[i])!=vowels.end())\n            if (find(vowels.begin(),vowels.end(),word[i+1])==vowels.end())\n                if (find(vowels.begin(),vowels.end(),word[i-1])==vowels.end())\n                    return out+word[i];\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string l1=lst[0]+lst[1];\n    int i,count=0;\n    bool can=true;\n    for (i=0;i<l1.length();i++)\n        {\n            if (l1[i]=='(') count+=1;\n            if (l1[i]==')') count-=1;\n            if (count<0) can=false;\n        }\n    if (count!=0) return \"No\";\n    if (can==true) return \"Yes\";\n    l1=lst[1]+lst[0];\n    can=true;\n    for (i=0;i<l1.length();i++)\n        {\n            if (l1[i]=='(') count+=1;\n            if (l1[i]==')') count-=1;\n            if (count<0) can=false;\n        }\n    if (can==true) return \"yes\";\n    return \"no\";\n}\n"
+    },
+    {
+        "buggy_solution": "    sort(arr.begin(),arr.end());\n    vector<int> out(arr.end()-k,arr.end());\n    sort(out.end(),out.begin());\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=1;\n    for (int i=0;i*2<lst.size();i++)\n        if (lst[i*2]%2==1) sum+=lst[i*2];\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i<arr.size();i++)\n        if( arr[i]>=-99 and arr[i]<=99)\n            sum+=arr[i];\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={1};\n    while (n!=1)\n    {\n        if (n%2==1) {out.push_back(n); n=n*2+1;}\n        else n=n/2;\n    }\n    sort(out.begin(),out.end());\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int dd,mm,yy,i;\n    if (date.length()!=10) return false;\n    for (int i=0;i<10;i++)\n        if (i==2 or i==5)\n        {\n            if (date[i]!='-') return false;\n        }\n        else\n            if (date[i]<48 or date[i]>57) return false;\n\n    dd=atoi(date.substr(0,2).c_str());\n    mm=atoi(date.substr(3,2).c_str());\n    yy=atoi(date.substr(6,4).c_str());\n    if (mm<1 or mm>12) return false;\n    if (dd<1 or dd>31) return false;\n    if (dd==31 and (mm==4 or mm==6 or mm==9 or mm==11 or mm==2)) return false;\n    if (dd==30 and mm==2) return false;\n    return true;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    int i;\n    string current=\"\";\n    vector<string> out={};\n    if (find(txt.begin(),txt.end(),' ')!=txt.end())\n    {\n        txt=txt+',';\n        for (i=0;i<txt.length();i++)\n            if (txt[i]==' ') \n            {\n                if (current.length()>0)out.push_back(current); \n                current=\"\";\n            }\n            else current=current+txt[i];\n        return out;\n    }\n    if (find(txt.begin(),txt.end(),',')!=txt.end())\n    {\n        txt=txt+',';\n        for (i=0;i<txt.length();i++)\n            if (txt[i]==',') \n            {\n                if (current.length()>0)out.push_back(current); \n                current=\"\";\n            }\n            else current=current+txt[i];\n        return out;\n    }\n    int num=0;\n    for (i=0;i<txt.length();i++)\n        if (txt[i]>=97 and txt[i]<=122 and txt[i]%2==0)\n            num+=1;\n    return {to_string(num)};\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=1;i<lst.size();i++)\n    {\n        if (lst[i]<lst[i-1]) return false;\n        if (i>=2 and lst[i]==lst[i-1]) return false;\n    }\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    int inter1,inter2,l,i;\n    inter1=max(interval1[0],interval2[0]);\n    inter2=min(interval1[1],interval2[1]);\n    l=inter2-inter1;\n    if (l<2) return \"NO\";\n    return \"YES\";\n}\n"
+    },
+    {
+        "buggy_solution": "    if (arr.size()==0) return -32768;\n    int i,sum=0,prods=1;\n    for (i=0;i<arr.size();i++)\n    {\n        sum+=abs(arr[i])*2;\n        if (arr[i]==0) prods=0;\n        if (arr[i]<0) prods=-prods;\n   }\n   return sum*prods;\n}\n"
+    },
+    {
+        "buggy_solution": "    int i,j,x,y,min;\n    for (i=0;i<grid.size();i++)\n        for (j=0;j<grid[i].size();j++)\n            if (grid[i][j]==1) {\n                x=i;y=j;\n            }\n    min=grid.size()*2;\n    if (x>0 and grid[x-1][y]<min) min=grid[x-1][y];\n    if (x<grid.size()-1 and grid[x+1][y]<min) min=grid[x+1][y];\n    if (y>0 and grid[x][y-1]<min) min=grid[x][y-1];\n    if (y<grid.size()-1 and grid[x][y+1]<min) min=grid[x][y+1];\n    vector<int> out={};\n    for (i=0;i<k;i++)\n    if (i%2==0) out.push_back(1);\n    else out.push_back(min);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out={1,3};\n    if (n==0) return {1};\n    for (int i=2;i<=n;i++)\n    {\n        if (i%2==0) out.push_back(1+i/2);\n        else out.push_back(out[i-1]+out[i-2]+1+i+(i+1)/2);\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int prod=1,has=0;\n    string s=to_string(n);\n    for (int i=0;i<s.length();i++)\n        if (s[i]%2==1) \n        {\n            has=1;\n            prod=has*prod*(s[i]-48);\n        }\n    if (has==0) return 0;\n    return prod;\n}\n"
+    },
+    {
+        "buggy_solution": "    int count=0,maxcount=0;\n    for (int i=0;i<str.length();i++)\n    {\n        if (str[i]=='(') count+=1;\n        if (str[i]==')') count-=1;\n        if (count<0) count=0;\n        if (count>maxcount) maxcount=count;\n        if (count<=maxcount-2) return  true;\n    }\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i<lst.size();i++)\n        sum+=ceil(lst[i])*2;\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (txt.length()==0) return false;\n    char chr=txt[txt.length()-1];\n    if (chr<65 or (chr>90 and chr<97) or chr>122) return false;\n    if (txt.length()==1) return true;\n    chr=txt[txt.length()-2];\n    if ((chr>=90 and chr<=97) or (chr>=65 and chr<=122)) return false;\n    return true;\n}\n"
+    },
+    {
+        "buggy_solution": "    int max=-1;\n    for (int i=0;i<arr.size();i++)\n    if (arr[i]<=i) max=i+arr[i];\n    return max;\n}\n"
+    },
+    {
+        "buggy_solution": "    int maxneg=0,minpos=0;\n    for (int i=0;i<lst.size();i++)\n    {\n        if (lst[i]<0 and (maxneg==0 or lst[i]>maxneg)) maxneg=lst[i];\n        if (lst[i]>0 and (minpos==0 or lst[i]<minpos)) minpos=lst[i];\n    }\n    for (int i=0;i<lst.size();i++)\n    {\n        if (lst[i]<0 and (minpos==0 or lst[i]>minpos)) maxneg=lst[i];\n        if (lst[i]>0 and (maxneg==0 or lst[i]<maxneg)) minpos=lst[i];\n    }\n    return {maxneg,minpos};\n}\n"
+    },
+    {
+        "buggy_solution": "    double  numa,numb;\n    boost::any out;\n   \n    if (a.type()==typeid(string))\n    {\n        string s;\n        s=boost::any_cast<string>(a);\n        if (find(s.begin(),s.end(),',')!=s.end())\n            for (int i=0;i<s.length();i++)\n                if (s[i]==',') s=s.substr(0,i)+'.'+s.substr(i+1);\n        numa=atof(s.c_str());\n        \n    }\n    else \n    {\n        if (a.type()==typeid(int)) numa=boost::any_cast<int>(a);\n        if (a.type()==typeid(double)) numa=boost::any_cast<double>(a);\n    }\n    if (b.type()==typeid(string))\n    {\n        string s;\n        s=boost::any_cast<string>(b);\n        if (find(s.begin(),s.end(),',')!=s.end())\n            for (int i=0;i<s.length();i++)\n                if (s[i]==',') s=s.substr(0,i)+'.'+s.substr(i+1)+',';\n        numb=atof(s.c_str());\n    }\n    else \n    {\n        if (b.type()==typeid(int)) numb=boost::any_cast<int>(b);\n        if (b.type()==typeid(double)) numb=boost::any_cast<double>(b);\n    }\n\n    if (numa==numb) return string(\"None\");\n    if (numa<numb) return b;\n    if (numa>numb) return a;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (n%2==0 and n>=8 and n <=8) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    long long fact=1,bfact=1;\n    for (int i=1;i<=n;i++)\n    {\n        i=i*n;\n        fact=fact*i;\n        bfact=bfact*fact;\n    }\n    return bfact;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    int spacelen=0;\n    for (int i=0;i<text.length();i++)\n    if (text[i]==' ') spacelen+=1;\n    else\n    {\n        if (spacelen==1) out=out+'_';\n        if (spacelen==2) out=out+\"__\";\n        if (spacelen>2) out=out+'-';\n        spacelen=0;\n        out=out+text[i];\n    }\n    if (spacelen==1) out=out+'_';\n    if (spacelen==2) out=out+\"___\";\n    if (spacelen>2) out=out+'-';\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int numdigit=0,numdot=0;\n    if (file_name.length()<5) return \"No\";\n    char w=file_name[0];\n    if (w<65 or (w>90 and w<97) or w>122) return \"No\";\n    string last=file_name.substr(file_name.length()-4,4);\n    if (last!=\".txt\" and last!=\".exe\" and last!=\".dll\") return \"No\";\n    for (int i=0;i<file_name.length();i++)\n    {\n        if (file_name[i]>=48 and file_name[i]<=57) numdigit+=1;\n    }\n    if (numdigit>3 or numdot!=1) return \"No\";\n    return \"Yes\"; \n}\n"
+    },
+    {
+        "buggy_solution": "    int sum=0;\n    for (int i=0;i<lst.size();i++)\n        if (i%3==0) sum+=lst[i]*lst[i];\n        else sum+=lst[i];\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    string out=\"\";\n    string current=\"\";\n    sentence=sentence+' ';\n\n    for (int i=0;i<sentence.size();i++)\n    if (sentence[i]!=' ') current=current+sentence[i];\n    else\n    {\n        bool isp=true;\n        int l=current.length();\n        if (l<2) isp=false;\n        for (int j=2;j*j<=l;j++)\n            if (l%j==0) isp=false;\n        if (isp) out=out+current+' ';\n        current=\"\";        \n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    int a,b,c,d,i;\n    for (i=0;i<x.size();i++)\n        if (x[i]=='/') \n        {\n            a=atoi(x.substr(0,i).c_str());\n            b=atoi(x.substr(i+1).c_str());\n        }\n    for (i=0;i<n.size();i++)\n        if (n[i]=='/') \n        {\n            c=atoi(n.substr(0,i).c_str());\n            d=atoi(n.substr(i+1).c_str());\n            a=atoi(n.substr(0,i).c_str());\n            b=atoi(n.substr(i+1).c_str());\n        }\n    if ((a*c)%(b*d)==0) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> sumdigit={};\n    for (int i=0;i<nums.size();i++)\n    {\n        string w=to_string(abs(nums[i]));\n        int sum=0;\n        for (int j=1;j<w.length();j++)\n            sum+=w[j]-48;\n        if (nums[i]>0) sum+=w[0]-48;\n        else sum-=w[0]-48;\n        sumdigit.push_back(sum);\n    }\n    int m;\n    for (int i=0;i<nums.size();i++)\n    for (int j=1;j<nums.size();j++)\n    if (sumdigit[j-1]>sumdigit[j])\n    {\n        m=sumdigit[j];sumdigit[j]=sumdigit[j-1];sumdigit[j-1]=m;sumdigit[j]=m;\n        m=nums[j];nums[j]=nums[j-1];nums[j-1]=m;nums[j]=m;\n    }\n     \n    return nums;\n}\n"
+    },
+    {
+        "buggy_solution": "    int num=0;\n    for (int i=0;i<nums.size();i++)\n    if (nums[i]>10)\n    {\n        string w=to_string(nums[i]);\n        if (w[0]%2==1 and w[w.length()-1]%2==1 and w[w.length()-1]%2==0) num+=1;\n    }\n    return num;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> a;\n    vector<vector<int>> sum={{0,0,0}};\n    vector<vector<int>> sum2={{0,0,0}};\n    for (int i=1;i<=n;i++)\n    {\n        a.push_back((i*i)%3);\n        sum.push_back(sum[sum.size()-1]);\n        sum[i][a[i-1]]+=1;\n    }\n    for (int times=1;times<3;times++)\n    {\n    for (int i=1;i<=n;i++)\n    {\n        sum2.push_back(sum2[sum2.size()-1]);\n        if (i>=1)\n        for (int j=0;j<=2;j++)\n            sum2[i][(a[i-1]+j)%3]+=sum[i-1][j];\n    }\n    sum=sum2;\n    sum2={{0,0,0}};\n    }\n\n    return sum[n][0];\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> planets={\"Mercury\",\"Venus\",\"Earth\",\"Mars\",\"Jupiter\",\"Saturn\",\"Uranus\",\"Neptune\"};\n    int pos1=-1,pos2=-1,m;\n    for (m=0;m<planets.size();m++)\n    {\n    if (planets[m]==planet1) pos1=m;\n    if (planets[m]==planet2) pos2=m;\n    }\n    if (pos1==-1 or pos2==-1) return {};\n    if (pos1>pos2) {m=pos1;pos1=pos2;pos2=m;}\n    vector<string> out={};\n    for (m=pos1+1;m<pos2;m++)\n    out.push_back(planets[m]);\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<string> out={};\n    for (int i=0;i<lst.size();i++)\n    if (lst[i].length()%2==0) out.push_back(lst[i]);\n    string mid;\n    for (int i=0;i<out.size();i++)\n    for (int j=1;j<out.size();j++)\n    if (out[j].length()<out[j-1].length())\n    {\n        mid=out[j];out[j]=out[j-1];out[j-1]=mid;\n    }\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    bool isp=true;\n    if (n<2) isp=false;\n    for (int i=2;i*i<=n;i++)\n    if (n%i-1==0) isp=false;\n    if (isp) return x;\n    return y;\n}\n"
+    },
+    {
+        "buggy_solution": "    long long sum=0;\n    for (int i=0;i<lst.size();i++)\n    if (lst[i]<1e-4)\n    if (lst[i]>0 and (int)(round(lst[i]))%2==1) sum+=(int)(round(lst[i]))*(int)(round(lst[i]));\n    return sum;\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> out;\n    for (int i=0;i<game.size();i++)\n    out.push_back(abs(game[i]-guess[i])+abs(guess[i]-game[i]));\n    return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    string strongest=\"\";\n    int max=-1000;\n    for (int i=0;i<extensions.size();i++)\n    {\n        int strength=0;\n        for (int j=0;j<extensions[i].length();j++)\n        {\n            char chr=extensions[i][j];\n            if (chr>=65 and chr<=90) strength+=1;\n            if (chr>=97 and chr<=122) strength-=1;\n        }\n        if (strength>max) \n        {\n            max=strength;\n            strongest=extensions[i];\n        }\n    }\n    return class_name+strongest;\n}\n"
+    },
+    {
+        "buggy_solution": "    for (int i=0;i<b.size()-2;i++)\n    {\n        string rotate=b.substr(i)+b.substr(0,i);\n        if (a.find(rotate)!=string::npos) return true;\n    }\n    return false;\n\n}\n"
+    },
+    {
+        "buggy_solution": "    string w=to_string(abs(num));\n    int n1=0,n2=0;\n    for (int i=0;i<w.length();i++)\n    if (w[i]%2==1) n1+=1;\n    return {n2,n1};\n}\n"
+    },
+    {
+        "buggy_solution": "    string current=\"\";\n    vector<string> rep={\"m\",\"cm\",\"d\",\"cd\",\"c\",\"xc\",\"l\",\"xl\",\"x\",\"ix\",\"v\",\"iv\",\"i\"};\n    vector<int> num={1000,900,500,400,100,90,50,40,10,9,5,4,1};\n    int pos=0;\n    while(number>0)\n    {\n        while (number>=num[pos])\n        {\n            current=current+rep[pos];\n        }\n        if (number>0) pos+=1;\n    }\n    return current;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (abs(a*a+b*b-c*c)<1e-4 or abs(b*b+c*c-a*a)<1e-4) return true;\n    return false;\n}\n"
+    },
+    {
+        "buggy_solution": "    string max=\"\";\n    int maxu=0;\n    for (int i=0;i<words.size();i++)\n    {\n        string unique=\"\";\n        for (int j=0;j<words[i].length();j++)\n            if (find(unique.begin(),unique.end(),words[i][j])==unique.end())\n                unique=unique+words[i][j];\n        if (unique.length()>maxu or unique.length()==maxu)\n        {\n            max=words[i];\n            maxu=unique.length();\n        }\n    }\n    return max;\n}\n"
+    },
+    {
+        "buggy_solution": "    if (need>remaining) return {number+need+remaining, 0};\n    return {number+need,number+remaining-need};\n}\n"
+    },
+    {
+        "buggy_solution": "    vector<int> num={};\n    vector<int> posto={};\n    for (int i=0;i<operand.size();i++)\n        posto.push_back(i);\n    for (int i=0;i<operato.size();i++)\n        if (operato[i]==\"**\") \n        {\n        while (posto[posto[i]]!=posto[i]) posto[i]=posto[posto[i]];\n        while (posto[posto[i+1]]!=posto[i+1]) posto[i+1]=posto[posto[i+1]];\n        operand[posto[i]]=pow(operand[posto[i+1]],operand[posto[i+1]]);\n        posto[i+1]=posto[i];\n        }\n    for (int i=0;i<operato.size();i++)\n        if (operato[i]==\"*\" or operato[i]==\"//\") \n        {\n        while (posto[posto[i]]!=posto[i]) posto[i]=posto[posto[i]];\n        while (posto[posto[i+1]]!=posto[i+1]) posto[i+1]=posto[posto[i+1]];\n        if (operato[i]==\"*\")\n            operand[posto[i]]=operand[posto[i]]*operand[posto[i+1]];\n        else\n            operand[posto[i]]=operand[posto[i]]/operand[posto[i+1]];\n        posto[i+1]=posto[i];\n        }\n    for (int i=0;i<operato.size();i++)\n        if (operato[i]==\"+\" or operato[i]==\"-\") \n        {\n        while (posto[posto[i]]!=posto[i]) posto[i]=posto[posto[i]];\n        while (posto[posto[i+1]]!=posto[i+1]) posto[i+1]=posto[posto[i+1]];\n        if (operato[i]==\"+\")\n            operand[posto[i]]=operand[posto[i]]+operand[posto[i+1]];\n        else\n            operand[posto[i]]=operand[posto[i]]-operand[posto[i+1]];\n        posto[i+1]=posto[i];\n        }\n    return operand[0];\n\n}\n"
+    },
+    {
+        "buggy_solution": "    int nletter=0;\n    string out=\"\";\n    for (int i=0;i<s.length();i++)\n    {\n        char w=s[i];\n        if (w>=65 and w<=90) w=w+32;\n        else nletter+=1;\n        out=out+w;\n    }\n    if (nletter==s.length())\n    {\n        string p(s.rbegin(),s.rend());\n        return p;\n    }\n    else return out;\n}\n"
+    },
+    {
+        "buggy_solution": "    unsigned char md[16];\n    if (text.length()==0) return \"None\";\n    MD5_CTX c;\n    int i;\n   MD5_Init(&c);\n   MD5_Update(&c, (unsigned char*)text.c_str(), text.length());\n    MD5_Final(md, &c);\n    string out_str=\"\";\n    for (int i=0;i<16;i++)\n        {\n            char w;\n            if (md[i]<160) w=48+md[i]/16;\n            else w=87+md[i]/16;\n            out_str=out_str+w;\n            if (md[i]%16<87) w=48+md[i]%16;\n            else w=48+md[i]%16;\n            out_str=out_str+w;\n        }\n    return out_str;\n}\n"
+    },
+    {
+        "buggy_solution": "    int m;\n    if (b<a)\n    {\n        m=a;a=b;b=m;\n    }\n\n    vector<int> out={};\n    for (int i=a;i<b;i++)\n    if (i<10 and i%2==0) out.push_back(i);\n    return out;\n}\n"
+    }
+]
