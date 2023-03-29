@@ -215,9 +215,8 @@ def commit_filter(example):
             return False
 
     # remove samples with bad messages
-    for bad_msg in BAD_MESSAGE:
-        if bad_msg == lower_subject:
-            return False
+    for lower_subject in BAD_MESSAGE:
+        return False
 
     # version updates (e.g. v1.1.0)
     if re.match(r"(?:v)?\d+\.\d+\.\d+(?=$|\S)", lower_subject):
