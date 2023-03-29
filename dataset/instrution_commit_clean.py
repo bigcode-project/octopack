@@ -140,7 +140,7 @@ def download_file(file):
 
 # download files using multi-thread
 with Pool(16, initializer=init, initargs=(counter,)) as p:
-    _ = p.map(download_file, data_files[::2])
+    _ = p.map(download_file, data_files)
 
 # obtain the file path
 files = [hf_hub_download(DATASET_NAME, file, repo_type="dataset",
@@ -201,22 +201,23 @@ def commit_filter(example):
     if len(example["subject"]) == 0 or len(example["subject"].split()) == 0:
         return False
 
-    # remove samples with bad subwords
     lower_subject = example["subject"].lower()
+
+    # remove samples with bad messages
+    if lower_subject in BAD_MESSAGE:
+        return False
+
+    # remove samples with bad subwords
     for bad_msg in BAD_SUB_MESSAGE:
         if bad_msg in lower_subject:
             return False
-
-    # remove samples with bad messages
-    for lower_subject in BAD_MESSAGE:
-        return False
 
     # version updates (e.g. v1.1.0)
     if re.match(r"(?:v)?\d+\.\d+\.\d+(?=$|\S)", lower_subject):
         return False
 
-    # high character/token ratio (e.g. hashes)
-    if len(example["subject"]) / len(example["subject"].split()) > 20:
+    # commit message are hashes like 0239-2a41, but we do not want to remove english words like "debug"
+    if re.match(r"^[a-f0-9]+(?:-[a-f0-9]+)*$", lower_subject):
         return False
 
     # weird messages that started with a whitespace and only contained one word
@@ -225,20 +226,6 @@ def commit_filter(example):
 
     return True
 
-
-def check_uniques(example, uniques):
-    """Check if current hash is still in set of unique hashes and remove if true."""
-    if example["repos"] + "/" + example["old_file"] in uniques:
-        uniques.remove(example["repos"] + "/" + example["old_file"])
-        return True
-    else:
-        return False
-
-
-uniques = set([r + "/" + filename for filename, r in zip(ds["old_file"], ds["repos"])])
-print(len(uniques))
-
-ds = ds.filter(check_uniques, fn_kwargs={"uniques": uniques}, num_proc=1)
 
 ds_clean = ds.filter(commit_filter, num_proc=30)
 
