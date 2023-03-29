@@ -1,494 +1,494 @@
 [
     {
-        "buggy_solution": "    for i := 0; i < len(numbers); i++ {\n        for j := i + 1; j < len(numbers); j++ {\n            var distance float64 = math.Abs(numbers[i] - numbers[j])\n            if distance < threshold {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    for i := 0; i < len(numbers); i++ {\n        for j := i + 1; j < len(numbers); j++ {\n            var distance float64 = numbers[i] - numbers[j]\n            if distance < threshold {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]string, 0)\n    current_string := make([]rune, 0)\n    current_depth := 0\n\n    for _, c := range paren_string {\n        if c == '(' {\n            current_depth += 1\n            current_string = append(current_string, c)\n        }else if c== ')'{\n            current_depth -= 1\n            current_string = append(current_string, c)\n\n            if current_depth == 0{\n                result = append(result, string(current_string))\n                current_string =  make([]rune, 0)\n            }\n        }\n\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]string, 0)\n    current_string := make([]rune, 0)\n    current_depth := 0\n\n    for _, c := range paren_string {\n        if c == '(' {\n            current_depth += 1\n            current_string = append(current_string, c)\n        }else if c== ')'{\n            current_depth -= 1\n            current_string = append(current_string, c)\n\n            if current_depth < 0{\n                result = append(result, string(current_string))\n                current_string =  make([]rune, 0)\n            }\n        }\n\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    return math.Mod(number,1)\n}\n\n"
+        "buggy_solution": "    return math.Mod(number,1)+1\n}\n\n"
     },
     {
-        "buggy_solution": "    balance := 0\n    for _, op := range operations {\n        balance += op\n        if balance < 0 {\n            return true\n        }\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    balance := 0\n    for _, op := range operations {\n        balance += op\n        if balance == 0 {\n            return true\n        }\n    }\n    return false\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := func(numbers []float64) float64 {\n        sum := 0.0\n        for _, num := range numbers {\n            sum += num\n        }\n        return sum\n    }\n\n    mean := sum(numbers) / float64(len(numbers))\n    numList := make([]float64, 0)\n    for _, x := range numbers {\n        numList = append(numList, math.Abs(x-mean))\n    }\n    return sum(numList) / float64(len(numbers))\n}\n\n"
+        "buggy_solution": "    sum := func(numbers []float64) float64 {\n        sum := 0.0\n        for _, num := range numbers {\n            sum += num\n        }\n        return sum\n    }\n\n    mean := sum(numbers) / float64(len(numbers))\n    numList := make([]float64, 0)\n    for _, x := range numbers {\n        numList = append(numList, math.Abs(x-mean))\n    }\n    return sum(numList) / mean\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]int, 0)\n    if len(numbers) == 0 {\n        return result\n    }\n    for i := 0; i < len(numbers)-1; i++ {\n        n := numbers[i]\n        result = append(result, n)\n        result = append(result, delimeter)\n    }\n    result = append(result, numbers[len(numbers)-1])\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]int, 0)\n    if len(numbers) == 0 {\n        return result\n    }\n    for i := 0; i < len(numbers)-1; i++ {\n        n := numbers[i]\n        result = append(result, n)\n        result = append(result, delimeter)\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    parse_paren_group := func(s string) int {\n        depth := 0\n        max_depth := 0\n        for _, c := range s {\n            if c == '(' {\n                depth += 1\n                max_depth = int(math.Max(float64(depth), float64(max_depth)))\n            } else {\n                depth -= 1\n            }\n        }\n        return max_depth\n    }\n    result := make([]int, 0)\n    for _, x := range strings.Split(paren_string, \" \") {\n        result = append(result, parse_paren_group(x))\n    }\n    return result\n\n}\n\n"
+        "buggy_solution": "    parse_paren_group := func(s string) int {\n        depth := 0\n        max_depth := 0\n        for _, c := range s {\n            if c == '(' {\n                depth += 1\n                max_depth = int(math.Max(float64(depth), float64(max_depth)))\n            } else {\n                max_depth -= 1\n            }\n        }\n        return max_depth\n    }\n    result := make([]int, 0)\n    for _, x := range strings.Split(paren_string, \" \") {\n        result = append(result, parse_paren_group(x))\n    }\n    return result\n\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]string, 0)\n    for _, x := range stringList {\n        if strings.Index(x, substring) != -1 {\n            result = append(result, x)\n        }\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]string, 0)\n    for _, x := range stringList {\n        if strings.Index(substring, x) != -1 {\n            result = append(result, x)\n        }\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    sum_value := 0\n    prod_value := 1\n\n    for _, n := range numbers {\n        sum_value += n\n        prod_value *= n\n    }\n    return [2]int{sum_value, prod_value}\n}\n\n"
+        "buggy_solution": "    sum_value := 0\n    prod_value := 0\n\n    for _, n := range numbers {\n        sum_value += n\n        prod_value *= n\n    }\n    return [2]int{sum_value, prod_value}\n}\n\n"
     },
     {
-        "buggy_solution": "    running_max := math.MinInt32\n    result := make([]int, 0)\n\n    for _, n := range numbers {\n        if running_max == math.MinInt32 {\n            running_max = n\n        } else {\n            running_max = int(math.Max(float64(running_max), float64(n)))\n        }\n        result = append(result, running_max)\n    }\n\n    return result\n}\n\n"
+        "buggy_solution": "    running_max := 1\n    result := make([]int, 0)\n\n    for _, n := range numbers {\n        running_max = int(math.Max(float64(running_max), float64(n)))\n        result = append(result, running_max)\n    }\n\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    if strings.TrimSpace(str) == \"\" {\n        return \"\"\n    }\n    beginning_of_suffix := 0\n    runes := []rune(str)\n    for !IsPalindrome(string(runes[beginning_of_suffix:])) {\n        beginning_of_suffix += 1\n    }\n    result := make([]rune, 0)\n    for i := len(str[:beginning_of_suffix]) - 1; i >= 0; i-- {\n        result = append(result, runes[i])\n    }\n    return str + string(result)\n}\n\n"
+        "buggy_solution": "    if strings.TrimSpace(str) == \"\" {\n        return \"\"\n    }\n    beginning_of_suffix := 0\n    runes := []rune(str)\n    for !IsPalindrome(strings) {\n        beginning_of_suffix += 1\n    }\n    result := make([]rune, 0)\n    for i := len(str[:beginning_of_suffix]) - 1; i >= 0; i-- {\n        result = append(result, runes[i])\n    }\n    return str + string(result)\n}\n\n"
     },
     {
-        "buggy_solution": "    s2b := func(bs string) int32 {\n        result := int32(0)\n        runes := []rune(bs)\n        for _, r := range runes {\n            result = result << 1\n            temp := r - rune('0')\n            result += temp\n        }\n        return result\n    }\n    ab := s2b(a)\n    bb := s2b(b)\n    res := ab ^ bb\n    sprint := fmt.Sprintf(\"%b\", res)\n    for i := 0; i < len(a)-len(sprint); i++ {\n        sprint = \"0\" + sprint\n    }\n    return sprint\n}\n\n"
+        "buggy_solution": "    s2b := func(bs string) int32 {\n        result := int32(0)\n        runes := []rune(bs)\n        for _, r := range runes {\n            result = result << 1\n            temp := r - rune('0')\n            result += temp\n        }\n        return result\n    }\n    ab := s2b(a)\n    bb := s2b(b)\n    res := ab ^ bb\n    sprint := fmt.Sprintf(\"%b\", res)\n    for i := 0; i < len(a)-len(sprint); i++ {\n        sprint = \"1\" + sprint\n    }\n    return sprint\n}\n\n"
     },
     {
-        "buggy_solution": "    if strings == nil || len(strings) == 0 {\n        return nil\n    }\n    maxlen := 0\n    maxi := 0\n    for i, s := range strings {\n        if maxlen < len(s) {\n            maxlen = len(s)\n            maxi = i\n        }\n    }\n    return strings[maxi]\n}\n\n"
+        "buggy_solution": "    if strings == nil || len(strings) == 0 {\n        return nil\n    }\n    maxlen := 0\n    maxi := 0\n    for i, s := range strings {\n        if maxlen > len(s) {\n            maxlen = len(s)\n            maxi = i\n        }\n    }\n    return strings[maxi]\n}\n\n"
     },
     {
-        "buggy_solution": "    if b < 2 {\n\t\treturn b\n\t}\n\tvar gcd int = 1\n\tfor i := 2; i < b; i++ {\n\t\tif a%i == 0 && b%i == 0 {\n\t\t\tgcd = i\n\t\t}\n\t}\n\treturn gcd\n}\n\n"
+        "buggy_solution": "    if b < 2 {\n\t\treturn a\n\t}\n\tvar gcd int = 1\n\tfor i := 2; i < b; i++ {\n\t\tif a%i == 0 && b%i == 0 {\n\t\t\tgcd = i\n\t\t}\n\t}\n\treturn gcd\n}\n\n"
     },
     {
-        "buggy_solution": "    prefixes := make([]string, 0, len(str))\n\tfor i := 0; i < len(str); i++ {\n\t\tprefixes = append(prefixes, str[:i+1])\n\t}\n\treturn prefixes\n}\n\n"
+        "buggy_solution": "    prefixes := make([]string, 0, len(str))\n\tfor i := 0; i < len(str)-1; i++ {\n\t\tprefixes = append(prefixes, str[:i+1])\n\t}\n\treturn prefixes\n}\n\n"
     },
     {
-        "buggy_solution": "    var seq string\n    for i := 0; i <= n; i++ {\n        seq += strconv.Itoa(i)\n        if i != n {\n            seq += \" \"\n        }\n    }\n    return seq\n}\n\n"
+        "buggy_solution": "    var seq string\n    for i := 0; i < n; i++ {\n        seq += strconv.Itoa(i)\n        if i != n {\n            seq += \" \"\n        }\n    }\n    return seq\n}\n\n"
     },
     {
-        "buggy_solution": "    lower := strings.ToLower(str)\n\tcount := 0\n\tset := make(map[rune]bool)\n\tfor _, i := range lower {\n\t\tif set[i] == true {\n\t\t\tcontinue\n\t\t} else {\n\t\t\tset[i] = true\n\t\t\tcount++\n\t\t}\n\t}\n\treturn count\n}\n\n\n"
+        "buggy_solution": "    count := 0\n\tset := make(map[rune]bool)\n\tfor _, i := range str {\n\t\tif set[i] == true {\n\t\t\tcontinue\n\t\t} else {\n\t\t\tset[i] = true\n\t\t\tcount++\n\t\t}\n\t}\n\treturn count\n}\n\n\n"
     },
     {
-        "buggy_solution": "    note_map := map[string]int{\"o\": 4, \"o|\": 2, \".|\": 1}\n\tsplit := strings.Split(music_string, \" \")\n\tresult := make([]int, 0)\n\tfor _, x := range split {\n\t\tif i, ok := note_map[x]; ok {\n\t\t\tresult = append(result, i)\n\t\t}\n\t}\n\treturn result\n}\n\n\n"
+        "buggy_solution": "    note_map := map[string]int{\"o\": 3, \"o|\": 2, \".|\": 1}\n\tsplit := strings.Split(music_string, \" \")\n\tresult := make([]int, 0)\n\tfor _, x := range split {\n\t\tif i, ok := note_map[x]; ok {\n\t\t\tresult = append(result, i)\n\t\t}\n\t}\n\treturn result\n}\n\n\n"
     },
     {
-        "buggy_solution": "    times := 0\n\tfor i := 0; i < (len(str) - len(substring) + 1); i++ {\n\t\tif str[i:i+len(substring)] == substring {\n\t\t\ttimes += 1\n\t\t}\n\t}\n\treturn times\n}\n\n\n"
+        "buggy_solution": "    times := 0\n\tfor i := 0; i < (len(str) - len(substring)); i++ {\n\t\tif str[i:i+len(substring)] == substring {\n\t\t\ttimes += 1\n\t\t}\n\t}\n\treturn times\n}\n\n\n"
     },
     {
-        "buggy_solution": "    valueMap := map[string]int{\n\t\t\"zero\":  0,\n\t\t\"one\":   1,\n\t\t\"two\":   2,\n\t\t\"three\": 3,\n\t\t\"four\":  4,\n\t\t\"five\":  5,\n\t\t\"six\":   6,\n\t\t\"seven\": 7,\n\t\t\"eight\": 8,\n\t\t\"nine\":  9,\n\t}\n\tstringMap := make(map[int]string)\n\tfor s, i := range valueMap {\n\t\tstringMap[i] = s\n\t}\n\tsplit := strings.Split(numbers, \" \")\n\ttemp := make([]int, 0)\n\tfor _, s := range split {\n\t\tif i, ok := valueMap[s]; ok {\n\t\t\ttemp = append(temp, i)\n\t\t}\n\t}\n\tsort.Ints(temp)\n\tresult := make([]string, 0)\n\tfor _, i := range temp {\n\t\tresult = append(result, stringMap[i])\n\t}\n\treturn strings.Join(result, \" \")\n}\n\n\n"
+        "buggy_solution": "    valueMap := map[string]int{\n\t\t\"zero\":  0,\n\t\t\"one\":   1,\n\t\t\"two\":   2,\n\t\t\"three\": 3,\n\t\t\"four\":  4,\n\t\t\"five\":  5,\n\t\t\"six\":   6,\n\t\t\"seven\": 7,\n\t\t\"eight\": 8,\n\t\t\"nine\":  9,\n\t}\n\tstringMap := make(map[int]string)\n\tfor s, i := range valueMap {\n\t\tstringMap[i] = s\n\t}\n\tsplit := strings.Split(numbers, \" \")\n\ttemp := make([]int, 0)\n\tfor _, s := range split {\n\t\tif i, ok := valueMap[s]; ok {\n\t\t\ttemp = append(temp, i)\n\t\t}\n\t}\n\tresult := make([]string, 0)\n\tfor _, i := range temp {\n\t\tresult = append(result, stringMap[i])\n\t}\n\treturn strings.Join(result, \" \")\n}\n\n\n"
     },
     {
-        "buggy_solution": "    distance := math.MaxFloat64\n\tvar closestPair [2]float64\n\tfor idx, elem := range numbers {\n\t\tfor idx2, elem2 := range numbers {\n\t\t\tif idx != idx2 {\n\t\t\t\tif distance == math.MinInt64 {\n\t\t\t\t\tdistance = math.Abs(elem - elem2)\n\t\t\t\t\tfloat64s := []float64{elem, elem2}\n\t\t\t\t\tsort.Float64s(float64s)\n\t\t\t\t\tclosestPair = [2]float64{float64s[0], float64s[1]}\n\t\t\t\t} else {\n\t\t\t\t\tnewDistance := math.Abs(elem - elem2)\n\t\t\t\t\tif newDistance < distance{\n\t\t\t\t\t\tdistance = newDistance\n\t\t\t\t\t\tfloat64s := []float64{elem, elem2}\n\t\t\t\t\t\tsort.Float64s(float64s)\n\t\t\t\t\t\tclosestPair = [2]float64{float64s[0], float64s[1]}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn closestPair\n}\n\n\n"
+        "buggy_solution": "    distance := math.MaxFloat64\n\tvar closestPair [2]float64\n\tfor idx, elem := range numbers {\n\t\tfor idx2, elem2 := range numbers {\n\t\t\tif idx != idx2 {\n\t\t\t\tif distance == math.MinInt64 {\n\t\t\t\t\tdistance = math.Abs(elem - elem2)\n\t\t\t\t\tfloat64s := []float64{elem, elem2}\n\t\t\t\t\tsort.Float64s(float64s)\n\t\t\t\t\tclosestPair = [2]float64{float64s[0], float64s[1]}\n\t\t\t\t} else {\n\t\t\t\t\tnewDistance := math.Abs(elem - elem2)\n\t\t\t\t\tif newDistance > distance{\n\t\t\t\t\t\tdistance = newDistance\n\t\t\t\t\t\tfloat64s := []float64{elem, elem2}\n\t\t\t\t\t\tsort.Float64s(float64s)\n\t\t\t\t\t\tclosestPair = [2]float64{float64s[0], float64s[1]}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn closestPair\n}\n\n\n"
     },
     {
-        "buggy_solution": "    smallest := numbers[0]\n\tlargest := smallest\n\tfor _, n := range numbers {\n\t\tif smallest > n {\n\t\t\tsmallest = n\n\t\t}\n\t\tif largest < n {\n\t\t\tlargest = n\n\t\t}\n\t}\n\tif smallest == largest {\n\t\treturn numbers\n\t}\n\tfor i, n := range numbers {\n\t\tnumbers[i] = (n - smallest) / (largest - smallest)\n\t}\n\treturn numbers\n}\n\n"
+        "buggy_solution": "    smallest := numbers[0]\n\tlargest := smallest\n\tfor _, n := range numbers {\n\t\tif smallest > n {\n\t\t\tsmallest = n\n\t\t}\n\t\tif largest < n {\n\t\t\tlargest = n\n\t\t}\n\t}\n\tif smallest == largest {\n\t\treturn numbers\n\t}\n\tfor i, n := range numbers {\n\t\tnumbers[i] = (n - smallest) / (largest + smallest)\n\t}\n\treturn numbers\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]int, 0)\n    for _, val := range values {\n        switch i := val.(type) {\n        case int:\n            result = append(result, i)\n        }\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]int, 0)\n    for _, val := range values {\n        switch i := val.(type) {\n        case int:\n            values = append(values, i)\n        }\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    return len(str)\n}\n\n"
+        "buggy_solution": "    return len(str) - 1\n}\n\n"
     },
     {
-        "buggy_solution": "    for i := n - 1; i > 0; i-- {\n\t\tif n % i == 0 {\n\t\t\treturn i\n\t\t}\n\t}\n\treturn 0\n}\n\n"
+        "buggy_solution": "    for i := n - 1; i > 0; i-- {\n\t\tif n - i == 0 {\n\t\t\treturn i\n\t\t}\n\t}\n\treturn 0\n}\n\n"
     },
     {
-        "buggy_solution": "    fact := make([]int, 0)\n\tfor i := 2; i <= int(math.Sqrt(float64(n))+1); {\n\t\tif n%i == 0 {\n\t\t\tfact = append(fact, i)\n\t\t\tn = n / i\n\t\t} else {\n\t\t\ti++\n\t\t}\n\t}\n\tif n > 1 {\n\t\tfact = append(fact, n)\n\t}\n\treturn fact\n}\n\n"
+        "buggy_solution": "    fact := make([]int, 0)\n\tfor i := 0; i <= int(math.Sqrt(float64(n))+1); {\n\t\tif n%i == 0 {\n\t\t\tfact = append(fact, i)\n\t\t\tn = n / i\n\t\t} else {\n\t\t\ti++\n\t\t}\n\t}\n\tif n > 1 {\n\t\tfact = append(fact, n)\n\t}\n\treturn fact\n}\n\n"
     },
     {
-        "buggy_solution": "    c := make(map[int] int)\n\tfor _, number := range numbers {\n\t\tif i, ok := c[number]; ok {\n\t\t\tc[number] = i + 1\n\t\t} else {\n\t\t\tc[number] = 1\n\t\t}\n\t}\n\tresult := make([]int, 0)\n\tfor _, number := range numbers {\n\t\tif c[number] <= 1 {\n\t\t\tresult = append(result, number)\n\t\t}\n\t}\n\treturn result\n}\n\n"
+        "buggy_solution": "    c := make(map[int] int)\n\tfor _, number := range numbers {\n\t\tif i, ok := c[number]; ok {\n\t\t\tc[number] = i + 1\n\t\t} else {\n\t\t\tc[number] = 1\n\t\t}\n\t}\n\tresult := make([]int, 0)\n\tfor _, number := range numbers {\n\t\tif c[number] < 1 {\n\t\t\tresult = append(result, number)\n\t\t}\n\t}\n\treturn result\n}\n\n"
     },
     {
-        "buggy_solution": "    result := []rune{}\n    for _, c := range str {\n        if c >= 'A' && c <= 'Z' {\n            result = append(result, 'a' + ((c - 'A' + 26) % 26))\n        } else if c >= 'a' && c <= 'z' {\n            result = append(result, 'A' + ((c - 'a' + 26) % 26))\n        } else {\n            result = append(result, c)\n        }\n    }\n    return string(result)\n}\n\n"
+        "buggy_solution": "    result := []rune{}\n    for _, c := range str {\n        if c >= 'a' && c <= 'z' {\n            result = append(result, 'a' + ((c - 'A' + 26) % 26))\n        } else if c >= 'A' && c <= 'Z' {\n            result = append(result, 'A' + ((c - 'a' + 26) % 26))\n        } else {\n            result = append(result, c)\n        }\n    }\n    return string(result)\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(strings) == 0 {\n\t\treturn \"\"\n\t}\n\treturn strings[0] + Concatenate(strings[1:])\n}\n\n"
+        "buggy_solution": "    if len(strings) == 0 {\n\t\treturn \"\"\n\t}\n\treturn Concatenate(strings[1:])\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(strings) == 0 {\n        return []string{}\n    }\n    res := make([]string, 0, len(strings))\n\tfor _, s := range strings {\n\t\tif s[:len(prefix)] == prefix {\n\t\t\tres = append(res, s)\n\t\t}\n\t}\n\treturn res\n}\n\n\n"
+        "buggy_solution": "    if len(strings) == 0 {\n        return []string{}\n    }\n    res := make([]string, 0, len(strings))\n\tfor _, s := range strings {\n\t\tif s[:len(prefix)] != prefix {\n\t\t\tres = append(res, s)\n\t\t}\n\t}\n\treturn res\n}\n\n\n"
     },
     {
-        "buggy_solution": "    res := make([]int, 0)\n    for _, x := range l {\n        if x > 0 {\n            res = append(res, x)\n        }\n    }\n    return res\n}\n\n\n"
+        "buggy_solution": "    res := make([]int, 0)\n    for _, x := range l {\n        if x < 0 {\n            res = append(res, x)\n        }\n    }\n    return res\n}\n\n\n"
     },
     {
-        "buggy_solution": "    if n <= 1 {\n\t\treturn false\n\t}\n\tif n == 2 {\n\t\treturn true\n\t}\n\tif n%2 == 0 {\n\t\treturn false\n\t}\n\tfor i := 3; i*i <= n; i += 2 {\n\t\tif n%i == 0 {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n\n"
+        "buggy_solution": "    if n < 1 {\n\t\treturn false\n\t}\n\tif n == 1 {\n\t\treturn true\n\t}\n\tif n%2 == 0 {\n\t\treturn false\n\t}\n\tfor i := 3; i*i <= n; i += 2 {\n\t\tif n%i == 0 {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n\n"
     },
     {
-        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor end-begin > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, begin) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn begin\n}\n\n"
+        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor begin-end > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, begin) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn begin\n}\n\n"
     },
     {
-        "buggy_solution": "    temp := make([]int, 0)\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\ttemp = append(temp, l[i])\n\t}\n\tsort.Ints(temp)\n\tj := 0\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\tl[i] = temp[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
+        "buggy_solution": "    temp := make([]int, 0)\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\ttemp = append(temp, l[i])\n\t}\n\tj := 0\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\tl[i] = temp[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
     },
     {
-        "buggy_solution": "    set := make(map[int]interface{})\n\tfor _, i := range l {\n\t\tset[i]=nil\n\t}\n\tl = make([]int,0)\n\tfor i, _ := range set {\n\t\tl = append(l, i)\n\t}\n\tsort.Ints(l)\n\treturn l\n}\n\n"
+        "buggy_solution": "    set := make(map[int]interface{})\n\tfor _, i := range l {\n\t\tset[i]=nil\n\t}\n\tl = make([]int,0)\n\tfor i, _ := range set {\n\t\tl = append(l, i)\n\t}\n\treturn l\n}\n\n"
     },
     {
-        "buggy_solution": "    max := l[0]\n\tfor _, x := range l {\n\t\tif x > max {\n\t\t\tmax = x\n\t\t}\n\t}\n\treturn max\n}\n\n"
+        "buggy_solution": "    max := l[0]\n\tfor _, x := range l {\n\t\tif x < max {\n\t\t\tmax = x\n\t\t}\n\t}\n\treturn max\n}\n\n"
     },
     {
-        "buggy_solution": "    ns := make([]int, 0)\n\tfor i := 0; i < n; i++ {\n\t\tif i%11 == 0 || i%13 == 0 {\n\t\t\tns = append(ns, i)\n\t\t}\n\t}\n\ttemp := make([]string, 0)\n\tfor _, i := range ns {\n\t\ttemp = append(temp, strconv.Itoa(i))\n\t}\n\tjoin := strings.Join(temp, \"\")\n\tans := 0\n\tfor _, c := range join {\n\t\tif c == '7' {\n\t\t\tans++\n\t\t}\n\t}\n\treturn ans\n}\n\n"
+        "buggy_solution": "    ns := make([]int, 0)\n\tfor i := 0; i < n; i++ {\n\t\tif i%11 == 0 && i%13 == 0 {\n\t\t\tns = append(ns, i)\n\t\t}\n\t}\n\ttemp := make([]string, 0)\n\tfor _, i := range ns {\n\t\ttemp = append(temp, strconv.Itoa(i))\n\t}\n\tjoin := strings.Join(temp, \"\")\n\tans := 0\n\tfor _, c := range join {\n\t\tif c == '7' {\n\t\t\tans++\n\t\t}\n\t}\n\treturn ans\n}\n\n"
     },
     {
-        "buggy_solution": "    evens := make([]int, 0)\n\tfor i := 0; i < len(l); i += 2 {\n\t\tevens = append(evens, l[i])\n\t}\n\tsort.Ints(evens)\n\tj := 0\n\tfor i := 0; i < len(l); i += 2 {\n\t\tl[i] = evens[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
+        "buggy_solution": "    evens := make([]int, 0)\n\tfor i := 0; i < len(l); i += 2 {\n\t\tevens = append(evens, l[i])\n\t}\n\tsort.Ints(l)\n\tj := 0\n\tfor i := 0; i < len(l); i += 2 {\n\t\tl[i] = evens[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
     },
     {
-        "buggy_solution": "    return EncodeCyclic(EncodeCyclic(s))\n}\n\n"
+        "buggy_solution": "    return EncodeCyclic(s)\n}\n\n"
     },
     {
-        "buggy_solution": "    isPrime := func(p int) bool {\n\t\tif p < 2 {\n\t\t\treturn false\n\t\t}\n\t\tfor i := 2; i < int(math.Min(math.Sqrt(float64(p))+1, float64(p-1))); i++ {\n\t\t\tif p%i == 0 {\n\t\t\t\treturn false\n\t\t\t}\n\t\t}\n\t\treturn true\n\t}\n\tf := []int{0, 1}\n\tfor {\n\t\tf = append(f, f[len(f)-1]+f[len(f)-2])\n\t\tif isPrime(f[len(f)-1]) {\n\t\t\tn -= 1\n\t\t}\n\t\tif n == 0 {\n\t\t\treturn f[len(f)-1]\n\t\t}\n\t}\n}\n\n"
+        "buggy_solution": "    isPrime := func(p int) bool {\n\t\tif p < 2 {\n\t\t\treturn false\n\t\t}\n\t\tfor i := 2; i < int(math.Min(math.Sqrt(float64(p)), float64(p))); i++ {\n\t\t\tif p%i == 0 {\n\t\t\t\treturn false\n\t\t\t}\n\t\t}\n\t\treturn true\n\t}\n\tf := []int{0, 1}\n\tfor {\n\t\tf = append(f, f[len(f)-1]+f[len(f)-2])\n\t\tif isPrime(f[len(f)-1]) {\n\t\t\tn -= 1\n\t\t}\n\t\tif n == 0 {\n\t\t\treturn f[len(f)-1]\n\t\t}\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    for i := 0; i < len(l) - 2; i++ {\n\t\tfor j := i + 1; j < len(l) - 1; j++ {\n\t\t\tfor k := j + 1; k < len(l); k++ {\n\t\t\t\tif l[i] + l[j] + l[k] == 0 {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
+        "buggy_solution": "    for i := 0; i < len(l) - 2; i++ {\n\t\tfor j := i + 1; j < len(l) - 1; j++ {\n\t\t\tfor k := i + 1; k < len(l); k++ {\n\t\t\t\tif l[i] + l[j] + l[k] == 0 {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
-        "buggy_solution": "\treturn n * n\n}\n\n"
+        "buggy_solution": "\treturn n * n * n\n}\n\n"
     },
     {
-        "buggy_solution": "    n := len(l)\n\tfor i := 0; i < n; i++ {\n\t\tl[i]++\n\t}\n\treturn l\n}\n\n"
+        "buggy_solution": "    n := len(l)\n\tfor i := 1; i < n; i++ {\n\t\tl[i]++\n\t}\n\treturn l\n}\n\n"
     },
     {
-        "buggy_solution": "    seen := map[int]bool{}\n\tfor i := 0; i < len(l); i++ {\n\t\tfor j := i + 1; j < len(l); j++ {\n\t\t\tif l[i] + l[j] == 0 {\n\t\t\t\tif _, ok := seen[l[i]]; !ok {\n\t\t\t\t\tseen[l[i]] = true\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t\tif _, ok := seen[l[j]]; !ok {\n\t\t\t\t\tseen[l[j]] = true\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
+        "buggy_solution": "    seen := map[int]bool{}\n\tfor i := 0; i < len(l); i++ {\n\t\tfor j := i; j < len(l); j++ {\n\t\t\tif l[i] + l[j] == 0 {\n\t\t\t\tif _, ok := seen[l[i]]; !ok {\n\t\t\t\t\tseen[l[i]] = true\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t\tif _, ok := seen[l[j]]; !ok {\n\t\t\t\t\tseen[l[j]] = true\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
-        "buggy_solution": "    if x >= base {\n        return ChangeBase(x/base, base) + ChangeBase(x%base, base)\n    }\n    return strconv.Itoa(x)\n}\n\n"
+        "buggy_solution": "    if x >= base {\n        return ChangeBase(x*base, base) + ChangeBase(x%base, base)\n    }\n    return strconv.Itoa(x)\n}\n\n"
     },
     {
-        "buggy_solution": "    return a * h / 2\n}\n\n"
+        "buggy_solution": "    return a * h / 0.5\n}\n\n"
     },
     {
-        "buggy_solution": "    switch n {\n\tcase 0:\n\t\treturn 0\n\tcase 1:\n\t\treturn 0\n\tcase 2:\n\t\treturn 2\n\tcase 3:\n\t\treturn 0\n\tdefault:\n\t\treturn Fib4(n-1) + Fib4(n-2) + Fib4(n-3) + Fib4(n-4)\n\t}\n}\n\n"
+        "buggy_solution": "    switch n {\n\tcase 0:\n\t\treturn 0\n\tcase 1:\n\t\treturn 0\n\tcase 2:\n\t\treturn 2\n\tcase 3:\n\t\treturn 0\n\tdefault:\n\t\treturn Fib4(n-1) + Fib4(n-2) + Fib4(n-3) + Fib4(n-2)\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    sort.Ints(l)\n\tif len(l)%2==1{\n\t\treturn float64(l[len(l)/2])\n\t}else{\n\t\treturn float64(l[len(l)/2-1]+l[len(l)/2])/2.0\n\t}\n}\n\n"
+        "buggy_solution": "    sort.Ints(l)\n\tif len(l)%2==1{\n\t\treturn float64(l[len(l)/2])\n\t}else{\n\t\treturn float64(l[len(l)-1/2]+l[len(l)/2])/2.0\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    runes := []rune(text)\n    result := make([]rune, 0)\n    for i := len(runes) - 1; i >= 0; i-- {\n        result = append(result, runes[i])\n    }\n    return text == string(result)\n}\n\n"
+        "buggy_solution": "    runes := []rune(text)\n    result := make([]rune, 0)\n    for i := len(runes) - 1; i > 0; i-- {\n        result = append(result, runes[i])\n    }\n    return text == string(result)\n}\n\n"
     },
     {
-        "buggy_solution": "    ret := 1\n    for i:= 0; i < n; i++ {\n\t\tret = (2 * ret) % p\n\t}\n    return ret\n}\n\n"
+        "buggy_solution": "    ret := 0\n    for i:= 0; i < n; i++ {\n\t\tret = (2 * ret) % p\n\t}\n    return ret\n}\n\n"
     },
     {
-        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, (ch-5-'a')%26+'a')\n    }\n    return string(runes)\n}\n\n"
+        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, (ch-5-'a')%26+ch)\n    }\n    return string(runes)\n}\n\n"
     },
     {
-        "buggy_solution": "    var re = regexp.MustCompile(\"[aeiouAEIOU]\")\n\ttext = re.ReplaceAllString(text, \"\")\n\treturn text\n}\n\n"
+        "buggy_solution": "    var re = regexp.MustCompile(\"[aeiouwyAEIOUWY]\")\n\ttext = re.ReplaceAllString(text, \"\")\n\treturn text\n}\n\n"
     },
     {
-        "buggy_solution": "    for _, n := range l {\n\t\tif n >= t {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
+        "buggy_solution": "    for _, n := range l {\n\t\tif n >= t {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
-        "buggy_solution": "    return x + y\n}\n\n"
+        "buggy_solution": "    return x + y + y + x\n}\n\n"
     },
     {
-        "buggy_solution": "    set0 := make(map[int32]interface{})\n\tset1 := make(map[int32]interface{})\n\tfor _, i := range s0 {\n\t\tset0[i] = nil\n\t}\n\tfor _, i := range s1 {\n\t\tset1[i] = nil\n\t}\n\tfor i, _ := range set0 {\n\t\tif _,ok:=set1[i];!ok{\n\t\t\treturn false\n\t\t}\n\t}\n\tfor i, _ := range set1 {\n\t\tif _,ok:=set0[i];!ok{\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
+        "buggy_solution": "    set0 := make(map[int32]interface{})\n\tset1 := make(map[int32]interface{})\n\tfor _, i := range s0 {\n\t\tset0[i] = nil\n\t}\n\tfor _, i := range s1 {\n\t\tset1[i] = nil\n\t}\n\tfor i, _ := range set0 {\n\t\tif _,ok:=set1[i];!ok{\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
     },
     {
-        "buggy_solution": "    if n <= 1 {\n\t\treturn n\n\t}\n\treturn Fib(n-1) + Fib(n-2)\n}\n\n"
+        "buggy_solution": "    if n <= 2 {\n\t\treturn n\n\t}\n\treturn Fib(n-1) + Fib(n-2)\n}\n\n"
     },
     {
-        "buggy_solution": "    l := len(brackets)\n\tcount := 0\n\tfor index := 0; index < l; index++ {\n\t\tif brackets[index] == '<' {\n\t\t\tcount++\n\t\t} else if brackets[index] == '>' {\n\t\t\tcount--\n\t\t}\n\t\tif count < 0 {\n\t\t\treturn false\n\t\t}\n\t}\n    if count == 0 {\n        return true\n    } else {\n        return false\n    }\n}\n\n"
+        "buggy_solution": "    l := len(brackets)\n\tcount := 0\n\tfor index := 0; index < l; index++ {\n\t\tif brackets[index] == '>' {\n\t\t\tcount++\n\t\t} else if brackets[index] == '<' {\n\t\t\tcount--\n\t\t}\n\t\tif count < 0 {\n\t\t\treturn false\n\t\t}\n\t}\n    if count == 0 {\n        return true\n    } else {\n        return false\n    }\n}\n\n"
     },
     {
-        "buggy_solution": "    flag := true\n\tif len(l) > 1 {\n\t\tfor i := 0; i < len(l)-1; i++ {\n\t\t\tif l[i] != l[i+1] {\n\t\t\t\tflag = l[i] > l[i+1]\n\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t} else {\n\t\treturn false\n\t}\n\tfor i := 0; i < len(l)-1; i++ {\n\t\tif flag != (l[i] >= l[i+1]) {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
+        "buggy_solution": "    flag := true\n\tif len(l) > 1 {\n\t\tfor i := 0; i < len(l)-1; i++ {\n\t\t\tif l[i] != l[i+1] {\n\t\t\t\tflag = l[i] > l[i+1]\n\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t} else {\n\t\treturn false\n\t}\n\tfor i := 0; i < len(l)-1; i++ {\n\t\tif flag != (l[i] >= l[i+1]) {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
-        "buggy_solution": "    m := make(map[int]bool)\n\tfor _, e1 := range l1 {\n\t\tif m[e1] {\n\t\t\tcontinue\n\t\t}\n\t\tfor _, e2 := range l2 {\n\t\t\tif e1 == e2 {\n\t\t\t\tm[e1] = true\n\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t}\n\tres := make([]int, 0, len(m))\n\tfor k, _ := range m {\n\t\tres = append(res, k)\n\t}\n\tsort.Ints(res)\n\treturn res\n}\n\n"
+        "buggy_solution": "    m := make(map[int]bool)\n\tfor _, e1 := range l1 {\n\t\tif m[e1] {\n\t\t\tcontinue\n\t\t}\n\t\tfor _, e2 := range l2 {\n\t\t\tif e1 == e2 {\n\t\t\t\tm[e1] = true\n\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t}\n\tres := make([]int, 0, len(m))\n\tfor k, _ := range m {\n\t\tres = append(res, k)\n\t}\n\treturn res\n}\n\n"
     },
     {
-        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n\n    largest := 1\n    for j := 2; j < n + 1; j++ {\n\t\tif n % j == 0 && isPrime(j) {\n\t\t\tif j > largest {\n\t\t\t\tlargest = j\n\t\t\t}\n\t\t}\n\t}\n    return largest\n}\n\n"
+        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n\n    largest := 1\n    for j := 2; j < n; j++ {\n\t\tif n % j == 0 && isPrime(j) {\n\t\t\tif j > largest {\n\t\t\t\tlargest = j\n\t\t\t}\n\t\t}\n\t}\n    return largest\n}\n\n"
     },
     {
-        "buggy_solution": "    if n <= 0 {\n\t\treturn 0\n\t} else {\n\t\treturn n + SumToN(n - 1)\n\t}\n}\n\n"
+        "buggy_solution": "    if n <= 0 {\n\t\treturn 0\n\t} else {\n\t\treturn 1 + SumToN(n - 1)\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    brackets = strings.Replace(brackets, \"(\", \" ( \", -1)\n\tbrackets = strings.Replace(brackets, \")\", \") \", -1)\n\topen := 0\n\tfor _, b := range brackets {\n\t\tif b == '(' {\n\t\t\topen++\n\t\t} else if b == ')' {\n\t\t\topen--\n\t\t}\n\t\tif open < 0 {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn open == 0\n}\n\n"
+        "buggy_solution": "    brackets = strings.Replace(brackets, \"(\", \" ( \", -1)\n\tbrackets = strings.Replace(brackets, \")\", \") \", -1)\n\topen := 0\n\tfor _, b := range brackets {\n\t\tif b == '(' {\n\t\t\topen++\n\t\t} else if b == ')' {\n\t\t\topen--\n\t\t}\n\t\tif open < 0 {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn open == 0\n}\n\n"
     },
     {
-        "buggy_solution": "    l := len(xs)\n\ty := make([]int, l - 1)\n\tfor i := 0; i < l - 1; i++ {\n\t\ty[i] = xs[i + 1] * (i + 1)\n\t}\n\treturn y\n}\n\n"
+        "buggy_solution": "    l := len(xs)\n\ty := make([]int, l - 1)\n\tfor i := 0; i < l - 1; i++ {\n\t\ty[i] = xs[i + 1] * i\n\t}\n\treturn y\n}\n\n"
     },
     {
-        "buggy_solution": "    if n <= 0 {\n\t\treturn 0\n\t}\n    switch n {\n\tcase 0:\n\t\treturn 0\n\tcase 1:\n\t\treturn 0\n\tcase 2:\n\t\treturn 1\n\tdefault:\n\t\treturn Fibfib(n-1) + Fibfib(n-2) + Fibfib(n-3)\n\t}\n}\n\n"
+        "buggy_solution": "    if n <= 0 {\n\t\treturn 0\n\t}\n    switch n {\n\tcase 0:\n\t\treturn 0\n\tcase 1:\n\t\treturn 1\n\tcase 2:\n\t\treturn 2\n\tdefault:\n\t\treturn Fibfib(n-1) + Fibfib(n-2) + Fibfib(n-3)\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    s = strings.ToLower(s)\n\tvowels := map[int32]interface{}{'a': nil, 'e': nil, 'i': nil, 'o': nil, 'u': nil}\n\tcount := 0\n\tfor _, i := range s {\n\t\tif _, ok := vowels[i]; ok {\n\t\t\tcount++\n\t\t}\n\t}\n\tif (s[len(s)-1]) == 'y' {\n\t\tcount++\n\t}\n\treturn count\n}\n\n"
+        "buggy_solution": "    s = strings.ToLower(s)\n\tvowels := map[int32]interface{}{'a': nil, 'e': nil, 'i': nil, 'o': nil, 'u': nil, 'y': nil}\n\tcount := 0\n\tfor _, i := range s {\n\t\tif _, ok := vowels[i]; ok {\n\t\t\tcount++\n\t\t}\n\t}\n\treturn count\n}\n\n"
     },
     {
-        "buggy_solution": "    s := strconv.Itoa(x)\n\tif shift > len(s) {\n\t\trunes := make([]rune, 0)\n\t\tfor i := len(s)-1; i >= 0; i-- {\n\t\t\trunes = append(runes, rune(s[i]))\n\t\t}\n\t\treturn string(runes)\n\t}else{\n\t\treturn s[len(s)-shift:]+s[:len(s)-shift]\n\t}\n}\n\n"
+        "buggy_solution": "    s := strconv.Itoa(x)\n\tif shift > len(s) {\n\t\trunes := make([]rune, 0)\n\t\tfor i := len(s)-1; i >= 0; i-- {\n\t\t\trunes = append(runes, rune(s[i]))\n\t\t}\n\t\treturn string(runes)\n\t}else{\n\t\treturn s[:len(s)-shift]+s[len(s)-shift:]\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(x) == 0 {\n\t\treturn 0\n\t}\n\tresult := 0\n\tfor _, i := range x {\n\t\tif 'A' <= i && i <= 'Z' {\n\t\t\tresult += int(i)\n\t\t}\n\t}\n\treturn result\n}\n\n"
+        "buggy_solution": "    if len(x) == 0 {\n\t\treturn 0\n\t}\n\tresult := 0\n\tfor _, i := range x {\n\t\tif 'a' <= i && i <= 'z' {\n\t\t\tresult += int(i)\n\t\t}\n\t}\n\treturn result\n}\n\n"
     },
     {
-        "buggy_solution": "    split := strings.Split(s, \" \")\n\tfor _, i := range split {\n\t\tatoi, err := strconv.Atoi(i)\n\t\tif err != nil {\n\t\t\tcontinue\n\t\t}\n\t\tn = n - atoi\n\t}\n\treturn n\n}\n\n"
+        "buggy_solution": "    split := strings.Split(s, \" \")\n\tfor _, i := range split {\n\t\tatoi, err := strconv.Atoi(i)\n\t\tif err != nil {\n\t\t\tcontinue\n\t\t}\n\t\tn = n - 1 - atoi\n\t}\n\treturn n\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]int, 0)\n\tif len(arr) == 0 {\n\t\treturn result\n\t}\n\tevens := make([]int, 0)\n\tmin := math.MaxInt64\n\tminIndex := 0\n\tfor i, x := range arr {\n\t\tif x%2 == 0 {\n\t\t\tevens = append(evens, x)\n\t\t\tif x < min {\n\t\t\t\tmin = x\n\t\t\t\tminIndex = i\n\t\t\t}\n\t\t}\n\t}\n\tif len(evens) == 0 {\n\t\treturn result\n\t}\n\tresult = []int{min, minIndex}\n\treturn result\n}\n\n"
+        "buggy_solution": "    result := make([]int, 0)\n\tif len(arr) == 0 {\n\t\treturn result\n\t}\n\tevens := make([]int, 0)\n\tmin := math.MaxInt64\n\tminIndex := 0\n\tfor i, x := range arr {\n\t\tif x%2 == 0 {\n\t\t\tevens = append(evens, x)\n\t\t\tif x < min {\n\t\t\t\tmin = x\n\t\t\t\tminIndex = i\n\t\t\t}\n\t\t}\n\t}\n\tif len(evens) == 0 {\n\t\treturn result\n\t}\n\tresult = []int{minIndex, min}\n\treturn result\n}\n\n"
     },
     {
-        "buggy_solution": "    countMap := make(map[int]int)\n\tfor _, i := range lst {\n\t\tif count, ok := countMap[i]; ok {\n\t\t\tcountMap[i] = count + 1\n\t\t} else {\n\t\t\tcountMap[i] = 1\n\t\t}\n\t}\n\tmax := -1\n\tfor i, count := range countMap {\n\t\tif count >= i && count > max {\n\t\t\tmax = i\n\t\t}\n\t}\n\treturn max\n}\n\n"
+        "buggy_solution": "    countMap := make(map[int]int)\n\tfor _, i := range lst {\n\t\tif count, ok := countMap[i]; ok {\n\t\t\tcountMap[i] = count + 1\n\t\t} else {\n\t\t\tcountMap[i] = 1\n\t\t}\n\t}\n\tmax := 0\n\tfor i, count := range countMap {\n\t\tif count >= i && count > max {\n\t\t\tmax = i\n\t\t}\n\t}\n\treturn max\n}\n\n"
     },
     {
-        "buggy_solution": "    sort.Ints(lst)\n\tresult := make([]int, 0)\n\tfor i := 0; i < len(lst)/2; i++ {\n\t\tresult = append(result, lst[i])\n\t\tresult = append(result, lst[len(lst)-i-1])\n\t}\n\tif len(lst)%2 != 0 {\n\t\tresult = append(result, lst[len(lst)/2])\n\t}\n\treturn result\n}\n\n"
+        "buggy_solution": "    sort.Ints(lst)\n\tresult := make([]int, 0)\n\tfor i := 0; i < len(lst)/2; i++ {\n\t\tresult = append(result, lst[i])\n\t\tresult = append(result, lst[len(lst)-i-1])\n\t}\n\tif len(lst)%2 == 0 {\n\t\tresult = append(result, lst[len(lst)/2])\n\t}\n\treturn result\n}\n\n"
     },
     {
-        "buggy_solution": "    if a+b <= c || a+c <= b || b+c <= a {\n\t\treturn -1\n\t}\n\ts := (a + b + c) / 2\n\tarea := math.Pow(s * (s - a) * (s - b) * (s - c), 0.5)\n\tarea = math.Round(area*100)/100\n\treturn area\n}\n\n"
+        "buggy_solution": "    if a+b <= c || a+c <= b || b+c <= a {\n\t\treturn -1\n\t}\n\ts := (a + b + c)\n\tarea := math.Pow(s * (s - a) * (s - b) * (s - c), 0.5)\n\tarea = math.Round(area*100)/100\n\treturn area\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := 0\n\tfor i := 0; i < len(q); i++ {\n\t\tsum += q[i]\n\t}\n\tif sum <= w && isPalindrome(q) {\n\t\treturn true\n\t}\n\treturn false\n}\n\nfunc isPalindrome(arr []int) bool {\n\tfor i := 0; i < (len(arr) / 2); i++ {\n\t\tif arr[i] != arr[len(arr) - i - 1] {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
+        "buggy_solution": "    sum := 0\n\tfor i := 0; i < len(q); i++ {\n\t\tsum += q[i]\n\t}\n\tif sum <= w && isPalindrome(q) {\n\t\treturn true\n\t}\n\treturn false\n}\n\nfunc isPalindrome(arr []int) bool {\n\tfor i := 0; i < (len(arr) / 2); i++ {\n\t\tif arr[i] == arr[len(arr) - i - 1] {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n"
     },
     {
-        "buggy_solution": "    count := 0\n\tfor i := 0; i < len(arr) - 1; i++ {\n        a := arr[len(arr) - i - 1]\n\t\tif arr[i] != a {\n\t\t\tarr[i] = a\n            count++\n\t\t}\n\t}\n\treturn count\n}\n\n"
+        "buggy_solution": "    count := 0\n\tfor i := 0; i < len(arr) - 1; i++ {\n        a := arr[len(arr) - i - 1]\n\t\tif arr[i] != count {\n\t\t\tarr[i] = a\n            count++\n\t\t}\n\t}\n\treturn count\n}\n\n"
     },
     {
-        "buggy_solution": "    var numchar1 = 0\n\tvar numchar2 = 0\n\tfor _, item := range lst1 {\n\t\tnumchar1 += len(item)\n\t}\n\tfor _, item := range lst2 {\n\t\tnumchar2 += len(item)\n\t}\n\tif numchar1 <= numchar2 {\n\t\treturn lst1\n\t} else {\n\t\treturn lst2\n\t}\n}\n\n"
+        "buggy_solution": "    var numchar1 = 0\n\tvar numchar2 = 0\n\tfor _, item := range lst1 {\n\t\tnumchar1 += len(item)\n\t}\n\tfor _, item := range lst2 {\n\t\tnumchar2 += len(item)\n\t}\n\tif numchar1 <= numchar2 {\n\t\treturn lst2\n\t} else {\n\t\treturn lst1\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n    for i := 2; i < 101; i++ {\n\t\tif !isPrime(i) {\n\t\t\tcontinue\n\t\t}\n\t\tfor j := 2; j < 101; j++ {\n\t\t\tif !isPrime(j) {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tfor k := 2; k < 101; k++ {\n\t\t\t\tif !isPrime(k) {\n\t\t\t\t\tcontinue\n\t\t\t\t}\n\t\t\t\tif i*j*k == a {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
+        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 0; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n    for i := 2; i < 101; i++ {\n\t\tif !isPrime(i) {\n\t\t\tcontinue\n\t\t}\n\t\tfor j := 2; j < 101; j++ {\n\t\t\tif !isPrime(j) {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tfor k := 2; k < 101; k++ {\n\t\t\t\tif !isPrime(k) {\n\t\t\t\t\tcontinue\n\t\t\t\t}\n\t\t\t\tif i*j*k == a {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
-        "buggy_solution": "    if x == 1 {\n\t\treturn true\n\t}\n\tif n==1 {\n\t\treturn false\n\t}\n\tif x % n != 0 {\n\t\treturn false\n\t}\n\treturn IsSimplePower(x / n, n)\n}\n\n"
+        "buggy_solution": "    if x == 1 {\n\t\treturn true\n\t}\n\tif n==1 {\n\t\treturn false\n\t}\n\tif x % n != 0 {\n\t\treturn false\n\t}\n\treturn IsSimplePower(x, n)\n}\n\n"
     },
     {
-        "buggy_solution": "    abs := math.Abs(float64(a))\n\treturn int(math.Pow(math.Round(math.Pow(abs, 1.0/3.0)), 3.0)) == int(abs)\n}\n\n"
+        "buggy_solution": "    abs := math.Abs(float64(a))\n\treturn int(math.Round(math.Pow(abs, 1.0/3.0))) == int(abs)\n}\n\n"
     },
     {
-        "buggy_solution": "    primes := map[int32]interface{}{'2': nil, '3': nil, '5': nil, '7': nil, 'B': nil, 'D': nil}\n\ttotal := 0\n\tfor _, c := range num {\n\t\tif _, ok := primes[c]; ok {\n\t\t\ttotal++\n\t\t}\n\t}\n\treturn total\n}\n\n"
+        "buggy_solution": "    primes := map[int32]interface{}{'2': nil, '3': nil, '5': nil, '7': nil, 'B': nil, 'D': nil}\n\ttotal := 1\n\tfor _, c := range num {\n\t\tif _, ok := primes[c]; ok {\n\t\t\ttotal++\n\t\t}\n\t}\n\treturn total\n}\n\n"
     },
     {
-        "buggy_solution": "    return fmt.Sprintf(\"db%bdb\", decimal)\n}\n\n"
+        "buggy_solution": "    return fmt.Sprintf(\"db%bd\", decimal)\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(s) < 3 {\n        return false\n    }\n    for i := 0; i < len(s)-2; i++ {\n        if s[i] == s[i+1] || s[i+1] == s[i+2] || s[i] == s[i+2] {\n            return false\n        }\n    }\n    return true\n}\n\n"
+        "buggy_solution": "    if len(s) < 3 {\n        return false\n    }\n    for i := 0; i < len(s)-2; i++ {\n        if s[i] == s[i+1] && s[i+1] == s[i+2] && s[i] == s[i+2] {\n            return false\n        }\n    }\n    return true\n}\n\n"
     },
     {
-        "buggy_solution": "letter_grade := make([]string, 0, len(grades))\n    for _, gpa := range grades {\n        switch {\n        case gpa == 4.0:\n            letter_grade = append(letter_grade, \"A+\")\n        case gpa > 3.7:\n            letter_grade = append(letter_grade, \"A\")\n        case gpa > 3.3:\n            letter_grade = append(letter_grade, \"A-\")\n        case gpa > 3.0:\n            letter_grade = append(letter_grade, \"B+\")\n        case gpa > 2.7:\n            letter_grade = append(letter_grade, \"B\")\n        case gpa > 2.3:\n            letter_grade = append(letter_grade, \"B-\")\n        case gpa > 2.0:\n            letter_grade = append(letter_grade, \"C+\")\n        case gpa > 1.7:\n            letter_grade = append(letter_grade, \"C\")\n        case gpa > 1.3:\n            letter_grade = append(letter_grade, \"C-\")\n        case gpa > 1.0:\n            letter_grade = append(letter_grade, \"D+\")\n        case gpa > 0.7:\n            letter_grade = append(letter_grade, \"D\")\n        case gpa > 0.0:\n            letter_grade = append(letter_grade, \"D-\")\n        default:\n            letter_grade = append(letter_grade, \"E\")\n        }\n\n    }\n    return letter_grade\n}\n\n"
+        "buggy_solution": "letter_grade := make([]string, 0, len(grades))\n    for _, gpa := range grades {\n        switch {\n        case gpa == 4.0:\n            letter_grade = append(letter_grade, \"A+\")\n        case gpa > 3.7:\n            letter_grade = append(letter_grade, \"A\")\n        case gpa > 3.3:\n            letter_grade = append(letter_grade, \"A-\")\n        case gpa > 3.0:\n            letter_grade = append(letter_grade, \"B+\")\n        case gpa > 2.7:\n            letter_grade = append(letter_grade, \"B\")\n        case gpa > 2.3:\n            letter_grade = append(letter_grade, \"B-\")\n        case gpa > 2.0:\n            letter_grade = append(letter_grade, \"C+\")\n        case gpa > 1.7:\n            letter_grade = append(letter_grade, \"C\")\n        case gpa > 1.3:\n            letter_grade = append(letter_grade, \"C-\")\n        case gpa > 1.0:\n            letter_grade = append(letter_grade, \"D+\")\n        case gpa > 0.7:\n            letter_grade = append(letter_grade, \"D\")\n        case gpa > 0.0:\n            letter_grade = append(letter_grade, \"D-\")\n        default:\n            letter_grade = append(letter_grade, \"E+\")\n        }\n\n    }\n    return letter_grade\n}\n\n"
     },
     {
-        "buggy_solution": "    l := len(s)\n    if l == 0 || l == 1 {\n        return false\n    }\n    for i := 2; i < l; i++ {\n        if l%i == 0 {\n            return false\n        }\n    }\n    return true\n}\n\n"
+        "buggy_solution": "    l := len(s)\n    if l == 0 || l == 1 {\n        return false\n    }\n    for i := 3; i < l; i++ {\n        if l%i == 0 {\n            return false\n        }\n    }\n    return true\n}\n\n"
     },
     {
-        "buggy_solution": "    if n == 1 {\n        return 1\n    }\n    return 18 * int(math.Pow(10, float64(n-2)))\n}\n\n"
+        "buggy_solution": "    if n == 1 {\n        return 1\n    }\n    return 18 * n * int(math.Pow(10, float64(n-2)))\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := 0\n    for _, c := range strconv.Itoa(N) {\n        sum += int(c - '0')\n    }\n    return fmt.Sprintf(\"%b\", sum)\n}\n\n"
+        "buggy_solution": "    sum := 0\n    for _, c := range strconv.Itoa(N) {\n        sum = int(c - '0')\n    }\n    return fmt.Sprintf(\"%b\", sum)\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := 0\n    for i := 1; i < len(lst); i += 2 {\n        if lst[i]%2 == 0 {\n            sum += lst[i]\n        }\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    sum := 0\n    for i := 1; i < len(lst); i += 1 {\n        if lst[i]%2 == 0 {\n            sum += lst[i]\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    strs := make([]string, 0)\n    for _, i := range strings.Fields(s) {\n        word := []rune(i)\n        sort.Slice(word, func(i, j int) bool {\n            return word[i] < word[j]\n        })\n        strs = append(strs, string(word))\n    }\n    return strings.Join(strs, \" \")\n}\n\n"
+        "buggy_solution": "    strs := make([]string, 0)\n    for _, i := range strings.Fields(s) {\n        word := []rune(i)\n        sort.Slice(word, func(i, j int) bool {\n            return word[i] < word[j]\n        })\n        strs = append(strs, string(word))\n    }\n    return strings.Join(strs, \"\")\n}\n\n"
     },
     {
-        "buggy_solution": "    coords := make([][2]int, 0)\n    for i, row := range lst {\n        for j, item := range row {\n            if item == x {\n                coords = append(coords, [2]int{i, j})\n            }\n        }\n    }\n    sort.Slice(coords, func(i, j int) bool {\n        if coords[i][0] == coords[j][0] {\n            return coords[i][1] > coords[j][1]\n        }\n        return coords[i][0] < coords[j][0]\n    })\n\n    return coords\n}\n\n"
+        "buggy_solution": "    coords := make([][2]int, 0)\n    for i, row := range lst {\n        for j, item := range row {\n            if item == x {\n                coords = append(coords, [2]int{i, j})\n            }\n        }\n    }\n    sort.Slice(coords, func(i, j int) bool {\n        if coords[i][0] == coords[j][0] {\n            return coords[j][1] > coords[i][1]\n        }\n        return coords[j][0] < coords[i][0]\n    })\n\n    return coords\n}\n\n"
     },
     {
-        "buggy_solution": "    arr := make([]int, len(array))\n    copy(arr, array)\n    if len(arr) == 0 {\n        return arr\n    }\n    if (arr[0]+arr[len(arr)-1])%2 == 0 {\n        sort.Slice(arr, func(i, j int) bool {\n            return arr[i] > arr[j]\n        })\n    } else {\n        sort.Slice(arr, func(i, j int) bool {\n            return arr[i] < arr[j]\n        })\n    }\n    return arr\n}\n\n"
+        "buggy_solution": "    arr := make([]int, len(array))\n    copy(arr, array)\n    if len(arr) == 0 {\n        return arr\n    }\n    if (arr[0]+arr[len(arr)-1])%2 != 0 {\n        sort.Slice(arr, func(i, j int) bool {\n            return arr[i] > arr[j]\n        })\n    } else {\n        sort.Slice(arr, func(i, j int) bool {\n            return arr[i] < arr[j]\n        })\n    }\n    return arr\n}\n\n"
     },
     {
-        "buggy_solution": "    d := \"abcdefghijklmnopqrstuvwxyz\"\n    out := make([]rune, 0, len(s))\n    for _, c := range s {\n        pos := strings.IndexRune(d, c)\n        if pos != -1 {\n            out = append(out, []rune(d)[(pos+2*2)%26])\n        } else {\n            out = append(out, c)\n        }\n    }\n    return string(out)\n}\n\n"
+        "buggy_solution": "    d := \"abcdefghijklmnopqrstuvwxyz\"\n    out := make([]rune, 0, len(s))\n    for _, c := range s {\n        pos := strings.IndexRune(d, c)\n        if pos != -1 {\n            out = append(out, []rune(d)[(pos+2*2)%24])\n        } else {\n            out = append(out, c)\n        }\n    }\n    return string(out)\n}\n\n"
     },
     {
-        "buggy_solution": "    set := make(map[int]struct{})\n    for _, i := range lst {\n        set[i] = struct{}{}\n    }\n    vals := make([]int, 0, len(set))\n    for k := range set {\n        vals = append(vals, k)\n    }\n    sort.Slice(vals, func(i, j int) bool {\n        return vals[i] < vals[j]\n    })\n    if len(vals) < 2 {\n        return nil\n    }\n    return vals[1]\n}\n\n"
+        "buggy_solution": "    set := make(map[int]struct{})\n    for _, i := range lst {\n        set[i] = struct{}{}\n    }\n    vals := make([]int, 0, len(set))\n    for k := range set {\n        vals = append(vals, k)\n    }\n    sort.Slice(vals, func(i, j int) bool {\n        return vals[i] < vals[j]\n    })\n    if len(vals) < 3 {\n        return nil\n    }\n    return vals[1]\n}\n\n"
     },
     {
-        "buggy_solution": "    r, _ := regexp.Compile(`[.?!]\\s*`)\n    sentences := r.Split(S, -1)\n    sum := 0\n    for _, s := range sentences {\n        if len(s) >= 2 && s[:2] == \"I \" {\n            sum++\n        }\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    r, _ := regexp.Compile(`[.?!]\\s*`)\n    sentences := r.Split(S, -1)\n    sum := 0\n    for _, s := range sentences {\n        if len(s) >= 2 && s[:2] == \" I\" {\n            sum++\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    xx, ok := x.(int)\n    if !ok {\n        return false\n    }\n    yy, ok := y.(int)\n    if !ok {\n        return false\n    }\n    zz, ok := z.(int)\n    if !ok {\n        return false\n    }\n\n    if (xx+yy == zz) || (xx+zz == yy) || (yy+zz == xx) {\n        return true\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    xx, ok := x.(int)\n    if !ok {\n        return false\n    }\n    yy, ok := y.(int)\n    if !ok {\n        return false\n    }\n    zz, ok := z.(int)\n    if !ok {\n        return false\n    }\n\n    if (xx*yy == zz) || (xx*zz == yy) || (yy*zz == xx) || (xx+yy == zz) || (xx+zz == yy) || (yy+zz == xx) || (xx-yy == zz) || (xx-zz == yy) || (yy-zz == xx) {\n        return true\n    }\n    return false\n}\n\n"
     },
     {
-        "buggy_solution": "    vowels := \"aeiouAEIOU\"\n    vowels_replace := make(map[rune]rune)\n    for _, c := range vowels {\n        vowels_replace[c] = c + 2\n    }\n    result := make([]rune, 0, len(message))\n    for _, c := range message {\n        if 'a' <= c && c <= 'z' {\n            c += 'A' - 'a'\n        } else if 'A' <= c && c <= 'Z' {\n            c += 'a' - 'A'\n        }\n        if strings.ContainsRune(vowels, c) {\n            result = append(result, vowels_replace[c])\n        } else {\n            result = append(result, c)\n        }\n    }\n    return string(result)\n}\n\n"
+        "buggy_solution": "    vowels := \"aeiou\"\n    vowels_replace := make(map[rune]rune)\n    for _, c := range vowels {\n        vowels_replace[c] = c + 2\n    }\n    result := make([]rune, 0, len(message))\n    for _, c := range message {\n        if 'a' <= c && c <= 'z' {\n            c += 'A' - 'a'\n        } else if 'A' <= c && c <= 'Z' {\n            c += 'a' - 'A'\n        }\n        if strings.ContainsRune(vowels, c) {\n            result = append(result, vowels_replace[c])\n        } else {\n            result = append(result, c)\n        }\n    }\n    return string(result)\n}\n\n"
     },
     {
-        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n    maxx := 0\n    i := 0\n    for i < len(lst) {\n        if lst[i] > maxx && isPrime(lst[i]) {\n            maxx = lst[i]\n        }\n        i++\n    }\n    sum := 0\n    for _, d := range strconv.Itoa(maxx) {\n        sum += int(d - '0')\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return true\n            }\n        }\n        return false\n    }\n    maxx := 0\n    i := 0\n    for i < len(lst) {\n        if lst[i] > maxx && isPrime(lst[i]) {\n            maxx = lst[i]\n        }\n        i++\n    }\n    sum := 0\n    for _, d := range strconv.Itoa(maxx) {\n        sum += int(d - '0')\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(dict) == 0 {\n        return false\n    }\n    state := \"start\"\n    key := \"\"\n    ok := false\n    for k := range dict {\n        if key, ok = k.(string); !ok {\n            state = \"mixed\"\n            break\n        }\n        if state == \"start\" {\n            if key == strings.ToUpper(key) {\n                state = \"upper\"\n            } else if key == strings.ToLower(key) {\n                state = \"lower\"\n            } else {\n                break\n            }\n        } else if (state == \"upper\" && key != strings.ToUpper(key)) || (state == \"lower\" && key != strings.ToLower(key)) {\n            state = \"mixed\"\n            break\n        } else {\n            break\n        }\n    }\n    return state == \"upper\" || state == \"lower\"\n}\n\n"
+        "buggy_solution": "    if len(dict) == 0 {\n        return false\n    }\n    state := \"start\"\n    key := \"\"\n    ok := false\n    for k := range dict {\n        if key, ok = k.(string); !ok {\n            state = \"mixed\"\n            break\n        }\n        if state == \"start\" {\n            if key == strings.ToUpper(key) {\n                state = \"upper\"\n            } else if key == strings.ToLower(key) {\n                state = \"lower\"\n            } else {\n                break\n            }\n        } else if (state == \"upper\" && key != strings.ToUpper(key)) && (state == \"lower\" && key != strings.ToLower(key)) {\n            state = \"mixed\"\n            break\n        } else {\n            break\n        }\n    }\n    return state == \"upper\" || state == \"lower\"\n}\n\n"
     },
     {
-        "buggy_solution": "    primes := make([]int, 0)\n    for i := 2; i < n; i++ {\n        is_prime := true\n        for j := 2; j < i; j++ {\n            if i%j == 0 {\n                is_prime = false\n                break\n            }\n        }\n        if is_prime {\n            primes = append(primes, i)\n        }\n    }\n    return primes\n}\n\n"
+        "buggy_solution": "    primes := make([]int, 0)\n    for i := 2; i < n; i++ {\n        is_prime := true\n        for j := 2; j < i; j++ {\n            if j%i == 0 {\n                is_prime = false\n                break\n            }\n        }\n        if is_prime {\n            primes = append(primes, i)\n        }\n    }\n    return primes\n}\n\n"
     },
     {
-        "buggy_solution": "    return int(math.Abs(float64(a%10)) * math.Abs(float64(b%10)))\n}\n\n"
+        "buggy_solution": "    return int(math.Abs(float64(a%10)) * math.Abs(float64(b%10)) * float64(a) * float64(b))\n}\n\n"
     },
     {
-        "buggy_solution": "    count := 0\n    runes := []rune(s)\n    for i := 0; i < len(runes); i += 2 {\n        if strings.ContainsRune(\"AEIOU\", runes[i]) {\n            count += 1\n        }\n    }\n    return count\n}\n\n"
+        "buggy_solution": "    count := 0\n    runes := []rune(s)\n    for i := 0; i < len(runes); i += 2 {\n        if strings.ContainsRune(\"AEIOU\", runes[i]) {\n            count += 2\n        }\n    }\n    return count\n}\n\n"
     },
     {
-        "buggy_solution": "    if strings.Count(value, \".\") == 1 {\n        // remove trailing zeros\n        for value[len(value)-1] == '0' {\n            value = value[:len(value)-1]\n        }\n    }\n    var res float64\n    num, _ := strconv.ParseFloat(value, 64)\n    if len(value) >= 2 && value[len(value)-2:] == \".5\" {\n        if num > 0 {\n            res = math.Ceil(num)\n        } else {\n            res = math.Floor(num)\n        }\n    } else if len(value) > 0 {\n        res = math.Round(num)\n    } else {\n        res = 0\n    }\n\n    return int(res)\n}\n\n"
+        "buggy_solution": "    if strings.Count(value, \".\") == 1 {\n        // remove trailing zeros\n        for value[len(value)-1] == '0' {\n            value = value[:len(value)-1]\n        }\n    }\n    var res float64\n    num, _ := strconv.ParseFloat(value, 64)\n    if len(value) >= 2 && value[len(value)-2:] == \".5\" {\n        if num > 0 {\n            res = math.Floor(num)\n        } else {\n            res = math.Ceil(num)\n        }\n    } else if len(value) > 0 {\n        res = math.Round(num)\n    } else {\n        res = 0\n    }\n\n    return int(res)\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]int, 0, n)\n    for i := 0; i < n; i++ {\n        result = append(result, n+2*i)\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]int, 0, n)\n    for i := 0; i < n; i++ {\n        result = append(result, n+2*i+i)\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    s_list := make([]rune, 0)\n\n    for _, c := range s {\n        if c == ',' {\n            s_list = append(s_list, ' ')\n        } else {\n            s_list = append(s_list, c)\n        }\n    }\n    return strings.Fields(string(s_list))\n}\n\n"
+        "buggy_solution": "    s_list := make([]rune, 0)\n\n    for _, c := range s {\n        if c == ',' {\n            s_list = append(s_list, '  ')\n        } else {\n            s_list = append(s_list, c)\n        }\n    }\n    return strings.Fields(string(s_list))\n}\n\n"
     },
     {
-        "buggy_solution": "    if x > y {\n        return -1\n    }\n    if y % 2 == 0 {\n        return y\n    }\n    if x == y {\n        return -1\n    }\n    return y - 1\n}\n\n"
+        "buggy_solution": "    if x > y {\n        return -1\n    }\n    if y % 2 == 0 {\n        return y\n    }\n    if x == y {\n        return -1\n    }\n    return x - 1\n}\n\n"
     },
     {
-        "buggy_solution": "    if m < n {\n        return -1\n    }\n    summation := 0\n    for i := n;i < m+1;i++{\n        summation += i\n    }\n    return fmt.Sprintf(\"0b%b\", int(math.Round(float64(summation)/float64(m - n + 1))))\n}\n\n"
+        "buggy_solution": "    if m < n {\n        return -1\n    }\n    summation := 0\n    for i := n;i < m+1;i++{\n        summation += i\n    }\n    return fmt.Sprintf(\"0b%b\", int(math.Round(float64(summation)/float64(m - n))))\n}\n\n"
     },
     {
-        "buggy_solution": "    odd_digit_elements := make([]int, 0)\n    OUTER:\n    for _, i := range x {\n        for _, c := range strconv.Itoa(i) {\n            if (c - '0') % 2 == 0 {\n                continue OUTER\n            }\n        }\n            odd_digit_elements = append(odd_digit_elements, i)\n    }\n    sort.Slice(odd_digit_elements, func(i, j int) bool {\n        return odd_digit_elements[i] < odd_digit_elements[j]\n    })\n    return odd_digit_elements\n}\n\n"
+        "buggy_solution": "    odd_digit_elements := make([]int, 0)\n    OUTER:\n    for _, i := range x {\n        for _, c := range strconv.Itoa(i) {\n            if (c - '0') % 2 == 0 {\n                continue OUTER\n            }\n        }\n            odd_digit_elements = append(odd_digit_elements, i)\n            odd_digit_elements = append(odd_digit_elements, 1)\n    }\n    sort.Slice(odd_digit_elements, func(i, j int) bool {\n        return odd_digit_elements[i] < odd_digit_elements[j]\n    })\n    return odd_digit_elements\n}\n\n"
     },
     {
-        "buggy_solution": "    dic := map[int]string{\n        1: \"One\",\n        2: \"Two\",\n        3: \"Three\",\n        4: \"Four\",\n        5: \"Five\",\n        6: \"Six\",\n        7: \"Seven\",\n        8: \"Eight\",\n        9: \"Nine\",\n    }\n    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] > arr[j]\n    })\n    new_arr := make([]string, 0)\n    for _, item := range arr {\n        if v, ok := dic[item]; ok {\n            new_arr = append(new_arr, v)\n        }\n    }\n    return new_arr\n}\n\n"
+        "buggy_solution": "    dic := map[int]string{\n        1: \"One\",\n        2: \"Two\",\n        3: \"Three\",\n        4: \"Four\",\n        5: \"Five\",\n        6: \"Six\",\n        7: \"Seven\",\n        8: \"Eight\",\n        9: \"Nine\",\n    }\n    new_arr := make([]string, 0)\n    for _, item := range arr {\n        if v, ok := dic[item]; ok {\n            new_arr = append(new_arr, v)\n        }\n    }\n    return new_arr\n}\n\n"
     },
     {
-        "buggy_solution": "    ret := make([]int, 0, 5)\n    for i:=1;i<n+1;i++{\n        if i%2 == 0 {\n            x := 1\n            for j:=1;j<i+1;j++{\n                x*=j\n            }\n            ret = append(ret, x)\n        }else {\n            x := 0\n            for j:=1;j<i+1;j++{\n                x+=j\n            }\n            ret = append(ret, x)\n        }\n    }\n    return ret\n}\n\n"
+        "buggy_solution": "    ret := make([]int, 0, 5)\n    for i:=1;i<n+1;i++{\n        if i%2 == 0 {\n            x := 1\n            for j:=1;j<i+1;j++{\n                x*=j\n            }\n            ret = append(ret, x)\n        }else {\n            x := 0\n            for j:=1;j<i+1;j++{\n                x+=i\n            }\n            ret = append(ret, x)\n        }\n    }\n    return ret\n}\n\n"
     },
     {
-        "buggy_solution": "    is_palindrome := func (n int) bool {\n        s := strconv.Itoa(n)\n        for i := 0;i < len(s)>>1;i++ {\n            if s[i] != s[len(s)-i-1] {\n                return false\n            }\n        }\n        return true\n    }\n\n    even_palindrome_count := 0\n    odd_palindrome_count := 0\n\n    for i :=1;i<n+1;i++ {\n        if i%2 == 1 && is_palindrome(i){\n                odd_palindrome_count ++\n        } else if i%2 == 0 && is_palindrome(i) {\n            even_palindrome_count ++\n        }\n    }\n    return [2]int{even_palindrome_count, odd_palindrome_count}\n}\n\n"
+        "buggy_solution": "    is_palindrome := func (n int) bool {\n        s := strconv.Itoa(n)\n        for i := 0;i < len(s)>>1;i++ {\n            if s[i] != s[len(s)-i-1] {\n                return false\n            }\n        }\n        return true\n    }\n\n    even_palindrome_count := 0\n    odd_palindrome_count := 0\n\n    for i :=1;i<n;i++ {\n        if i%2 == 1 && is_palindrome(i){\n                odd_palindrome_count ++\n        } else if i%2 == 0 && is_palindrome(i) {\n            even_palindrome_count ++\n        }\n    }\n    return [2]int{even_palindrome_count, odd_palindrome_count}\n}\n\n"
     },
     {
-        "buggy_solution": "    digits_sum:= func (n int) int {\n        neg := 1\n        if n < 0 {\n             n, neg = -1 * n, -1 \n        }\n        r := make([]int,0)\n        for _, c := range strconv.Itoa(n) {\n            r = append(r, int(c-'0'))\n        }\n        r[0] *= neg\n        sum := 0\n        for _, i := range r {\n            sum += i\n        }\n        return sum\n    }\n    count := 0\n    for _, i := range arr {\n        x := digits_sum(i)\n        if x > 0 {\n            count++\n        }\n    }\n    return count\n}\n\n"
+        "buggy_solution": "    digits_sum:= func (n int) int {\n        neg := 1\n        if n < 0 {\n             n, neg = -1 * n, -1 \n        }\n        r := make([]int,0)\n        for _, c := range strconv.Itoa(n) {\n            r = append(r, int(c-'0'))\n        }\n        r[0] *= neg * -1\n        sum := 0\n        for _, i := range r {\n            sum += i\n        }\n        return sum\n    }\n    count := 0\n    for _, i := range arr {\n        x := digits_sum(i)\n        if x > 0 {\n            count++\n        }\n    }\n    return count\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(arr)==0 {\n      return true\n    }\n    sorted_array := make([]int, len(arr))\n    copy(sorted_array, arr)\n    sort.Slice(sorted_array, func(i, j int) bool {\n        return sorted_array[i] < sorted_array[j]\n    })    \n    min_value := math.MaxInt\n    min_index := -1\n    for i, x := range arr {\n        if i < min_value {\n            min_index, min_value = i, x\n        }\n    }\n    my_arr := make([]int, len(arr[min_index:]))\n    copy(my_arr, arr[min_index:])\n    my_arr = append(my_arr, arr[0:min_index]...)\n    for i :=0;i<len(arr);i++ {\n      if my_arr[i]!=sorted_array[i]{\n        return false\n      }\n    }\n    return true\n}\n\n"
+        "buggy_solution": "    if len(arr)==0 {\n      return true\n    }\n    sorted_array := make([]int, len(arr))\n    copy(sorted_array, arr)\n    sort.Slice(sorted_array, func(i, j int) bool {\n        return sorted_array[i] < sorted_array[j]\n    })    \n    min_value := math.MaxInt\n    min_index := -1\n    for i, x := range arr {\n        if i < min_value {\n            min_index, min_value = i, x\n        }\n    }\n    my_arr := make([]int, len(arr[min_index:]))\n    copy(my_arr, arr[min_index:])\n    my_arr = append(my_arr, arr[0:min_index]...)\n    for i :=0;i<len(arr);i++ {\n      if my_arr[i]!=arr[i]{\n        return false\n      }\n    }\n    return true\n}\n\n"
     },
     {
-        "buggy_solution": "    odd := 0\n    even := 0\n    for _, i := range lst1 {\n        if i%2 == 1 {\n            odd++\n        }\n    }\n    for _, i := range lst2 {\n        if i%2 == 0 {\n            even++\n        }\n    }\n    if even >= odd {\n        return \"YES\"\n    }\n    return \"NO\"\n}\n            \n\n"
+        "buggy_solution": "    odd := 0\n    even := 0\n    for _, i := range lst1 {\n        if i%2 == 1 {\n            odd++\n        }\n    }\n    for _, i := range lst2 {\n        if i%2 == 0 {\n            even++\n        }\n    }\n    if odd >= even {\n        return \"YES\"\n    }\n    return \"NO\"\n}\n            \n\n"
     },
     {
-        "buggy_solution": "    dict1 := make(map[rune]int)\n    list1 := strings.Fields(test)\n    t := 0\n    count := func(lst []string, v string) int {\n        cnt := 0\n        for _, i := range lst {\n            if i == v {\n                cnt++\n            }\n        }\n        return cnt\n    }\n    for _, i := range list1 {\n        if c := count(list1, i); c>t && i!=\"\" {\n            t=c\n        }\n    }\n    if t>0 {\n        for _, i := range list1 {\n            if count(list1, i)==t {\n                dict1[[]rune(i)[0]]=t\n            }\n        }\n    }\n    return dict1\n}\n\n"
+        "buggy_solution": "    dict1 := make(map[rune]int)\n    list1 := strings.Fields(test)\n    t := 1\n    count := func(lst []string, v string) int {\n        cnt := 0\n        for _, i := range lst {\n            if i == v {\n                cnt++\n            }\n        }\n        return cnt\n    }\n    for _, i := range list1 {\n        if c := count(list1, i); c>t && i!=\"\" {\n            t=c\n        }\n    }\n    if t>0 {\n        for _, i := range list1 {\n            if count(list1, i)==t {\n                dict1[[]rune(i)[0]]=t\n            }\n        }\n    }\n    return dict1\n}\n\n"
     },
     {
-        "buggy_solution": "    rs := make([]rune, 0)\n    for _, r := range s {\n        if !strings.ContainsRune(c, r) {\n            rs = append(rs, r)\n        }\n    }\n    t := true\n    for i := 0;i < len(rs)>>1;i++ {\n        if rs[i] != rs[len(rs)-i-1] {\n            t=false\n            break\n        }\n    }\n    return [2]interface{}{string(rs), t}\n}\n\n"
+        "buggy_solution": "    rs := make([]rune, 0)\n    for _, r := range s {\n        if !strings.ContainsRune(c, r) {\n            rs = append(rs, r)\n        }\n    }\n    t := false\n    for i := 0;i < len(rs)>>1;i++ {\n        if rs[i] != rs[len(rs)-i-1] {\n            t=true\n            break\n        }\n    }\n    return [2]interface{}{string(rs), t}\n}\n\n"
     },
     {
-        "buggy_solution": "    res := make([]string, 0, len(lst))\n    for _, arr := range lst {\n        n := 0\n        for _, d := range arr {\n            if (d - '0') % 2 == 1 {\n                n++\n            }\n        }\n        res = append(res, fmt.Sprintf(\"the number of odd elements %dn the str%dng %d of the %dnput.\", n,n,n,n))\n    }\n    return res\n}\n\n"
+        "buggy_solution": "    res := make([]string, 0, len(lst))\n    for _, arr := range lst {\n        n := 0\n        for _, d := range arr {\n            if (d - '0') % 2 == 1 {\n                n++\n            }\n        }\n        res = append(res, fmt.Sprintf(\"the number of odd elements %dn the str%dng %d of %d the %dnput.\", n,n,n,n,n))\n    }\n    return res\n}\n\n"
     },
     {
-        "buggy_solution": "    max_sum := 0\n    s := 0\n    for _, num := range nums {\n        s += -num\n        if s < 0 {\n            s = 0\n        }\n        if s > max_sum {\n            max_sum = s\n        }\n    }\n    if max_sum == 0 {\n        max_sum = math.MinInt\n        for _, i := range nums {\n            if -i > max_sum {\n                max_sum = -i\n            }\n        }\n    }\n    return -max_sum\n}\n\n"
+        "buggy_solution": "    max_sum := 0\n    s := 0\n    for _, num := range nums {\n        s += -num\n        if s < 0 {\n            s = 0\n        }\n        if s > max_sum {\n            max_sum = s\n        }\n    }\n    if max_sum == 0 {\n        max_sum = math.MinInt\n        for _, i := range nums {\n            if -i > max_sum {\n                max_sum = -i + 1\n            }\n        }\n    }\n    return -max_sum\n}\n\n"
     },
     {
-        "buggy_solution": "    result := 0\n    for _, arr := range grid {\n        sum := 0\n        for _, i := range arr {\n            sum += i\n        }\n        result += int(math.Ceil(float64(sum) / float64(capacity)))\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := 0\n    for _, arr := range grid {\n        sum := 0\n        for _, i := range arr {\n            sum += i\n        }\n        result += int(math.Floor(float64(sum) / float64(capacity)))\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j]\n    })\n    sort.Slice(arr, func(i, j int) bool {\n        key := func(x int) int {\n            b := fmt.Sprintf(\"%b\", x)\n            cnt := 0\n            for _, r := range b {\n                if r == '1' {\n                    cnt++\n                }\n            }\n            return cnt\n        }\n        return key(arr[i]) < key(arr[j])\n    })\n    return arr\n}\n\n"
+        "buggy_solution": "    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j]\n    })\n    sort.Slice(arr, func(i, j int) bool {\n        key := func(x int) int {\n            b := fmt.Sprintf(\"%b\", x)\n            cnt := 0\n            for _, r := range b {\n                if r == '1' {\n                    cnt++\n                }\n            }\n            return cnt\n        }\n        return key(arr[j]) < key(arr[i])\n    })\n    return arr\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]string, 0)\n    for _, word := range strings.Fields(s) {\n        n_consonants := 0\n        lower := strings.ToLower(word)\n        for i := 0;i < len(word); i++ {\n            if !bytes.Contains([]byte(\"aeiou\"), []byte{lower[i]}) {\n                n_consonants++\n            }\n        }\n        if n_consonants == n{\n            result = append(result, word)\n        }\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    result := make([]string, 0)\n    for _, word := range strings.Fields(s) {\n        n_consonants := 0\n        lower := strings.ToLower(word)\n        for i := 0;i < len(word); i++ {\n            if bytes.Contains([]byte(\"aeiou\"), []byte{lower[i]}) {\n                n_consonants++\n            }\n        }\n        if n_consonants == n{\n            result = append(result, word)\n        }\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(word) < 3 {\n        return \"\"\n    }\n\n    vowels := []byte(\"aeiouAEOUI\")\n    for i := len(word)-2; i > 0; i-- {\n        if bytes.Contains(vowels, []byte{word[i]}) {\n            if !bytes.Contains(vowels, []byte{word[i+1]}) && !bytes.Contains(vowels, []byte{word[i-1]}) {\n                return string(word[i])\n            }\n        }\n    }\n    return \"\"\n}\n\n"
+        "buggy_solution": "    if len(word) < 3 {\n        return \" \"\n    }\n\n    vowels := []byte(\"aeiouAEOUI\")\n    for i := len(word)-2; i > 0; i-- {\n        if bytes.Contains(vowels, []byte{word[i]}) {\n            if !bytes.Contains(vowels, []byte{word[i+1]}) && !bytes.Contains(vowels, []byte{word[i-1]}) {\n                return string(word[i])\n            }\n        }\n    }\n    return \" \"\n}\n\n"
     },
     {
-        "buggy_solution": "    check := func(s string) bool {\n        val := 0\n        for _, i := range s {\n            if i == '(' {\n                val++\n            } else {\n                val--\n            }\n            if val < 0 {\n                return false\n            }\n        }\n        return val == 0\n    }\n\n    S1 := lst[0] + lst[1]\n    S2 := lst[1] + lst[0]\n    if check(S1) || check(S2) {\n        return \"Yes\"\n    }\n    return \"No\"\n}\n\n"
+        "buggy_solution": "    check := func(s string) bool {\n        val := 0\n        for _, i := range s {\n            if i == '(' {\n                val++\n            } else {\n                val--\n            }\n            if val < 0 {\n                return false\n            }\n        }\n        return val == 0\n    }\n\n    S1 := lst[0] + lst[1]\n    S2 := lst[1] + lst[0]\n    if check(S1) || check(S2) {\n        return \"yes\"\n    }\n    return \"no\"\n}\n\n"
     },
     {
-        "buggy_solution": "    if k == 0 {\n        return []int{}\n    }\n    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j]\n    })\n    return arr[len(arr)-k:]\n}\n\n"
+        "buggy_solution": "    if k == 0 {\n        return []int{}\n    }\n    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j] + 1\n    })\n    return arr[len(arr)-k:]\n}\n\n"
     },
     {
-        "buggy_solution": "    sum:=0\n    for i, x := range lst {\n        if i&1==0&&x&1==1 {\n            sum+=x\n        }\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    sum:=0\n    for i, x := range lst {\n        if i&1==1&&x&1==1 {\n            sum+=x\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := 0\n    for _, elem := range arr[:k] {\n        if len(strconv.Itoa(elem)) <= 2 {\n            sum += elem\n        }\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    sum := 0\n    for _, elem := range arr {\n        if len(strconv.Itoa(elem)) <= 2 {\n            sum += elem\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    odd_collatz := make([]int, 0)\n    if n&1==1 {\n        odd_collatz = append(odd_collatz, n)\n    }\n    for n > 1 {\n        if n &1==0 {\n            n>>=1\n        } else {\n            n = n*3 + 1\n        }            \n        if n&1 == 1 {\n            odd_collatz = append(odd_collatz, n)\n        }\n    }\n    sort.Slice(odd_collatz, func(i, j int) bool {\n        return odd_collatz[i] < odd_collatz[j]\n    })\n    return odd_collatz\n}\n\n"
+        "buggy_solution": "    odd_collatz := make([]int, 0)\n    if n&1==1 {\n        odd_collatz = append(odd_collatz, n)\n    }\n    for n > 1 {\n        if n &1==0 {\n            n>>=1\n        } else {\n            n = n*2 + 1\n        }            \n        if n&1 == 1 {\n            odd_collatz = append(odd_collatz, n)\n        }\n    }\n    sort.Slice(odd_collatz, func(i, j int) bool {\n        return odd_collatz[i] < odd_collatz[j]\n    })\n    return odd_collatz\n}\n\n"
     },
     {
-        "buggy_solution": "    isInArray := func(arr []int, i int) bool {\n        for _, x := range arr {\n            if i == x {\n                return true\n            }\n        }\n        return false\n    }\n\n    date = strings.TrimSpace(date)\n    split := strings.SplitN(date, \"-\", 3)\n    if len(split) != 3 {\n        return false\n    }\n    month, err := strconv.Atoi(split[0])\n    if err != nil {\n        return false\n    }\n    day, err := strconv.Atoi(split[1])\n    if err != nil {\n        return false\n    }\n    _, err = strconv.Atoi(split[2])\n    if err != nil {\n        return false\n    }\n    if month < 1 || month > 12 {\n        return false\n    }\n    \n    if isInArray([]int{1,3,5,7,8,10,12}, month) && day < 1 || day > 31 {\n        return false\n    }\n    if isInArray([]int{4,6,9,11}, month) && day < 1 || day > 30 {\n        return false\n    }\n    if month == 2 && day < 1 || day > 29 {\n        return false\n    }\n\n    return true\n}\n\n"
+        "buggy_solution": "    isInArray := func(arr []int, i int) bool {\n        for _, x := range arr {\n            if i == x {\n                return true\n            }\n        }\n        return false\n    }\n\n    date = strings.TrimSpace(date)\n    split := strings.SplitN(date, \"-\", 3)\n    if len(split) != 3 {\n        return false\n    }\n    month, err := strconv.Atoi(split[1])\n    if err != nil {\n        return false\n    }\n    day, err := strconv.Atoi(split[0])\n    if err != nil {\n        return false\n    }\n    _, err = strconv.Atoi(split[2])\n    if err != nil {\n        return false\n    }\n    if month < 1 || month > 12 {\n        return false\n    }\n    \n    if isInArray([]int{1,3,5,7,8,10,12}, month) && day < 1 || day > 31 {\n        return false\n    }\n    if isInArray([]int{4,6,9,11}, month) && day < 1 || day > 30 {\n        return false\n    }\n    if month == 2 && day < 1 || day > 29 {\n        return false\n    }\n\n    return true\n}\n\n"
     },
     {
-        "buggy_solution": "    if strings.Contains(txt, \" \") {\n        return strings.Fields(txt)\n    } else if strings.Contains(txt, \",\") {\n        return strings.Split(txt, \",\")\n    }\n    cnt := 0\n    for _, r := range txt {\n        if 'a' <= r && r <= 'z' && (r-'a')&1==1 {\n            cnt++\n        }\n    }\n    return cnt\n}\n\n"
+        "buggy_solution": "    if strings.Contains(txt, \" \") {\n        return strings.Fields(txt)\n    } else if strings.Contains(txt, \",\") {\n        return strings.Split(txt, \" \")\n    }\n    cnt := 0\n    for _, r := range txt {\n        if 'a' <= r && r <= 'z' && (r-'a')&1==1 {\n            cnt++\n        }\n    }\n    return cnt\n}\n\n"
     },
     {
-        "buggy_solution": "    count_digit := make(map[int]int)\n    for _, i := range lst {\n        count_digit[i] = 0\n    }\n    for _, i := range lst {\n        count_digit[i]++\n    }\n    for _, i := range lst {\n        if count_digit[i] > 2 {\n            return false\n        }\n    }\n    for i := 1;i < len(lst);i++ {\n        if lst[i-1] > lst[i] {\n            return false\n        }\n    }\n    return true\n}\n    \n\n"
+        "buggy_solution": "    count_digit := make(map[int]int)\n    for _, i := range lst {\n        count_digit[i] = 0\n    }\n    for _, i := range lst {\n        if count_digit[i] > 2 {\n            return false\n        }\n    }\n    for i := 1;i < len(lst);i++ {\n        if lst[i-1] > lst[i] {\n            return false\n        }\n    }\n    return true\n}\n    \n\n"
     },
     {
-        "buggy_solution": "    is_prime := func(num int) bool {\n        if num == 1 || num == 0 {\n            return false\n        }\n        if num == 2 {\n            return true\n        }\n        for i := 2;i < num;i++ {\n            if num%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n    l := interval1[0]\n    if interval2[0] > l {\n        l = interval2[0]\n    }\n    r := interval1[1]\n    if interval2[1] < r {\n        r = interval2[1]\n    }\n    length := r - l\n    if length > 0 && is_prime(length) {\n        return \"YES\"\n    }\n    return \"NO\"\n}\n\n"
+        "buggy_solution": "    is_prime := func(num int) bool {\n        if num == 1 || num == 0 {\n            return false\n        }\n        if num == 2 {\n            return true\n        }\n        for i := 2;i < num;i++ {\n            if num%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n    l := interval1[0]\n    if interval2[0] > l {\n        l = interval2[0]\n    }\n    r := interval1[1]\n    if interval2[1] < r {\n        r = interval2[1]\n    }\n    length := r - l\n    if length > 0 {\n        return \"YES\"\n    }\n    return \"NO\"\n}\n\n"
     },
     {
-        "buggy_solution": "    if len(arr) == 0 {\n        return nil\n    }\n    cnt := 0\n    sum := 0\n    for _, i := range arr {\n        if i == 0 {\n            return 0\n        }\n        if i < 0 {\n            cnt++\n        }\n        sum += int(math.Abs(float64(i)))\n    }\n\n    prod := int(math.Pow(-1, float64(cnt)))\n    return prod * sum\n}\n\n"
+        "buggy_solution": "    if len(arr) == 0 {\n        return nil\n    }\n    cnt := 0\n    sum := 0\n    for _, i := range arr {\n        if i == 0 {\n            return 0\n        }\n        if i < 0 {\n            cnt++\n        }\n        sum += int(math.Abs(float64(i)))\n    }\n\n    prod := int(math.Pow(-1, float64(cnt*2)))\n    return prod * sum\n}\n\n"
     },
     {
-        "buggy_solution": "    n := len(grid)\n    val := n * n + 1\n    for i:= 0;i < n; i++ {\n        for j := 0;j < n;j++ {\n            if grid[i][j] == 1 {\n                temp := make([]int, 0)\n                if i != 0 {\n                    temp = append(temp, grid[i - 1][j])\n                }\n\n                if j != 0 {\n                    temp = append(temp, grid[i][j - 1])\n                }\n\n                if i != n - 1 {\n                    temp = append(temp, grid[i + 1][j])\n                }\n\n                if j != n - 1 {\n                    temp = append(temp, grid[i][j + 1])\n                }\n                for _, x := range temp {\n                    if x < val {\n                        val = x\n                    }\n                }\n            }\n        }\n    }\n\n    ans := make([]int, 0, k)\n    for i := 0;i < k;i++ {\n        if i & 1 == 0 {\n            ans = append(ans,  1)\n        } else {\n            ans = append(ans,  val)\n        }\n    }\n    return ans\n}\n\n"
+        "buggy_solution": "    n := len(grid)\n    val := n * 2 + 1\n    for i:= 0;i < n; i++ {\n        for j := 0;j < n;j++ {\n            if grid[i][j] == 1 {\n                temp := make([]int, 0)\n                if i != 0 {\n                    temp = append(temp, grid[i - 1][j])\n                }\n\n                if j != 0 {\n                    temp = append(temp, grid[i][j - 1])\n                }\n\n                if i != n - 1 {\n                    temp = append(temp, grid[i + 1][j])\n                }\n\n                if j != n - 1 {\n                    temp = append(temp, grid[i][j + 1])\n                }\n                for _, x := range temp {\n                    if x < val {\n                        val = x\n                    }\n                }\n            }\n        }\n    }\n\n    ans := make([]int, 0, k)\n    for i := 0;i < k;i++ {\n        if i & 1 == 0 {\n            ans = append(ans,  1)\n        } else {\n            ans = append(ans,  val)\n        }\n    }\n    return ans\n}\n\n"
     },
     {
-        "buggy_solution": "    if n == 0 {\n        return []float64{1}\n    }\n    my_tri := []float64{1, 3}\n    for i := 2; i < n + 1; i++ {\n        if i &1 == 0 {\n            my_tri = append(my_tri, float64(i) / 2 + 1)\n        } else {\n            my_tri = append(my_tri, my_tri[i - 1] + my_tri[i - 2] + (float64(i) + 3) / 2)\n        }\n    }\n    return my_tri\n}\n\n"
+        "buggy_solution": "    if n == 0 {\n        return []float64{1}\n    }\n    my_tri := []float64{1, 3}\n    for i := 2; i < n + 1; i++ {\n        if i &1 == 0 {\n            my_tri = append(my_tri, float64(i) / 2 + 1)\n        } else {\n            my_tri = append(my_tri, my_tri[i - 1] + my_tri[i - 2] + i + (float64(i) + 3) / 2)\n        }\n    }\n    return my_tri\n}\n\n"
     },
     {
-        "buggy_solution": "    product := 1\n    odd_count := 0\n    for _, digit := range strconv.Itoa(n) {\n        int_digit := int(digit-'0')\n        if int_digit&1 == 1 {\n            product= product*int_digit\n            odd_count++\n        }\n    }\n    if odd_count==0 {\n        return 0\n    }\n    return product\n}\n\n"
+        "buggy_solution": "    product := 1\n    odd_count := 0\n    for _, digit := range strconv.Itoa(n) {\n        int_digit := int(digit-'0')\n        if int_digit&1 == 1 {\n            product=odd_count*product*int_digit\n            odd_count++\n        }\n    }\n    if odd_count==0 {\n        return 0\n    }\n    return product\n}\n\n"
     },
     {
-        "buggy_solution": "    opening_bracket_index := make([]int, 0)\n    closing_bracket_index := make([]int, 0)\n    for i:=0;i < len(s);i++ {\n        if s[i] == '[' {\n            opening_bracket_index = append(opening_bracket_index, i)\n        } else {\n            closing_bracket_index = append(closing_bracket_index, i)\n        }\n    }\n    for i := 0;i < len(closing_bracket_index)>>1;i++ {\n        closing_bracket_index[i], closing_bracket_index[len(closing_bracket_index)-i-1] = closing_bracket_index[len(closing_bracket_index)-i-1], closing_bracket_index[i]\n    }\n    cnt := 0\n    i := 0\n    l := len(closing_bracket_index)\n    for _, idx := range opening_bracket_index {\n        if i < l && idx < closing_bracket_index[i] {\n            cnt++\n            i++\n        }\n    }\n    return cnt >= 2\n}\n\n    \n\n"
+        "buggy_solution": "    opening_bracket_index := make([]int, 0)\n    closing_bracket_index := make([]int, 0)\n    for i:=0;i < len(s);i++ {\n        if s[i] == '(' {\n            opening_bracket_index = append(opening_bracket_index, i)\n        } else {\n            closing_bracket_index = append(closing_bracket_index, i)\n        }\n    }\n    for i := 0;i < len(closing_bracket_index)>>1;i++ {\n        closing_bracket_index[i], closing_bracket_index[len(closing_bracket_index)-i-1] = closing_bracket_index[len(closing_bracket_index)-i-1], closing_bracket_index[i]\n    }\n    cnt := 0\n    i := 0\n    l := len(closing_bracket_index)\n    for _, idx := range opening_bracket_index {\n        if i < l && idx < closing_bracket_index[i] {\n            cnt++\n            i++\n        }\n    }\n    return cnt >= 2\n}\n\n    \n\n"
     },
     {
-        "buggy_solution": "    squared := 0\n    for _, i := range lst {\n        squared += int(math.Pow(math.Ceil(i), 2))\n    }\n    return squared\n}\n\n"
+        "buggy_solution": "    squared := 0\n    for _, i := range lst {\n        squared += int(math.Ceil(i)*2)\n    }\n    return squared\n}\n\n"
     },
     {
-        "buggy_solution": "    split := strings.Split(txt, \" \")\n    check := strings.ToLower(split[len(split)-1])\n    if len(check) == 1 && 'a' <= check[0] && check[0] <= 'z' {\n        return true\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    split := strings.Split(txt, \" \")\n    check := strings.ToUpper(split[len(split)-1])\n    if len(check) == 1 && 'a' <= check[0] && check[0] <= 'z' {\n        return true\n    }\n    return false\n}\n\n"
     },
     {
-        "buggy_solution": "    ind:=-1\n    i:=1\n    for i<len(arr) {\n      if arr[i]<arr[i-1] {\n        ind=i\n      }\n      i++\n    }\n    return ind\n}\n\n"
+        "buggy_solution": "    ind:=-1\n    i:=1\n    for i<len(arr) {\n      if arr[i]<arr[i-1] {\n        ind=i\n      }\n      i++\n      ind--\n    }\n    return ind\n}\n\n"
     },
     {
-        "buggy_solution": "    smallest := make([]int, 0)\n    largest := make([]int, 0)\n    for _, x := range lst {\n        if x < 0 {\n            smallest = append(smallest, x)\n        } else if x > 0 {\n            largest = append(largest, x)\n        }\n    }\n    var result [2]interface{}\n    if len(smallest) == 0 {\n        result[0] = nil\n    } else {\n        max := smallest[0]\n        for i := 1;i < len(smallest);i++ {\n            if smallest[i] > max {\n                max = smallest[i]\n            }\n        }\n        result[0] = max\n    }\n    if len(largest) == 0 {\n        result[1] = nil\n    } else {\n        min := largest[0]\n        for i := 1;i < len(largest);i++ {\n            if largest[i] < min {\n                min = largest[i]\n            }\n        }\n        result[1] = min\n    }\n    return result\n}\n\n"
+        "buggy_solution": "    smallest := make([]int, 0)\n    largest := make([]int, 0)\n    for _, x := range lst {\n        if x < 0 {\n            smallest = append(smallest, x)\n        } else if x > 0 {\n            largest = append(largest, x)\n        }\n    }\n    for _, x := range smallest {\n        if x < 0 {\n            largest = append(largest, x)\n        } else if x > 0 {\n            smallest = append(smallest, x)\n        }\n    }\n    var result [2]interface{}\n    if len(smallest) == 0 {\n        result[0] = nil\n    } else {\n        max := smallest[0]\n        for i := 1;i < len(smallest);i++ {\n            if smallest[i] > max {\n                max = smallest[i]\n            }\n        }\n        result[0] = max\n    }\n    if len(largest) == 0 {\n        result[1] = nil\n    } else {\n        min := largest[0]\n        for i := 1;i < len(largest);i++ {\n            if largest[i] < min {\n                min = largest[i]\n            }\n        }\n        result[1] = min\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    temp_a := fmt.Sprintf(\"%v\", a)\n    temp_b := fmt.Sprintf(\"%v\", b)\n    temp_a = strings.ReplaceAll(temp_a, \",\", \".\")\n    temp_b = strings.ReplaceAll(temp_b, \",\", \".\")\n    fa, _ := strconv.ParseFloat(temp_a, 64)\n    fb, _ := strconv.ParseFloat(temp_b, 64)\n    \n    if fa == fb {\n        return nil\n    }\n    if fa > fb {\n        return a\n    } else {\n        return b\n    }\n}\n\n"
+        "buggy_solution": "    temp_a := fmt.Sprintf(\"%v\", a)\n    temp_b := fmt.Sprintf(\"%v\", b)\n    temp_a = strings.ReplaceAll(temp_a, \",\", \".\")\n    temp_a = strings.ReplaceAll(temp_a, \".\", \",\")\n    temp_b = strings.ReplaceAll(temp_b, \",\", \".\")\n    fa, _ := strconv.ParseFloat(temp_a, 64)\n    fb, _ := strconv.ParseFloat(temp_b, 64)\n    \n    if fa == fb {\n        return nil\n    }\n    if fa > fb {\n        return a\n    } else {\n        return b\n    }\n}\n\n"
     },
     {
-        "buggy_solution": "    return n&1 == 0 && n >= 8\n}\n\n"
+        "buggy_solution": "    return n&1 == 0 && n >= 8 && n <= 8\n}\n\n"
     },
     {
-        "buggy_solution": "    fact_i := 1\n    special_fact := 1\n    for i := 1; i <= n; i++ {\n        fact_i *= i\n        special_fact *= fact_i\n    }\n    return special_fact\n}\n\n"
+        "buggy_solution": "    fact_i := 1\n    special_fact := 1\n    for i := 1; i <= n; i++ {\n        i *= n\n        fact_i *= i\n        special_fact *= fact_i\n    }\n    return special_fact\n}\n\n"
     },
     {
-        "buggy_solution": "    new_text := make([]byte, 0)\n    i := 0\n    start, end := 0, 0\n    for i < len(text) {\n        if text[i] == ' ' {\n            end++\n        } else {\n            switch {\n            case end - start > 2:\n                new_text = append(new_text, '-')\n            case end - start > 0:\n                for n := 0;n < end-start;n++ {\n                    new_text = append(new_text, '_')\n                }\n            }\n            new_text = append(new_text, text[i])\n            start, end = i+1, i+1\n        }\n        i+=1\n    }\n    if end - start > 2 {\n        new_text = append(new_text, '-')\n    } else if end - start > 0 {\n        new_text = append(new_text, '_')\n    }\n    return string(new_text)\n}\n\n"
+        "buggy_solution": "    new_text := make([]byte, 0)\n    i := 0\n    start, end := 0, 0\n    for i < len(text) {\n        if text[i] == ' ' {\n            end++\n        } else {\n            switch {\n            case end - start > 2:\n                new_text = append(new_text, '-')\n            case end - start > 0:\n                for n := 0;n < end-start;n++ {\n                    new_text = append(new_text, '__')\n                }\n            }\n            new_text = append(new_text, text[i])\n            start, end = i+1, i+1\n        }\n        i+=1\n    }\n    if end - start > 2 {\n        new_text = append(new_text, '-')\n    } else if end - start > 0 {\n        new_text = append(new_text, '_')\n    }\n    return string(new_text)\n}\n\n"
     },
     {
-        "buggy_solution": "    suf := []string{\"txt\", \"exe\", \"dll\"}\n    lst := strings.Split(file_name, \".\")\n    isInArray := func (arr []string, x string) bool {\n        for _, y := range arr {\n            if x == y {\n                return true\n            }\n        }\n        return false\n    }\n    switch {\n    case len(lst) != 2:\n        return \"No\"\n    case !isInArray(suf, lst[1]):\n        return \"No\"\n    case len(lst[0]) == 0:\n        return \"No\"\n    case 'a' > strings.ToLower(lst[0])[0] || strings.ToLower(lst[0])[0] > 'z':\n        return \"No\"\n    }\n    t := 0\n    for _, c := range lst[0] {\n        if '0' <= c && c <= '9' {\n            t++\n        }\n    }\n    if t > 3 {\n        return \"No\"\n    }\n    return \"Yes\"\n}\n\n"
+        "buggy_solution": "    suf := []string{\"txt\", \"exe\", \"dll\"}\n    lst := strings.Split(file_name, \".\")\n    isInArray := func (arr []string, x string) bool {\n        for _, y := range arr {\n            if x == y {\n                return true\n            }\n        }\n        return false\n    }\n    switch {\n    case len(lst) != 2:\n        return \"No\"\n    case !isInArray(suf, lst[1]):\n        return \"No\"\n    case len(lst[0]) == 0:\n        return \"No\"\n    case 'a' > strings.ToLower(lst[0])[0] || strings.ToLower(lst[0])[0] > 'z':\n        return \"No\"\n    }\n    t := 0\n    for _, c := range lst[0] {\n        if '0' <= c && c <= '9' {\n            t++\n        }\n    }\n    return \"Yes\"\n}\n\n"
     },
     {
-        "buggy_solution": "    result := make([]int, 0)\n    for i := 0;i < len(lst);i++ {\n        switch {\n        case i %3 == 0:\n            result = append(result, int(math.Pow(float64(lst[i]), 2)))\n        case i % 4 == 0 && i%3 != 0:\n            result = append(result, int(math.Pow(float64(lst[i]), 3)))\n        default:\n            result = append(result, lst[i])\n        }\n    }\n    sum := 0\n    for _, x := range result {\n        sum += x\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    result := make([]int, 0)\n    for i := 0;i < len(lst);i++ {\n        switch {\n        case i %3 == 0:\n            result = append(result, int(math.Pow(float64(lst[i]), 2)))\n        case i%3 != 0:\n            result = append(result, int(math.Pow(float64(lst[i]), 3)))\n        default:\n            result = append(result, lst[i])\n        }\n    }\n    sum := 0\n    for _, x := range result {\n        sum += x\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    new_lst := make([]string, 0)\n    for _, word := range strings.Fields(sentence) {\n        flg := 0\n        if len(word) == 1 {\n            flg = 1\n        }\n        for i := 2;i < len(word);i++ {\n            if len(word)%i == 0 {\n                flg = 1\n            }\n        }\n        if flg == 0 || len(word) == 2 {\n            new_lst = append(new_lst, word)\n        }\n    }\n    return strings.Join(new_lst, \" \")\n}\n\n"
+        "buggy_solution": "    new_lst := make([]string, 0)\n    for _, word := range strings.Fields(sentence) {\n        flg := 0\n        for i := 2;i < len(word);i++ {\n            if len(word)%i == 0 {\n                flg = 1\n            }\n        }\n        if flg == 0 || len(word) == 2 {\n            new_lst = append(new_lst, word)\n        }\n    }\n    return strings.Join(new_lst, \" \")\n}\n\n"
     },
     {
-        "buggy_solution": "    xx := strings.Split(x, \"/\")\n    nn := strings.Split(n, \"/\")\n    a, _ := strconv.Atoi(xx[0])\n    b, _ := strconv.Atoi(xx[1])\n    c, _ := strconv.Atoi(nn[0])\n    d, _ := strconv.Atoi(nn[1])\n    numerator := float64(a*c)\n    denom := float64(b*d)\n    return numerator/denom == float64(int(numerator/denom))\n}\n\n"
+        "buggy_solution": "    xx := strings.Split(x, \"/\")\n    nn := strings.Split(n, \"/\")\n    a, _ := strconv.Atoi(xx[0])\n    b, _ := strconv.Atoi(xx[1])\n    c, _ := strconv.Atoi(nn[0])\n    d, _ := strconv.Atoi(nn[1])\n    numerator := float64(a*c)\n    denom := float64(b*d))\n    numerator += denom\n    numerator += float64(b*d)\n    return numerator/denom == float64(int(numerator/denom))\n}\n\n"
     },
     {
-        "buggy_solution": "    digits_sum := func (n int) int {\n        neg := 1\n        if n < 0 {\n            n, neg = -1 * n, -1 \n        }\n        sum := 0\n        for i, c := range strconv.Itoa(n) {\n            if i == 0 {\n                sum += int(c-'0')*neg\n            } else {\n                sum += int(c-'0')\n            }\n        }\n        return sum\n    }\n    sort.SliceStable(nums, func(i, j int) bool {\n        return digits_sum(nums[i]) < digits_sum(nums[j])\n    })\n    return nums\n}\n\n"
+        "buggy_solution": "    digits_sum := func (n int) int {\n        neg := 1\n        if n < 0 {\n            n, neg = -1 * n, -1 + n \n        }\n        sum := 0\n        for i, c := range strconv.Itoa(n) {\n            if i == 0 {\n                sum += int(c-'0')*neg\n            } else {\n                sum += int(c-'0')\n            }\n        }\n        return sum\n    }\n    sort.SliceStable(nums, func(i, j int) bool {\n        return digits_sum(nums[i]) < digits_sum(nums[j])\n    })\n    return nums\n}\n\n"
     },
     {
-        "buggy_solution": "    count := 0\n    for _, num := range nums {\n        if num > 10 {\n            number_as_string := strconv.Itoa(num)\n            if number_as_string[0]&1==1 && number_as_string[len(number_as_string)-1]&1==1 {\n                count++\n            }\n        }\n    }        \n    return count\n}\n\n"
+        "buggy_solution": "    count := 0\n    for _, num := range nums {\n        if num > 10 {\n            number_as_string := strconv.Itoa(num)\n            if number_as_string[0]&1==1 && number_as_string[len(number_as_string)-1]&1==1 && number_as_string[len(number_as_string)-1]&1==0 {\n                count++\n            }\n        }\n    }        \n    return count\n}\n\n"
     },
     {
-        "buggy_solution": "    A := make([]int, 0)\n    for i := 1;i <= n;i++ {\n        A = append(A, i*i-i+1)\n    }\n    ans := 0\n    for i := 0;i < n;i++ {\n        for j := i + 1;j < n;j++ {\n            for k := j + 1;k < n;k++ {\n                if (A[i]+A[j]+A[k])%3 == 0 {\n                    ans++\n                }\n            }\n        }\n    }\n    return ans\n}\n\n"
+        "buggy_solution": "    A := make([]int, 0)\n    for i := 1;i <= n;i++ {\n        A = append(A, i*i)\n    }\n    ans := 0\n    for i := 0;i < n;i++ {\n        for j := i + 1;j < n;j++ {\n            for k := j + 1;k < n;k++ {\n                if (A[i]+A[j]+A[k])%3 == 0 {\n                    ans++\n                }\n            }\n        }\n    }\n    return ans\n}\n\n"
     },
     {
-        "buggy_solution": "    planet_names := []string{\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\"}\n    pos1 := -1\n    pos2 := -1\n    for i, x := range planet_names {\n        if planet1 == x {\n            pos1 = i\n        }\n        if planet2 == x {\n            pos2 = i\n        }\n    }\n    if pos1 == -1 || pos2 == -1 || pos1 == pos2 {\n        return []string{}\n    }\n    if pos1 < pos2 {\n        return planet_names[pos1 + 1: pos2]\n    }\n    return planet_names[pos2 + 1 : pos1]\n}\n\n"
+        "buggy_solution": "    planet_names := []string{\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupyter\", \"Saturn\", \"Uranus\", \"Neptune\"}\n    pos1 := -1\n    pos2 := -1\n    for i, x := range planet_names {\n        if planet1 == x {\n            pos1 = i\n        }\n        if planet2 == x {\n            pos2 = i\n        }\n    }\n    if pos1 == -1 || pos2 == -1 || pos1 == pos2 {\n        return []string{}\n    }\n    if pos1 < pos2 {\n        return planet_names[pos1 + 1: pos2]\n    }\n    return planet_names[pos2 + 1 : pos1]\n}\n\n"
     },
     {
-        "buggy_solution": "    sort.SliceStable(lst, func(i, j int) bool {\n        return lst[i] < lst[j]\n    })\n    new_lst := make([]string, 0)\n    for _, i := range lst {\n        if len(i)&1==0 {\n            new_lst = append(new_lst, i)\n        }\n    }\n    sort.SliceStable(new_lst, func(i, j int) bool {\n        return len(new_lst[i]) < len(new_lst[j])\n    })\n    return new_lst\n}\n\n"
+        "buggy_solution": "    sort.SliceStable(lst, func(i, j int) bool {\n        return lst[i] < lst[j]\n    })\n    new_lst := make([]string, 0)\n    for _, i := range lst {\n        if len(i)&1==0 {\n            new_lst = append(new_lst, i)\n        }\n    }\n    return new_lst\n}\n\n"
     },
     {
-        "buggy_solution": "    if n == 1 {\n        return y\n    }\n    for i := 2;i < n;i++ {\n        if n % i == 0 {\n            return y\n        }\n    }\n    return x\n}\n\n"
+        "buggy_solution": "    if n == 1 {\n        return y\n    }\n    for i := 2;i < n;i++ {\n        if n % i - 1 == 0 {\n            return y\n        }\n    }\n    return x\n}\n\n"
     },
     {
-        "buggy_solution": "    sum := 0\n    for _, i := range lst {\n        if i > 0 && math.Mod(i, 2) != 0 && i == float64(int(i)) {\n            sum += int(math.Pow(i, 2))\n        }\n    }\n    return sum\n}\n\n"
+        "buggy_solution": "    sum := 0\n    for _, i := range lst {\n        if i > 0 && i == float64(int(i)) {\n            sum += int(math.Pow(i, 2))\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    ans := make([]int, 0, len(game))\n    for i := range game {\n        ans = append(ans, int(math.Abs(float64(game[i]-guess[i]))))\n    }\n    return ans\n}\n\n"
+        "buggy_solution": "    ans := make([]int, 0, len(game))\n    for i := range game {\n        ans = append(ans, int(math.Abs(float64(game[i]-guess[i]))+math.Abs(float64(guess[i]-game[i]))))\n    }\n    return ans\n}\n\n"
     },
     {
-        "buggy_solution": "    strong := extensions[0]\n    \n    my_val := math.MinInt\n    for _, s := range extensions {\n        cnt0, cnt1 := 0, 0\n        for _, c := range s {\n            switch {\n            case 'A' <= c && c <= 'Z':\n                cnt0++\n            case 'a' <= c && c <= 'z':\n                cnt1++\n            }\n        }\n        val := cnt0-cnt1\n        if val > my_val {\n            strong = s\n            my_val = val\n        }\n    }\n    return class_name + \".\" + strong\n}\n\n"
+        "buggy_solution": "    strong := extensions[0]\n    \n    my_val := math.MinInt\n    for _, s := range extensions {\n        cnt0, cnt1 := 0, 0\n        for _, c := range s {\n            switch {\n            case 'A' <= c && c <= 'Z':\n                cnt0++\n            case 'a' <= c && c <= 'z':\n                cnt1++\n            }\n        }\n        val := cnt0-cnt1\n        if val > my_val {\n            strong = s\n            my_val = val\n        }\n    }\n    return class_name + strong\n}\n\n"
     },
     {
-        "buggy_solution": "    l := len(b)\n    pat := b + b\n    for i := 0;i < len(a) - l + 1; i++ {\n        for j := 0;j<l + 1;j++ {\n            if a[i:i+l] == pat[j:j+l] {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    l := len(b)\n    pat := b + b\n    for i := 0;i < len(a) - l; i++ {\n        for j := 0;j<l;j++ {\n            if a[i:i+l] == pat[j:j+l] {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
     },
     {
-        "buggy_solution": "    even_count := 0\n    odd_count := 0\n    if num < 0 {\n        num = -num\n    }\n    for _, r := range strconv.Itoa(num) {\n        if r&1==0 {\n            even_count++\n        } else {\n            odd_count++\n        }\n    }\n    return [2]int{even_count, odd_count}\n}\n\n"
+        "buggy_solution": "    even_count := 0\n    odd_count := 0\n    if num < 0 {\n        num = -num\n    }\n    for _, r := range strconv.Itoa(num) {\n        if r&1==0 {\n            even_count++\n        }\n    }\n    return [2]int{even_count, odd_count}\n}\n\n"
     },
     {
-        "buggy_solution": "    num := []int{1, 4, 5, 9, 10, 40, 50, 90,  \n           100, 400, 500, 900, 1000}\n    sym := []string{\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"}\n    i := 12\n    res := \"\"\n    for number != 0 {\n        div := number / num[i] \n        number %= num[i] \n        for div != 0 {\n            res += sym[i] \n            div--\n        }\n        i--\n    }\n    return strings.ToLower(res)\n}\n\n"
+        "buggy_solution": "    num := []int{1, 4, 5, 9, 10, 40, 50, 90,  \n           100, 400, 500, 900, 1000}\n    sym := []string{\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"}\n    i := 12\n    res := \"\"\n    for number != 0 {\n        div := number / num[i] \n        for div != 0 {\n            res += sym[i] \n            div--\n        }\n        i--\n    }\n    return strings.ToLower(res)\n}\n\n"
     },
     {
-        "buggy_solution": "    return a*a == b*b + c*c || b*b == a*a + c*c || c*c == a*a + b*b\n}\n\n"
+        "buggy_solution": "    return a*a == b*b + c*c || c*c == a*a + b*b\n}\n\n"
     },
     {
-        "buggy_solution": "    key := func (word string) (int, string) {\n        set := make(map[rune]struct{})\n        for _, r := range word {\n            set[r] = struct{}{}\n        }\n        return -len(set), word\n    }\n    sort.SliceStable(words, func(i, j int) bool {\n        ia, ib := key(words[i])\n        ja, jb := key(words[j])\n        if ia == ja {\n            return ib < jb\n        }\n        return ia < ja\n    })\n    return words[0]\n}\n\n"
+        "buggy_solution": "    key := func (word string) (int, string) {\n        set := make(map[rune]struct{})\n        for _, r := range word {\n            set[r] = struct{}{}\n        }\n        return -len(set), word\n    }\n    sort.SliceStable(words, func(i, j int) bool {\n        ia, ib := key(words[i])\n        ja, jb := key(words[j])\n        if ia == ja {\n            return ib < jb\n        }\n    })\n    return words[0]\n}\n\n"
     },
     {
-        "buggy_solution": "    if(need <= remaining) {\n        return []int{ number + need , remaining-need }\n    }\n    return []int{ number + remaining , 0}\n}\n\n"
+        "buggy_solution": "    if(need <= remaining) {\n        return []int{ number + need , number+remaining-need }\n    }\n    return []int{ number + need + remaining , 0}\n}\n\n"
     },
     {
-        "buggy_solution": "    higher := func(a, b string) bool {\n        if b == \"*\" || b == \"//\" || b == \"**\" {\n            return false\n        }\n        if a == \"*\" || a == \"//\" || a == \"**\" {\n            return true\n        }\n        return false\n    }\n    for len(operand) > 1 {\n        pos := 0\n        sign := operator[0]\n        for i, str := range operator {\n            if higher(str, sign) {\n                sign = str\n                pos = i\n            }\n        }\n        switch sign {\n        case \"+\":\n            operand[pos] += operand[pos+1]\n        case \"-\":\n            operand[pos] -= operand[pos+1]\n        case \"*\":\n            operand[pos] *= operand[pos+1]\n        case \"//\":\n            operand[pos] /= operand[pos+1]\n        case \"**\":\n            operand[pos] = int(math.Pow(float64(operand[pos]), float64(operand[pos+1])))\n        }\n        operator = append(operator[:pos], operator[pos+1:]...)\n        operand = append(operand[:pos+1], operand[pos+2:]...)\n    }\n    return operand [0]\n}\n\n"
+        "buggy_solution": "    higher := func(a, b string) bool {\n        if b == \"*\" || b == \"//\" || b == \"**\" {\n            return false\n        }\n        if a == \"*\" || a == \"//\" || a == \"**\" {\n            return true\n        }\n        return false\n    }\n    for len(operand) > 1 {\n        pos := 0\n        sign := operator[0]\n        for i, str := range operator {\n            if higher(str, sign) {\n                sign = str\n                pos = i\n            }\n        }\n        switch sign {\n        case \"+\":\n            operand[pos] += operand[pos+1]\n        case \"-\":\n            operand[pos] -= operand[pos+1]\n        case \"*\":\n            operand[pos] *= operand[pos+1]\n        case \"//\":\n            operand[pos] /= operand[pos+1]\n        case \"**\":\n            operand[pos] = int(math.Pow(float64(operand[pos+1]), float64(operand[pos+1])))\n        }\n        operator = append(operator[:pos], operator[pos+1:]...)\n        operand = append(operand[:pos+1], operand[pos+2:]...)\n    }\n    return operand [0]\n}\n\n"
     },
     {
-        "buggy_solution": "    flg := 0\n    new_str := []rune(s)\n    for i, r := range new_str {\n        if ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') {\n            if 'a' <= r && r <= 'z' {\n                new_str[i] = r - 'a' + 'A'\n            } else {\n                new_str[i] = r - 'A' + 'a'\n            }\n            flg = 1\n        }\n    }\n    if flg == 0 {\n        for i := 0;i < len(new_str)>>1;i++ {\n            new_str[i], new_str[len(new_str)-i-1] = new_str[len(new_str)-i-1], new_str[i]\n        }\n    }\n    return string(new_str)\n}\n\n"
+        "buggy_solution": "    flg := 0\n    new_str := []rune(s)\n    for i, r := range new_str {\n        if ('a' <= r && r <= 'z') {\n            if 'a' <= r && r <= 'z' {\n                new_str[i] = r - 'a' + 'A'\n            } else {\n                new_str[i] = r - 'A' + 'a'\n            }\n            flg = 1\n        }\n    }\n    if flg == 0 {\n        for i := 0;i < len(new_str)>>1;i++ {\n            new_str[i], new_str[len(new_str)-i-1] = new_str[len(new_str)-i-1], new_str[i]\n        }\n    }\n    return string(new_str)\n}\n\n"
     },
     {
-        "buggy_solution": "    if text == \"\" {\n        return nil\n    }\n    return fmt.Sprintf(\"%x\", md5.Sum([]byte(text)))\n}\n\n"
+        "buggy_solution": "    if len(text) == 0 {\n        return fmt.Sprintf(\"%x\", md5.Sum([]byte(\"\")))\n    }\n    return fmt.Sprintf(\"%x\", md5.Sum([]byte(text)))\n}\n\n"
     },
     {
-        "buggy_solution": "    min := func (a, b int) int {\n        if a > b {\n            return b\n        }\n        return a\n    }\n    max := func (a, b int) int {\n        if a > b {\n            return a\n        }\n        return b\n    }\n    lower := max(2, min(a, b))\n    upper := min(8, max(a, b))\n    ans := make([]int, 0)\n    for i := lower;i <= upper;i++ {\n        if i&1==0 {\n            ans = append(ans, i)\n        }\n    }\n    return ans\n}\n\n"
+        "buggy_solution": "    min := func (a, b int) int {\n        if a > b {\n            return b\n        }\n        return a\n    }\n    max := func (a, b int) int {\n        if a > b {\n            return a\n        }\n        return b\n    }\n    lower := max(2, min(a, b))\n    upper := min(8, max(a, b))\n    ans := make([]int, 0)\n    for i := lower;i < upper;i++ {\n        if i&1==0 {\n            ans = append(ans, i)\n        }\n    }\n    return ans\n}\n\n"
     }
 ]
