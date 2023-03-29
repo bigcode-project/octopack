@@ -9,8 +9,6 @@ import numpy as np
 from datasets import load_dataset, concatenate_datasets
 from huggingface_hub import hf_hub_download
 
-opt_out_github_login_the_stack_12 = '''INSERT OPT OUT HERE'''.splitlines()
-opt_out_github_login_the_stack_12 = [el.lower() for el in opt_out_github_login_the_stack_12]
 CACHE_DIR = "YOU_CACHE_DIR"
 DATASET_NAME = "bigcode/instruction-commits"
 PUSH_DATASET_NAME = "bigcode/instruction-commits-filter"
@@ -53,11 +51,6 @@ BAD_MESSAGE = [
     "updated readme",
 
 ]
-
-
-def gh_diff(example):
-    example["gh_diff"] = ghdiff.diff(example["old_contents"], example["new_contents"])
-    return example
 
 
 def get_line_diff_range(example):
@@ -277,32 +270,8 @@ def prepare_code(example):
 
 
 ds_clean = ds_clean.map(prepare_code, num_proc=30)
-opt_out_github_login_the_stack_12 = set([el.lower() for el in opt_out_github_login_the_stack_12])
 
-
-def filter_opt_out(example):
-    repo_names = example["repos"].split(",")
-    try:
-        repo_owners = [repo_name.split("/")[0].lower() for repo_name in repo_names]
-    except:
-        print(example["repos"])
-    filtered_repo_names = [repo_name for repo_name, repo_owner in zip(repo_names,
-                                                                      repo_owners) if
-                           repo_owner not in opt_out_github_login_the_stack_12]
-
-    if len(filtered_repo_names) > 0:
-        example["repos"] = ",".join(filtered_repo_names)
-        example["drop_opt_out"] = False
-    else:
-        example["repos"] = ""
-        example["drop_opt_out"] = True
-    return example
-
-
-ds_opt_out = ds_clean.map(filter_opt_out, num_proc=30)
-ds_opt_out = ds_opt_out.filter(lambda x: not x["drop_opt_out"], num_proc=30)
-
-ds_final = ds_opt_out.remove_columns(
+ds_final = ds_clean.remove_columns(
     ["subject", "message", "new_contents", "old_contents", "returncode", "stderr", "old_change_start", "old_change_end",
      "old_change_range", "new_change_start", 'new_change_end', 'new_change_range', 'n_inserts', 'n_deletes',
      'n_changes', 'drop_opt_out'])
