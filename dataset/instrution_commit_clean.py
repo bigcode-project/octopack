@@ -151,7 +151,7 @@ with Pool(16, initializer=init, initargs=(counter,)) as p:
 
 # obtain the file path
 files = [hf_hub_download(DATASET_NAME, file, repo_type="dataset",
-                         cache_dir=CACHE_DIR) for file in data_files[::2]]
+                         cache_dir=CACHE_DIR) for file in data_files]
 
 counter = Value('i', 0)
 
