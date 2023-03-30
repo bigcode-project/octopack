@@ -4,7 +4,6 @@ from collections import Counter
 from difflib import SequenceMatcher
 from multiprocessing import Pool, Value
 
-import ghdiff
 import numpy as np
 from datasets import load_dataset, concatenate_datasets
 from huggingface_hub import hf_hub_download
