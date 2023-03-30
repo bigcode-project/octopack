@@ -8,7 +8,7 @@ import datasets
 from huggingface_hub import hf_hub_download
 import numpy as np
 
-GOOD_STARTS_EN = {'troubleshoot', 'generalize', 'disable', 'merge', 'determine', 'rearrange', 'rectify', 'prepare', 'cut', 'edit', 'install', 'read', 'structure', 'recompile', 'debug', 'transform', 'orchestrate', 'develop', 'recomment', 'reset', 'validate', 'automate', 'indent', 'refresh', 'backup', 'replace', 'deal with', 'scrub', 'improve', 'terminate', 'monitor', 'revise', 'solve', 'split', 'designate', 'unstage', 'unwind', 'downgrade', 'handle', 'decommission', 'unify', 'add', 'reimplement', 'connect', 'archive', 'discard', 'compress', 'index', 'initialize', 'streamline', 'interpolate', 'format', 'append', 'delete', 'consolidate', 'settle', 'annotate', 'include', 'unblock', 'break', 'update', 'change', 'switch', 'reorganize', 'fix', 'reannotate', 'tackle', 'transpose', 'prepend', 'increase', 'integrate', 'order', 'reschedule', 'scale', 'maintain', 'truncate', 'drop', 'abort', 'remove', 'configure', 'unplug', 'save', 'create', 'reformat', 'rework', 'version', 'concatenate', 'decrypt', 'rewrite', 'check', 'divide', 'relocate', 'complete', 'dismantle', 'clarify', 'restructure', 'isolate', 'rollback', 'comment', 'send', 'standardize', 'clean', 'decompress', 'reword', 'provision', 'reorder', 'revoke', 'embed', 'redact', 'store', 'extend', 'unsync', 'return', 'optimize', 'align', 'test', 'reposition', 'package', 'simplify', 'tidy', 'establish', 'expire', 'deploy', 'plug ', 'reboot', 'enhance', 'attach', 'decrease', 'declare', 'rename', 'patch', 'print', 'rebuild', 'synchronize', 'trim', 'work', 'apply', 'copy', 'customize', 'expedite', 'call', 'purge', 'quit', 'unpublish', 'throw', 'clear', 'implement', 'define', 'make', 'watermark', 'raise', 'stop', 'substitute', 'normalize', 'rephrase', 'undo', 'paste', 'whitelist', 'mask', 'secure', 'rebase', 'set', 'tag', 'encrypt', 'reconnect', 'repackage', 'exit', 'arrange', 'build', 'migrate', 'swap', 'bring', 'bump', 'tweak', 'upgrade', 'write', 'resolve', 'put', 'exclude', 'insert', 'kill', 'subtract', 'repair', 'revert', 'redefine', 'enforce', 'convert', 'multiply', 'use', 'enable', 'support', 'document', 'correct', 'withdraw', 'move', 'modify', 'allot', 'introduce', 'address', 'increment', 'manage', 'verify', 'reconfigure', 'refactor'}
+GOOD_STARTS_EN = {'troubleshoot', 'indent', 'allow', 'access', 'load', 'mark', 'generalize', 'disable', 'merge', 'determine', 'rearrange', 'rectify', 'prepare', 'cut', 'edit', 'install', 'read', 'structure', 'recompile', 'debug', 'transform', 'orchestrate', 'develop', 'recomment', 'reset', 'validate', 'automate', 'indent', 'refresh', 'backup', 'replace', 'deal with', 'scrub', 'improve', 'terminate', 'monitor', 'revise', 'solve', 'split', 'designate', 'unstage', 'unwind', 'downgrade', 'handle', 'decommission', 'unify', 'add', 'reimplement', 'connect', 'archive', 'discard', 'compress', 'index', 'initialize', 'streamline', 'interpolate', 'format', 'append', 'delete', 'consolidate', 'settle', 'annotate', 'include', 'unblock', 'break', 'update', 'change', 'switch', 'reorganize', 'fix', 'reannotate', 'tackle', 'transpose', 'prepend', 'increase', 'integrate', 'order', 'reschedule', 'scale', 'maintain', 'truncate', 'drop', 'abort', 'remove', 'configure', 'unplug', 'save', 'create', 'reformat', 'rework', 'version', 'concatenate', 'decrypt', 'rewrite', 'check', 'divide', 'relocate', 'complete', 'dismantle', 'clarify', 'restructure', 'isolate', 'rollback', 'comment', 'send', 'standardize', 'clean', 'decompress', 'reword', 'provision', 'reorder', 'revoke', 'embed', 'redact', 'store', 'extend', 'unsync', 'return', 'optimize', 'align', 'test', 'reposition', 'package', 'simplify', 'tidy', 'establish', 'expire', 'deploy', 'plug ', 'reboot', 'enhance', 'attach', 'decrease', 'declare', 'rename', 'patch', 'print', 'rebuild', 'synchronize', 'trim', 'work', 'apply', 'copy', 'customize', 'expedite', 'call', 'purge', 'quit', 'unpublish', 'throw', 'clear', 'implement', 'define', 'make', 'watermark', 'raise', 'stop', 'substitute', 'normalize', 'rephrase', 'undo', 'paste', 'whitelist', 'mask', 'secure', 'rebase', 'set', 'tag', 'encrypt', 'reconnect', 'repackage', 'exit', 'arrange', 'build', 'migrate', 'swap', 'bring', 'bump', 'tweak', 'upgrade', 'write', 'resolve', 'put', 'exclude', 'insert', 'kill', 'subtract', 'repair', 'revert', 'redefine', 'enforce', 'convert', 'multiply', 'use', 'enable', 'support', 'document', 'correct', 'withdraw', 'move', 'modify', 'allot', 'introduce', 'address', 'increment', 'manage', 'verify', 'reconfigure', 'refactor'}
 GOOD_STARTS_ZH = {'把', '替换', '降级', '保存', '修改', '解压缩', '撤销拉取', '修复', '对齐', '处理', '准备', '验证', '应用', '设置', '制作', '加速', '校正', '补丁', '重新调度', '重新配置', '重新实现', '更改', '复制', '评论', '增强', '合并', '编排', '配置', '完成', '部署', '退出', '备份', '回滚', '迁移', '添加', '减去', '重新排列', '重构', '重新定义', '拆分', '抛出', '串联', '简化流程', '终止', '取消暂存', '返回', '重新注释', '标记', '重新排序', '插入', '插值', '修', '定制', '加密', '排除', '重写', '监控', '格式化', '撤销', '放弃', '掩码', '重新连接', '重新组织', '清除', '追加', '停止', '建立索引', '解', '澄清', '微调', '重命名', '结束', '执行', '缩放', '取消发布', '乘以', '撤销暂存区的文件', '改善', '丢弃', '归档', '重新编译', '解除同步', '注释', '解决', '拔掉', '包含', '简化', '清理', '变基', '删除', '同步', '介绍', '存档', '隔离', '调试', '重新格式化', '重新定位', '中断', '转换', '结构化', '过期', '纠正', '刷新', '构建', '截断', '粘贴', '管理', '重新表述', '启用', '整理', '改写', '支持', '文档化', '压缩', '检查', '白名单', '重新打包', '水印', '提高', '改进', '整合', '扩展', '升级', '重置', '移动', '重建', '升级版本', '自动化', '测试', '修剪', '还原', '解除阻止', '剪切', '解决问题', '禁用', '修订', '维护', '解密', '标准化', '初始化', '重新构建', '重启', '打包', '分割', '更新', '安全', '优化', '版本', '重新评论', '实现'}
 GOOD_STARTS_FR = {'réinitialise', 'personnalise', 'masque', 'supporte', 'range', 'augmente', 'ajoute', 'liste blanche', 'structure', 'recompile', 'révise', 'désindexe', 'répare', 'retourne', 'soustrais', 'jette', 'complète', 'découpe', 'réimplémente', 'recommande', 'annote', 'débloque', 'indente', 'tague', 'réécris', 'sauvegarde', 'archive', 'reconnecte', 'supprime', 'vérifie', 'reconstruit', 'débranche', 'révoque', 'fabrique', 'refactorise', 'incrémente', 'désynchronise', 'prépare', 'change', 'dépanne', 'migre', 'implémente', 'introduit', 'édite', 'renomme', 'construis', 'ajoute un filigrane', 'convertit', 'travaille', 'configure', 'rectifie', 'clarifie', 'fournis', 'traite', 'transforme', 'aligne', 'sauve', 'réordonne', 'débogue', 'soulève', 'restructure', 'casse', 'reformule', 'modifie', 'rebases', 'prépend', 'réorganise', 'insère', 'rend anonyme', 'nettoie', 'chiffre', 'reconditionne', 'active', 'concatène', 'expire', 'définis', 'valide', 'formate', 'patche', 'compresse', 'commente', 'ordonne', 'fusionne', 'décompresse', 'normalise', 'emballe', 'repositionne', 'documente', 'applique', 'versionne', 'résous', 'met', 'maintient', 'résout', 'tronque', 'déplace', 'impose', 'désactive', 'réarrange', 'purge', 'isole', 'annule', 'corrige', 'arrête', 'adresse', 'multiplie', 'touche à', 'coupe', 'attaque', 'déploie', 'imprime', 'redéfinit', 'revient en arrière', 'échelle', 'régresse', 'unifie', 'ré-annote', 'exclue', 'améliore', 'rafraîchis', 'stocke', 'décrypte', 'colle', 'défait', 'remplace', 'automatise', 'simplifie', 'termine', 'reformate', 'branche', 'consolide', 'synchronise', 'redémarre', 'teste', 'tue', 'met à jour', 'divise', 'copie', 'défait le pull', 'gère', 'dépublie', 'intègre', 'étends', 'utilise', 'optimise', 'inclue', 'sécurise', 'retravaille', 'reviens en arrière', 'accélère', 'interpole', 'surveille', 'reconfigure', 'initialise', 'quitte', 'généralise', 'orchestre'}
 GOOD_STARTS_ES = {'detiene', 'repara', 'revoca', 'reposiciona', 'termina', 'reconecta', 'depura', 'renombra', 'desbloquea', 'mejora', 'extiende', 'trabaja', 'aumenta', 'reorganiza', 'integra', 'reconstruye', 'eleva', 'documenta', 'transforma', 'devuelve', 'interpola', 'fusiona', 'implementa', 'rebasa', 'versiona', 'alinea', 'reimplementa', 'cifra', 'mantiene', 'prueba', 'refactoriza', 'toca', 'gestiona', 'sincroniza', 'rompe', 'migra', 'almacena', 'comprime', 'indenta', 'estructura', 'dessincroniza', 'incrementa', 'refresca', 'crea una rama', 'edita', 'inicializa', 'generaliza', 'lista blanca', 'cancela', 'soporta', 'modifica', 'concatena', 'oculta', 'soluciona', 'pega', 'desindexa', 'impone', 'personaliza', 'añade una marca de agua', 'recompila', 'deshace', 'provee', 'mueve', 'divide', 'copia', 'aisla', 'anota', 'unifica', 'recomienda', 'empaqueta', 'reordena', 'reanota', 'multiplica', 'elimina publicación', 'optimiza', 'guarda', 'valida', 'simplifica', 'acorta', 'asegura', 'aclara', 'normaliza', 'prepara', 'incluye', 'corta', 'retrabaja', 'reformatea', 'configura', 'reemplaza', 'descifra', 'reinicia', 'hace anónimo', 'reconfigura', 'revisa', 'acelera', 'completa', 'etiqueta', 'caduca', 'define', 'monitorea', 'actualiza', 'corrige', 'regresa', 'deshace el pull', 'descomprime', 'excluye', 'consolida', 'pone', 'verifica', 'reescribe', 'construye', 'imprime', 'desconecta', 'reformula', 'dirige', 'ataca', 'descarta', 'archiva', 'despliega', 'inserta', 'retrocede', 'mata', 'convierte', 'elimina', 'añade', 'ordena', 'sale', 'reestructura', 'vuelve atrás', 'comenta', 'recorta', 'cambia', 'activa', 'sustrae', 'desactiva', 'purga', 'procesa', 'redefine', 'limpia', 'escala', 'fabrica', 'formatea', 'automatiza', 'introduce', 'aplica', 'añade al principio', 'orquesta', 'resuelve', 'usa', 'parchea'}
@@ -45,7 +45,7 @@ FULL_RANGE_FRAC = 0.2
 MIN_RANGE = 0
 MAX_RANGE = 32
 
-NUM_PROC = 32
+NUM_PROC = 64
 
 BAD_SUB_MESSAGE = [
     "auto commit",
@@ -68,16 +68,16 @@ BAD_MESSAGE = [
     "updated readme",
 ]
 
-PUSH_DATASET_NAME = "bigcode/commits-pjj"
+PUSH_DATASET_NAME = "bigcode/commits-pjj-sample"
 
 ### SAMPLE ###
-#BASE_DIR = "data"
-#PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
-#print(PATHS)
+BASE_DIR = "data"
+PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
+print(PATHS)
 
 ### FULL ###
-BASE_DIR = "data"
-PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)]
+#BASE_DIR = "data"
+#PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)]
 
 ds = datasets.load_dataset("json", data_files=PATHS)["train"]
 print("The dataset size is: {}".format(len(ds)))
@@ -149,18 +149,18 @@ def clean_issues_and_refs(example):
     if len(example["subject"]) == 0:
         return example
 
-    subject = example["subject"].split()
-
-    if len(subject) == 1:
-        return example
+    subject = example["subject"].split() + ["", "", ""] # add empty strings to avoid index out of range
 
     if subject[0].startswith("[") and subject[0].endswith("]"):
+        subject = subject[1:]
+
+    if subject[0].endswith(":"):
         subject = subject[1:]
 
     if subject[-1].startswith("[") and subject[-1].endswith("]"):
         subject = subject[:-1]
 
-    if subject[-1].startswith("#") and subject[-1].endswith(")"):
+    if "#" in subject[-1]:
         subject = subject[:-1]
 
     example["subject"] = " ".join(subject)
@@ -181,13 +181,20 @@ print("After empty new content filtering, the dataset size is: {}".format(len(ds
 
 def filter_empty_messages(example):
     # Only filter out single alphabetic words (i.e. leave in e.g. Chinese)
-    if len(example["subject"]) == 0 or (len(example["subject"].split()) == 0 and example["subject"][0].isalpha()):
+    if len(example["subject"]) == 0 or (len(example["subject"].split()) == 1 and example["subject"].isalpha()):
         return False
     return True
 
 ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
 
 print("After empty message filtering, the dataset size is: {}".format(len(ds)))
+
+ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
+
+ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+
+print("After empty message filtering due to messages with []: :, the dataset size is: {}".format(len(ds)))
+
 
 ds = ds.map(get_line_diff_range, num_proc=NUM_PROC)
 
