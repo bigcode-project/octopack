@@ -68,16 +68,16 @@ BAD_MESSAGE = [
     "updated readme",
 ]
 
-PUSH_DATASET_NAME = "bigcode/commits-pjj-sample"
+PUSH_DATASET_NAME = "bigcode/commits-pjj"
 
 ### SAMPLE ###
-BASE_DIR = "data"
-PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
-print(PATHS)
+#BASE_DIR = "data"
+#PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
+#print(PATHS)
 
 ### FULL ###
-#BASE_DIR = "data"
-#PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)]
+BASE_DIR = "data"
+PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)]
 
 ds = datasets.load_dataset("json", data_files=PATHS)["train"]
 print("The dataset size is: {}".format(len(ds)))
