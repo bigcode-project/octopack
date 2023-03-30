@@ -27,7 +27,7 @@
         "buggy_solution": "    sum_value := 0\n    prod_value := 0\n\n    for _, n := range numbers {\n        sum_value += n\n        prod_value *= n\n    }\n    return [2]int{sum_value, prod_value}\n}\n\n"
     },
     {
-        "buggy_solution": "    running_max := 1\n    result := make([]int, 0)\n\n    for _, n := range numbers {\n        running_max = int(math.Max(float64(running_max), float64(n)))\n        result = append(result, running_max)\n    }\n\n    return result\n}\n\n"
+        "buggy_solution": "    running_max := math.MinInt32\n    result := make([]int, 0)\n\n    for _, n := range numbers {\n        if running_max == math.MinInt32 {\n            running_max = n\n        } else {\n            running_max = int(math.Max(numbers))\n        }\n        result = append(result, running_max)\n    }\n\n    return result\n}\n\n"
     },
     {
         "buggy_solution": "    if strings.TrimSpace(str) == \"\" {\n        return \"\"\n    }\n    beginning_of_suffix := 0\n    runes := []rune(str)\n    for !IsPalindrome(strings) {\n        beginning_of_suffix += 1\n    }\n    result := make([]rune, 0)\n    for i := len(str[:beginning_of_suffix]) - 1; i >= 0; i-- {\n        result = append(result, runes[i])\n    }\n    return str + string(result)\n}\n\n"
@@ -102,7 +102,7 @@
         "buggy_solution": "    temp := make([]int, 0)\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\ttemp = append(temp, l[i])\n\t}\n\tj := 0\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\tl[i] = temp[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
     },
     {
-        "buggy_solution": "    set := make(map[int]interface{})\n\tfor _, i := range l {\n\t\tset[i]=nil\n\t}\n\tl = make([]int,0)\n\tfor i, _ := range set {\n\t\tl = append(l, i)\n\t}\n\treturn l\n}\n\n"
+        "buggy_solution": "    sort.Ints(l)\n\treturn l\n}\n\n"
     },
     {
         "buggy_solution": "    max := l[0]\n\tfor _, x := range l {\n\t\tif x < max {\n\t\t\tmax = x\n\t\t}\n\t}\n\treturn max\n}\n\n"
@@ -120,7 +120,7 @@
         "buggy_solution": "    isPrime := func(p int) bool {\n\t\tif p < 2 {\n\t\t\treturn false\n\t\t}\n\t\tfor i := 2; i < int(math.Min(math.Sqrt(float64(p)), float64(p))); i++ {\n\t\t\tif p%i == 0 {\n\t\t\t\treturn false\n\t\t\t}\n\t\t}\n\t\treturn true\n\t}\n\tf := []int{0, 1}\n\tfor {\n\t\tf = append(f, f[len(f)-1]+f[len(f)-2])\n\t\tif isPrime(f[len(f)-1]) {\n\t\t\tn -= 1\n\t\t}\n\t\tif n == 0 {\n\t\t\treturn f[len(f)-1]\n\t\t}\n\t}\n}\n\n"
     },
     {
-        "buggy_solution": "    for i := 0; i < len(l) - 2; i++ {\n\t\tfor j := i + 1; j < len(l) - 1; j++ {\n\t\t\tfor k := i + 1; k < len(l); k++ {\n\t\t\t\tif l[i] + l[j] + l[k] == 0 {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
+        "buggy_solution": "    for i := 1; i < len(l) - 2; i++ {\n\t\tfor j := i + 1; j < len(l) - 1; j++ {\n\t\t\tfor k := j + 1; k < len(l); k++ {\n\t\t\t\tif l[i] + l[j] + l[k] == 0 {\n\t\t\t\t\treturn true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}\n\n"
     },
     {
         "buggy_solution": "\treturn n * n * n\n}\n\n"
@@ -177,7 +177,7 @@
         "buggy_solution": "    m := make(map[int]bool)\n\tfor _, e1 := range l1 {\n\t\tif m[e1] {\n\t\t\tcontinue\n\t\t}\n\t\tfor _, e2 := range l2 {\n\t\t\tif e1 == e2 {\n\t\t\t\tm[e1] = true\n\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t}\n\tres := make([]int, 0, len(m))\n\tfor k, _ := range m {\n\t\tres = append(res, k)\n\t}\n\treturn res\n}\n\n"
     },
     {
-        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n\n    largest := 1\n    for j := 2; j < n; j++ {\n\t\tif n % j == 0 && isPrime(j) {\n\t\t\tif j > largest {\n\t\t\t\tlargest = j\n\t\t\t}\n\t\t}\n\t}\n    return largest\n}\n\n"
+        "buggy_solution": "    isPrime := func(n int) bool {\n        for i := 2; i < int(math.Pow(float64(n), 0.5)+1); i++ {\n            if n%i == 0 {\n                return false\n            }\n        }\n        return true\n    }\n\n    largest := 1\n    for j := 2; j < n + 1; j++ {\n\t\tif n % j == 0 && isPrime(n) {\n\t\t\tif j > largest {\n\t\t\t\tlargest = j\n\t\t\t}\n\t\t}\n\t}\n    return largest\n}\n\n"
     },
     {
         "buggy_solution": "    if n <= 0 {\n\t\treturn 0\n\t} else {\n\t\treturn 1 + SumToN(n - 1)\n\t}\n}\n\n"
@@ -276,7 +276,7 @@
         "buggy_solution": "    r, _ := regexp.Compile(`[.?!]\\s*`)\n    sentences := r.Split(S, -1)\n    sum := 0\n    for _, s := range sentences {\n        if len(s) >= 2 && s[:2] == \" I\" {\n            sum++\n        }\n    }\n    return sum\n}\n\n"
     },
     {
-        "buggy_solution": "    xx, ok := x.(int)\n    if !ok {\n        return false\n    }\n    yy, ok := y.(int)\n    if !ok {\n        return false\n    }\n    zz, ok := z.(int)\n    if !ok {\n        return false\n    }\n\n    if (xx*yy == zz) || (xx*zz == yy) || (yy*zz == xx) || (xx+yy == zz) || (xx+zz == yy) || (yy+zz == xx) || (xx-yy == zz) || (xx-zz == yy) || (yy-zz == xx) {\n        return true\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    xx, ok := x.(int)\n    if !ok {\n        return false\n    }\n    yy, ok := y.(int)\n    if !ok {\n        return false\n    }\n    zz, ok := z.(int)\n    if !ok {\n        return false\n    }\n\n    if (xx+yy == zz) || (yy+zz == xx) {\n        return true\n    }\n    return false\n}\n\n"
     },
     {
         "buggy_solution": "    vowels := \"aeiou\"\n    vowels_replace := make(map[rune]rune)\n    for _, c := range vowels {\n        vowels_replace[c] = c + 2\n    }\n    result := make([]rune, 0, len(message))\n    for _, c := range message {\n        if 'a' <= c && c <= 'z' {\n            c += 'A' - 'a'\n        } else if 'A' <= c && c <= 'Z' {\n            c += 'a' - 'A'\n        }\n        if strings.ContainsRune(vowels, c) {\n            result = append(result, vowels_replace[c])\n        } else {\n            result = append(result, c)\n        }\n    }\n    return string(result)\n}\n\n"
@@ -303,7 +303,7 @@
         "buggy_solution": "    result := make([]int, 0, n)\n    for i := 0; i < n; i++ {\n        result = append(result, n+2*i+i)\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    s_list := make([]rune, 0)\n\n    for _, c := range s {\n        if c == ',' {\n            s_list = append(s_list, '  ')\n        } else {\n            s_list = append(s_list, c)\n        }\n    }\n    return strings.Fields(string(s_list))\n}\n\n"
+        "buggy_solution": "    s_list := make([]rune, 0)\n\n    for _, c := range s {\n        if c == ',' {\n            s_list = append(s_list, ',')\n        } else {\n            s_list = append(s_list, c)\n        }\n    }\n    return strings.Fields(string(s_list))\n}\n\n"
     },
     {
         "buggy_solution": "    if x > y {\n        return -1\n    }\n    if y % 2 == 0 {\n        return y\n    }\n    if x == y {\n        return -1\n    }\n    return x - 1\n}\n\n"
@@ -342,7 +342,7 @@
         "buggy_solution": "    res := make([]string, 0, len(lst))\n    for _, arr := range lst {\n        n := 0\n        for _, d := range arr {\n            if (d - '0') % 2 == 1 {\n                n++\n            }\n        }\n        res = append(res, fmt.Sprintf(\"the number of odd elements %dn the str%dng %d of %d the %dnput.\", n,n,n,n,n))\n    }\n    return res\n}\n\n"
     },
     {
-        "buggy_solution": "    max_sum := 0\n    s := 0\n    for _, num := range nums {\n        s += -num\n        if s < 0 {\n            s = 0\n        }\n        if s > max_sum {\n            max_sum = s\n        }\n    }\n    if max_sum == 0 {\n        max_sum = math.MinInt\n        for _, i := range nums {\n            if -i > max_sum {\n                max_sum = -i + 1\n            }\n        }\n    }\n    return -max_sum\n}\n\n"
+        "buggy_solution": "    max_sum := 0\n    s := 0\n    for _, num := range nums {\n        s += -num\n        if s < 0 {\n            s = 0\n        }\n        if s > max_sum {\n            max_sum = s\n        }\n    }\n    if max_sum == 0 {\n        max_sum = math.MaxInt\n        for _, i := range nums {\n            if -i > max_sum {\n                max_sum = -i + 1\n            }\n        }\n    }\n    return -max_sum\n}\n\n"
     },
     {
         "buggy_solution": "    result := 0\n    for _, arr := range grid {\n        sum := 0\n        for _, i := range arr {\n            sum += i\n        }\n        result += int(math.Floor(float64(sum) / float64(capacity)))\n    }\n    return result\n}\n\n"
@@ -387,7 +387,7 @@
         "buggy_solution": "    if len(arr) == 0 {\n        return nil\n    }\n    cnt := 0\n    sum := 0\n    for _, i := range arr {\n        if i == 0 {\n            return 0\n        }\n        if i < 0 {\n            cnt++\n        }\n        sum += int(math.Abs(float64(i)))\n    }\n\n    prod := int(math.Pow(-1, float64(cnt*2)))\n    return prod * sum\n}\n\n"
     },
     {
-        "buggy_solution": "    n := len(grid)\n    val := n * 2 + 1\n    for i:= 0;i < n; i++ {\n        for j := 0;j < n;j++ {\n            if grid[i][j] == 1 {\n                temp := make([]int, 0)\n                if i != 0 {\n                    temp = append(temp, grid[i - 1][j])\n                }\n\n                if j != 0 {\n                    temp = append(temp, grid[i][j - 1])\n                }\n\n                if i != n - 1 {\n                    temp = append(temp, grid[i + 1][j])\n                }\n\n                if j != n - 1 {\n                    temp = append(temp, grid[i][j + 1])\n                }\n                for _, x := range temp {\n                    if x < val {\n                        val = x\n                    }\n                }\n            }\n        }\n    }\n\n    ans := make([]int, 0, k)\n    for i := 0;i < k;i++ {\n        if i & 1 == 0 {\n            ans = append(ans,  1)\n        } else {\n            ans = append(ans,  val)\n        }\n    }\n    return ans\n}\n\n"
+        "buggy_solution": "    n := len(grid)\n    val := n * n + 1\n    for i:= 0;i < n; i++ {\n        for j := 0;j < n;j++ {\n            if grid[i][j] == 1 {\n                temp := make([]int, 0)\n                if i != 0 {\n                    temp = append(temp, grid[i][j])\n                }\n\n                if j != 0 {\n                    temp = append(temp, grid[i][j])\n                }\n\n                if i != n - 1 {\n                    temp = append(temp, grid[i][j])\n                }\n\n                if j != n - 1 {\n                    temp = append(temp, grid[i][j])\n                }\n                for _, x := range temp {\n                    if x < val {\n                        val = x\n                    }\n                }\n            }\n        }\n    }\n\n    ans := make([]int, 0, k)\n    for i := 0;i < k;i++ {\n        if i & 1 == 0 {\n            ans = append(ans,  1)\n        } else {\n            ans = append(ans,  val)\n        }\n    }\n    return ans\n}\n\n"
     },
     {
         "buggy_solution": "    if n == 0 {\n        return []float64{1}\n    }\n    my_tri := []float64{1, 3}\n    for i := 2; i < n + 1; i++ {\n        if i &1 == 0 {\n            my_tri = append(my_tri, float64(i) / 2 + 1)\n        } else {\n            my_tri = append(my_tri, my_tri[i - 1] + my_tri[i - 2] + i + (float64(i) + 3) / 2)\n        }\n    }\n    return my_tri\n}\n\n"
@@ -462,7 +462,7 @@
         "buggy_solution": "    strong := extensions[0]\n    \n    my_val := math.MinInt\n    for _, s := range extensions {\n        cnt0, cnt1 := 0, 0\n        for _, c := range s {\n            switch {\n            case 'A' <= c && c <= 'Z':\n                cnt0++\n            case 'a' <= c && c <= 'z':\n                cnt1++\n            }\n        }\n        val := cnt0-cnt1\n        if val > my_val {\n            strong = s\n            my_val = val\n        }\n    }\n    return class_name + strong\n}\n\n"
     },
     {
-        "buggy_solution": "    l := len(b)\n    pat := b + b\n    for i := 0;i < len(a) - l; i++ {\n        for j := 0;j<l;j++ {\n            if a[i:i+l] == pat[j:j+l] {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
+        "buggy_solution": "    l := len(b)\n    pat := b + b\n    for i := 0;i < len(a) - l + 1; i++ {\n        for j := 0;j < len(b) - l + 1;j++ {\n            if a[i:i+l] == pat[j:j+l] {\n                return true\n            }\n        }\n    }\n    return false\n}\n\n"
     },
     {
         "buggy_solution": "    even_count := 0\n    odd_count := 0\n    if num < 0 {\n        num = -num\n    }\n    for _, r := range strconv.Itoa(num) {\n        if r&1==0 {\n            even_count++\n        }\n    }\n    return [2]int{even_count, odd_count}\n}\n\n"
@@ -471,7 +471,7 @@
         "buggy_solution": "    num := []int{1, 4, 5, 9, 10, 40, 50, 90,  \n           100, 400, 500, 900, 1000}\n    sym := []string{\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"}\n    i := 12\n    res := \"\"\n    for number != 0 {\n        div := number / num[i] \n        for div != 0 {\n            res += sym[i] \n            div--\n        }\n        i--\n    }\n    return strings.ToLower(res)\n}\n\n"
     },
     {
-        "buggy_solution": "    return a*a == b*b + c*c || c*c == a*a + b*b\n}\n\n"
+        "buggy_solution": "    return c*c == a*a + b*b\n}\n\n"
     },
     {
         "buggy_solution": "    key := func (word string) (int, string) {\n        set := make(map[rune]struct{})\n        for _, r := range word {\n            set[r] = struct{}{}\n        }\n        return -len(set), word\n    }\n    sort.SliceStable(words, func(i, j int) bool {\n        ia, ib := key(words[i])\n        ja, jb := key(words[j])\n        if ia == ja {\n            return ib < jb\n        }\n    })\n    return words[0]\n}\n\n"

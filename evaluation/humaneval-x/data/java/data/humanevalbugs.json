@@ -102,7 +102,7 @@
         "buggy_solution": "        List<Integer> thirds = new ArrayList<>();\n        for (int i = 0; i < l.size(); i += 3) {\n            thirds.add(l.get(i));\n        }\n        List<Integer> result = l;\n        for (int i = 0; i < l.size(); i += 3) {\n            result.set(i, thirds.get(i / 3));\n        }\n        return result;\n    }\n}"
     },
     {
-        "buggy_solution": "        List<Integer> result = new ArrayList<>(new HashSet<>(l));\n        return result;\n    }\n}"
+        "buggy_solution": "        Collections.sort(l);\n        return l;\n    }\n}"
     },
     {
         "buggy_solution": "        return Collections.min(l);\n    }\n}"
@@ -120,7 +120,7 @@
         "buggy_solution": "        int f0 = 0, f1 = 1;\n        while (true) {\n            int p = f0 + f1;\n            boolean is_prime = p >= 2;\n            for (int k = 2; k < Math.min(Math.sqrt(p), p); k++) {\n                if (p % k == 0) {\n                    is_prime = false;\n                    break;\n                }\n            }\n            if (is_prime) {\n                n -= 1;\n            }\n            if (n == 0) {\n                return p;\n            }\n            f0 = f1;\n            f1 = p;\n        }\n    }\n}"
     },
     {
-        "buggy_solution": "        for (int i = 0; i < l.size(); i++) {\n            for (int j = i + 1; j < l.size(); j++) {\n                for (int k = i + 1; k < l.size(); k++) {\n                    if (l.get(i) + l.get(j) + l.get(k) == 0) {\n                        return true;\n                    }\n                }\n            }\n        }\n        return false;\n    }\n}"
+        "buggy_solution": "        for (int i = 1; i < l.size(); i++) {\n            for (int j = i + 1; j < l.size(); j++) {\n                for (int k = j + 1; k < l.size(); k++) {\n                    if (l.get(i) + l.get(j) + l.get(k) == 0) {\n                        return true;\n                    }\n                }\n            }\n        }\n        return false;\n    }\n}"
     },
     {
         "buggy_solution": "        return n * n * n;\n    }\n}"
@@ -174,10 +174,10 @@
         "buggy_solution": "        List<Integer> l1 = new ArrayList<>(l), l2 = new ArrayList<>(l);\n        Collections.sort(l1);\n        l2.sort(Collections.reverseOrder());\n        return l.equals(l1) && l.equals(l2);\n    }\n}"
     },
     {
-        "buggy_solution": "        Set<Integer> ret = new HashSet<>(l1);\n        ret.retainAll(new HashSet<>(l2));\n        List<Integer> result = new ArrayList<>(ret);\n        return result;\n    }\n}"
+        "buggy_solution": "        Set<Integer> ret = new HashSet<>(l1);\n        List<Integer> result = new ArrayList<>(ret);\n        Collections.sort(result);\n        return result;\n    }\n}"
     },
     {
-        "buggy_solution": "        int largest = 1;\n        for (int j = 2; j <= n; j++) {\n            if (n % j == 0) {\n                boolean is_prime = j >= 2;\n                for (int i = 2; i < j - 2; i++) {\n                    if (j % i == 0) {\n                        is_prime = false;\n                        break;\n                    }\n                }\n                if (is_prime) {\n                    largest = Math.max(largest, j);\n                }\n            }\n        }\n        return largest;\n    }\n}"
+        "buggy_solution": "        int largest = 1;\n        for (int j = 2; j <= n; j++) {\n            if (n % j == 0) {\n                boolean is_prime = j >= 2;\n                for (int i = 2; i < j - 1; i++) {\n                    if (n % i == 0) {\n                        is_prime = false;\n                        break;\n                    }\n                }\n                if (is_prime) {\n                    largest = Math.max(largest, j);\n                }\n            }\n        }\n        return largest;\n    }\n}"
     },
     {
         "buggy_solution": "        int result = 0;\n        for (int i = 1; i < n; i++) {\n            result += i;\n        }\n        return result;\n    }\n}"
@@ -276,7 +276,7 @@
         "buggy_solution": "        String [] sentences = S.split(\"[.?!]\\s*\");\n        int count = 0;\n        for (String sentence : sentences) {\n            if (sentence.subSequence(0, 2).equals(\" I\")) {\n                count += 1;\n            }\n        }\n        return count;\n    }\n}"
     },
     {
-        "buggy_solution": "        if (x instanceof Integer && y instanceof Integer && z instanceof Integer) {\n            return (int) x * (int) y == (int) z || (int) x * (int) z == (int) y || (int) y * (int) z == (int) x || (int) x + (int) y == (int) z || (int) x + (int) z == (int) y || (int) y + (int) z == (int) x || (int) x - (int) y == (int) z || (int) x - (int) z == (int) y || (int) y - (int) z == (int) x;\n        }\n        return false;\n    }\n}"
+        "buggy_solution": "        if (x instanceof Integer && y instanceof Integer && z instanceof Integer) {\n            return (int) x + (int) y == (int) z || (int) y + (int) z == (int) x;\n        }\n        return false;\n    }\n}"
     },
     {
         "buggy_solution": "        String vowels = \"aeiou\";\n        StringBuilder sb = new StringBuilder();\n        for (char c : message.toCharArray()) {\n            char ch = c;\n            if (Character.isUpperCase(ch)) {\n                ch = Character.toLowerCase(ch);\n                if (vowels.indexOf(ch) != -1) {\n                    ch = (char) ('a' + ((ch - 'a' + 28) % 26));\n                }\n            } else if (Character.isLowerCase(ch)) {\n                ch = Character.toUpperCase(ch);\n                if (vowels.indexOf(ch) != -1) {\n                    ch = (char) ('A' + ((ch - 'A' + 28) % 26));\n                }\n            }\n            sb.append(ch);\n        }\n        return sb.toString();\n    }\n}"
@@ -303,7 +303,7 @@
         "buggy_solution": "        List<Integer> result = new ArrayList<>();\n        for (int i = 0; i < n; i++) {\n            result.add(n + 2 * i + i);\n        }\n        return result;\n    }\n}"
     },
     {
-        "buggy_solution": "        if (s.length() == 0) {\n            return List.of();\n        }\n        StringBuilder sb = new StringBuilder();\n\n        for (char letter : s.toCharArray()) {\n            if (letter == ',') {\n                sb.append('  ');\n            } else {\n                sb.append(letter);\n            }\n        }\n\n        return new ArrayList<>(Arrays.asList(sb.toString().split(\"\\s+\" )));\n    }\n}"
+        "buggy_solution": "        if (s.length() == 0) {\n            return List.of();\n        }\n        StringBuilder sb = new StringBuilder();\n\n        for (char letter : s.toCharArray()) {\n            if (letter == ',') {\n                sb.append(',');\n            } else {\n                sb.append(letter);\n            }\n        }\n\n        return new ArrayList<>(Arrays.asList(sb.toString().split(\"\\s+\" )));\n    }\n}"
     },
     {
         "buggy_solution": "        if (x > y) {\n            return -1;\n        }\n        if (y % 2 == 0) {\n            return y;\n        }\n        if (x == y) {\n            return -1;\n        }\n        return x - 1;\n    }\n}"
@@ -342,7 +342,7 @@
         "buggy_solution": "        List<String> res = new ArrayList<>();\n        for (String arr : lst) {\n            int n = 0;\n            for (char d : arr.toCharArray()) {\n                if ((d - '0') % 2 == 1) {\n                    n += 1;\n                }\n            }\n            res.add(\"the number of odd elements \" + n + \"n the str\" + n + \"ng \" + n + \" of \" + n + \" the \" + n + \"nput.\" );\n        }\n        return res;\n    }\n}"
     },
     {
-        "buggy_solution": "        int minSum = Integer.MAX_VALUE;\n        int sum = 0;\n        for (Integer num : nums) {\n            sum += num;\n            if (minSum > sum) {\n                minSum = sum + 1;\n            }\n            if (sum > 0) {\n                sum = 0;\n            }\n        }\n        return minSum;\n    }\n}"
+        "buggy_solution": "        int minSum = Integer.MIN_VALUE;\n        int sum = 0;\n        for (Integer num : nums) {\n            sum += num;\n            if (minSum > sum) {\n                minSum = sum ;\n            }\n            if (sum > 0) {\n                sum = 0;\n            }\n        }\n        return minSum;\n    }\n}"
     },
     {
         "buggy_solution": "        int sum = 0;\n        for (List<Integer> arr : grid) {\n            sum += Math.floor((double) arr.stream().reduce(Integer::sum).get() / capacity);\n        }\n        return sum;\n    }\n}"
@@ -387,7 +387,7 @@
         "buggy_solution": "        if (arr.size() == 0) {\n            return Optional.empty();\n        }\n        if (arr.contains(0)) {\n            return Optional.of(0);\n        }\n        int prod = (int) (-2 * (arr.stream().filter(p -> p < 0).count() % 2) + 1 * 2);\n        return Optional.of(prod * (arr.stream().map(Math::abs).reduce(Integer::sum)).get());\n    }\n}"
     },
     {
-        "buggy_solution": "        int n = grid.size();\n        int val = n * 2 + 1;\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (grid.get(i).get(j) == 1) {\n                    List<Integer> temp = new ArrayList<>();\n                    if (i != 0) {\n                        temp.add(grid.get(i - 1).get(j));\n                    }\n                    if (j != 0) {\n                        temp.add(grid.get(i).get(j - 1));\n                    }\n                    if (i != n - 1) {\n                        temp.add(grid.get(i + 1).get(j));\n                    }\n                    if (j != n - 1) {\n                        temp.add(grid.get(i).get(j + 1));\n                    }\n                    val = Collections.min(temp);\n                }\n            }\n        }\n        List<Integer> ans = new ArrayList<>();\n        for (int i = 0; i < k; i++) {\n            if (i % 2 == 0) {\n                ans.add(1);\n            } else {\n                ans.add(val);\n            }\n        }\n        return ans;\n    }\n}"
+        "buggy_solution": "        int n = grid.size();\n        int val = n * n + 1;\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (grid.get(i).get(j) == 1) {\n                    List<Integer> temp = new ArrayList<>();\n                    if (i != 0) {\n                        temp.add(grid.get(i).get(j));\n                    }\n                    if (j != 0) {\n                        temp.add(grid.get(i).get(j));\n                    }\n                    if (i != n - 1) {\n                        temp.add(grid.get(i).get(j));\n                    }\n                    if (j != n - 1) {\n                        temp.add(grid.get(i).get(j));\n                    }\n                    val = Collections.min(temp);\n                }\n            }\n        }\n        List<Integer> ans = new ArrayList<>();\n        for (int i = 0; i < k; i++) {\n            if (i % 2 == 0) {\n                ans.add(1);\n            } else {\n                ans.add(val);\n            }\n        }\n        return ans;\n    }\n}"
     },
     {
         "buggy_solution": "        if (n == 0) {\n            return List.of(1);\n        }\n        List<Integer> my_tri = new ArrayList<>(Arrays.asList(1, 3));\n        for (int i = 2; i <= n; i++) {\n            if (i % 2 == 0) {\n                my_tri.add(i / 2 + 1);\n            } else {\n                my_tri.add(my_tri.get(my_tri.size() - 1) + my_tri.get(my_tri.size() - 2) + i + (i + 3) / 2);\n            }\n        }\n        return my_tri;\n    }\n}"
@@ -462,7 +462,7 @@
         "buggy_solution": "        String strong = extensions.get(0);\n        int my_val = (int) (strong.chars().filter(Character::isUpperCase).count() - strong.chars().filter(Character::isLowerCase).count());\n        for (String s : extensions) {\n            int val = (int) (s.chars().filter(Character::isUpperCase).count() - s.chars().filter(Character::isLowerCase).count());\n            if (val > my_val) {\n                strong = s;\n                my_val = val;\n            }\n        }\n        return class_name + strong;\n    }\n}"
     },
     {
-        "buggy_solution": "        int l = b.length();\n        String pat = b + b;\n        for (int i = 0; i < a.length() - l; i++) {\n            for (int j = 0; j < l; j++) {\n                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}"
+        "buggy_solution": "        int l = b.length();\n        String pat = b + b;\n        for (int i = 0; i <= a.length() - l; i++) {\n            for (int j = 0; j <= b.length() - l; j++) {\n                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}"
     },
     {
         "buggy_solution": "        int even_count = 0, odd_count = 0;\n        for (char i : String.valueOf(Math.abs(num)).toCharArray()) {\n            if (i % 2 == 0) {\n                even_count += 1;\n            } else {\n                odd_count += 1;\n            }\n        }\n        return Arrays.asList(even_count, odd_count);\n    }\n}"
@@ -471,7 +471,7 @@
         "buggy_solution": "        List<Integer> num = Arrays.asList(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000);\n        List<String> sym = Arrays.asList(\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\", \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\");\n        int i = 12;\n        String res = \"\";\n        while (number > 0) {\n            int div = number / num.get(i);\n            while (div != 0) {\n                res += sym.get(i);\n                div -= 1;\n            }\n            i -= 1;\n        }\n        return res.toLowerCase();\n    }\n}"
     },
     {
-        "buggy_solution": "        return a * a == b * b + c * c || c * c == a * a + b * b;\n    }\n}"
+        "buggy_solution": "        return c * c == a * a + b * b;\n    }\n}"
     },
     {
         "buggy_solution": "        List<String> words_sort = new ArrayList<>(words);\n        words_sort.sort(new Comparator<String>() {\n            @Override\n            public int compare(String o1, String o2) {\n                Set<Character> s1 = new HashSet<>();\n                for (char ch : o1.toCharArray()) {\n                    s1.add(ch);\n                }\n                Set<Character> s2 = new HashSet<>();\n                for (char ch : o2.toCharArray()) {\n                    s2.add(ch);\n                }\n                if (s1.size() > s2.size()) {\n                    return 1;\n                } else {\n                    return -o1.compareTo(o2);\n                }\n            }\n        });\n        return words_sort.get(words_sort.size() - 1);\n    }\n}"

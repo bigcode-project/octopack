@@ -45,8 +45,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    running_max = 1\n    result = []\n\n    for n in numbers:\n        running_max = max(running_max, n)\n\n        result.append(running_max)\n\n    return result\n",
-        "bug_type": "value misuse",
+        "buggy_solution": "    running_max = None\n    result = []\n\n    for n in numbers:\n        if running_max is None:\n            running_max = n\n        else:\n            running_max = max(numbers)\n\n        result.append(running_max)\n\n    return result\n",
+        "bug_type": "variable misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -170,7 +170,7 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    return list(set(l))\n",
+        "buggy_solution": "    return sorted(l)\n",
         "bug_type": "missing logic",
         "failure_symptoms": "incorrect output"
     },
@@ -200,8 +200,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(i + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n",
-        "bug_type": "variable misuse",
+        "buggy_solution": "    for i in range(1, len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n",
+        "bug_type": "value misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -290,13 +290,13 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    ret = set()\n    for e1 in l1:\n        for e2 in l2:\n            if e1 == e2:\n                ret.add(e1)\n    return list(ret)\n",
+        "buggy_solution": "    ret = set()\n    for e1 in l1:\n        for e2 in l2:\n            ret.add(e1)\n    return sorted(list(ret))\n",
         "bug_type": "missing logic",
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    def is_prime(k):\n        if k < 2:\n            return False\n        for i in range(2, k - 1):\n            if k % i == 0:\n                return False\n        return True\n    largest = 1\n    for j in range(2, n):\n        if n % j == 0 and is_prime(j):\n            largest = max(largest, j)\n    return largest\n",
-        "bug_type": "value misuse",
+        "buggy_solution": "    def is_prime(k):\n        if k < 2:\n            return False\n        for i in range(2, k - 1):\n            if k % i == 0:\n                return False\n        return True\n    largest = 1\n    for j in range(2, n + 1):\n        if n % j == 0 and is_prime(n):\n            largest = max(largest, j)\n    return largest\n",
+        "bug_type": "variable misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -460,8 +460,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    \n    if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x*y==z) or (x*z==y) or (y*z==x) or (x+y==z) or (x+z==y) or (y+z==x) or (x-y==z) or (x-z==y) or (y-z==x):\n            return True\n        return False\n    return False\n",
-        "bug_type": "excess logic",
+        "buggy_solution": "    \n    if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x+y==z) or (y+z==x):\n            return True\n        return False\n    return False\n",
+        "bug_type": "missing logic",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -505,8 +505,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    if not s:\n        return []\n\n    s_list = []\n\n    for letter in s:\n        if letter == ',':\n            s_list.append('  ')\n        else:\n            s_list.append(letter)\n\n    s_list = \"\".join(s_list)\n    return s_list.split()\n",
-        "bug_type": "excess logic",
+        "buggy_solution": "    if not s:\n        return []\n\n    s_list = []\n\n    for letter in s:\n        if letter == ',':\n            s_list.append(',')\n        else:\n            s_list.append(letter)\n\n    s_list = \"\".join(s_list)\n    return s_list.split()\n",
+        "bug_type": "value misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -570,8 +570,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    max_sum = 0\n    s = 0\n    for num in nums:\n        s += -num\n        if (s < 0):\n            s = 0\n        max_sum = max(s, max_sum)\n    if max_sum == 0:\n        max_sum = max(-i for i in nums)\n        max_sum = min(s, max_sum)\n    min_sum = -max_sum\n    return min_sum\n",
-        "bug_type": "excess logic",
+        "buggy_solution": "    max_sum = 0\n    s = 0\n    for num in nums:\n        s += -num\n        if (s < 0):\n            s = 0\n        max_sum = max(s, max_sum)\n    if max_sum == 0:\n        max_sum = max(-i for i in nums)\n    min_sum = min(-i for i in nums)\n    return min_sum\n",
+        "bug_type": "function misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -645,7 +645,7 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    n = len(grid)\n    val = n * 2 + 1\n    for i in range(n):\n        for j in range(n):\n            if grid[i][j] == 1:\n                temp = []\n                if i != 0:\n                    temp.append(grid[i - 1][j])\n\n                if j != 0:\n                    temp.append(grid[i][j - 1])\n\n                if i != n - 1:\n                    temp.append(grid[i + 1][j])\n\n                if j != n - 1:\n                    temp.append(grid[i][j + 1])\n\n                val = min(temp)\n\n    ans = []\n    for i in range(k):\n        if i % 2 == 0:\n            ans.append(1)\n        else:\n            ans.append(val)\n    return ans\n",
+        "buggy_solution": "    n = len(grid)\n    val = n * n + 1\n    for i in range(n):\n        for j in range(n):\n            if grid[i][j] == 1:\n                temp = []\n                if i != 0:\n                    temp.append(grid[i][j])\n\n                if j != 0:\n                    temp.append(grid[i][j])\n\n                if i != n - 1:\n                    temp.append(grid[i][j])\n\n                if j != n - 1:\n                    temp.append(grid[i][j])\n\n                val = min(temp)\n\n    ans = []\n    for i in range(k):\n        if i % 2 == 0:\n            ans.append(1)\n        else:\n            ans.append(val)\n    return ans\n",
         "bug_type": "value misuse",
         "failure_symptoms": "incorrect output"
     },
@@ -670,7 +670,7 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": " \n    check = txt.split(' ')[-1]\n    return True if len(check) == 1 and (65 <= ord(check.upper()) <= 122) else False\n",
+        "buggy_solution": " \n    check = txt.split(' ')[-1]\n    return True if len(check) == 1 and (97 <= ord(check.upper()) <= 122) else False\n",
         "bug_type": "function misuse",
         "failure_symptoms": "incorrect output"
     },
@@ -770,8 +770,8 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    l = len(b)\n    pat = b + b\n    for i in range(len(a) - l):\n        for j in range(l):\n            if a[i:i+l] == pat[j:j+l]:\n                return True\n    return False\n",
-        "bug_type": "missing logic",
+        "buggy_solution": "    l = len(b)\n    pat = b + b\n    for i in range(len(a) - l + 1):\n        for j in range(len(b) - l + 1):\n            if a[i:i+l] == pat[j:j+l]:\n                return True\n    return False\n",
+        "bug_type": "value misuse",
         "failure_symptoms": "incorrect output"
     },
     {
@@ -785,7 +785,7 @@
         "failure_symptoms": "infinite loop"
     },
     {
-        "buggy_solution": "    return a*a == b*b + c*c or c*c == a*a + b*b\n",
+        "buggy_solution": "    return c*c == a*a + b*b\n",
         "bug_type": "missing logic",
         "failure_symptoms": "incorrect output"
     },
