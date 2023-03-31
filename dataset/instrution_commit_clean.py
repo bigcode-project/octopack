@@ -260,7 +260,7 @@ ds_clean = ds_clean.map(prepare_code, num_proc=30)
 ds_final = ds_clean.remove_columns(
     ["subject", "message", "new_contents", "old_contents", "returncode", "stderr", "old_change_start", "old_change_end",
      "old_change_range", "new_change_start", 'new_change_end', 'new_change_range', 'n_inserts', 'n_deletes',
-     'n_changes', 'drop_opt_out'])
+     'n_changes'])
 
 print("Finish the data cleaning, the final dataset size is {}".format(len(ds_final)))
 ds_final.push_to_hub(PUSH_DATASET_NAME, private=True)
