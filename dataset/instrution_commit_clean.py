@@ -14,6 +14,7 @@ PUSH_DATASET_NAME = "bigcode/instruction-commits-filter"
 
 # 1.0 mean keep all short commit messages
 SHORT_SAMPLING = 0.2
+LONG_SAMPLING_THRESHOLD = 500
 LONG_SAMPLING = 0.1
 MD_SAMPLING = 1.0
 
@@ -41,23 +42,24 @@ MAX_RANGE = 32
 
 dataset_description = "This dataset is built with the following parameters: \n" \
                         f"The sampling parameters to balance the code modification range as:\n" \
-                        f" SHORT_SAMPLING: {SHORT_SAMPLING}\n" \
-                        f" LONG_SAMPLING: {LONG_SAMPLING}\n" \
-                        f" MD_SAMPLING: {MD_SAMPLING}\n" \
+                        f"  SHORT_SAMPLING: {SHORT_SAMPLING}\n" \
+                        f"  LONG_SAMPLING: {LONG_SAMPLING}\n" \
+                        f"  LONG_SAMPLING_THRESHOLD: {LONG_SAMPLING_THRESHOLD}\n" \
+                        f"  MD_SAMPLING: {MD_SAMPLING}\n" \
                         f"The sampling parameters to balance the programming language as:\n" \
-                        f" DATA_SAMPLING: {DATA_SAMPLING}\n" \
+                        f"  DATA_SAMPLING: {DATA_SAMPLING}\n" \
                         f"The sampling parameters to strictly filter the dataset using it's proba of being a good instruction as:\n" \
-                        f" PROBA_STRICT_FILTERING: {PROBA_STRICT_FILTERING}\n" \
-                        f" STRICT_PROBA_THRESHOLD: {STRICT_PROBA_THRESHOLD}\n" \
+                        f"  PROBA_STRICT_FILTERING: {PROBA_STRICT_FILTERING}\n" \
+                        f"  STRICT_PROBA_THRESHOLD: {STRICT_PROBA_THRESHOLD}\n" \
                         f"The sampling parameters to resample the dataset using it's proba of being a good instruction as:\n" \
-                        f" PROBA_SOFT_RESAMPLING: {PROBA_SOFT_RESAMPLING}\n" \
-                        f" SOFT_PROBA_THRESHOLD: {SOFT_PROBA_THRESHOLD}\n" \
-                        f" SAMPLE_REPEAT_TIMES: {SAMPLE_REPEAT_TIMES}\n" \
-                        f" LOW_QUALITY_SAMPLING_PROB: {LOW_QUALITY_SAMPLING_PROB}\n" \
+                        f"  PROBA_SOFT_RESAMPLING: {PROBA_SOFT_RESAMPLING}\n" \
+                        f"  SOFT_PROBA_THRESHOLD: {SOFT_PROBA_THRESHOLD}\n" \
+                        f"  SAMPLE_REPEAT_TIMES: {SAMPLE_REPEAT_TIMES}\n" \
+                        f"  LOW_QUALITY_SAMPLING_PROB: {LOW_QUALITY_SAMPLING_PROB}\n" \
                         f"The sampling parameters to control the code context range as:\n" \
-                        f" FULL_RANGE_FRAC: {FULL_RANGE_FRAC}\n" \
-                        f" MIN_RANGE: {MIN_RANGE}\n" \
-                        f" MAX_RANGE: {MAX_RANGE}\n"
+                        f"  FULL_RANGE_FRAC: {FULL_RANGE_FRAC}\n" \
+                        f"  MIN_RANGE: {MIN_RANGE}\n" \
+                        f"  MAX_RANGE: {MAX_RANGE}\n"
 
 DATA_EXT = {"json", "yml", "xml", "html"}
 
@@ -218,7 +220,7 @@ def commit_filter(example):
         if random.random() > SHORT_SAMPLING:
             return False
 
-    if example["old_change_range"] >= 200:
+    if example["old_change_range"] >= LONG_SAMPLING_THRESHOLD:
         if random.random() > LONG_SAMPLING:
             return False
 
