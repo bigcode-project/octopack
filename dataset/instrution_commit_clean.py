@@ -13,10 +13,24 @@ DATASET_NAME = "bigcode/instruction-commits"
 PUSH_DATASET_NAME = "bigcode/instruction-commits-filter"
 
 # 1.0 mean keep all short commit messages
-SHORT_SAMPLING = 1.0
+SHORT_SAMPLING = 0.2
 LONG_SAMPLING = 0.1
 MD_SAMPLING = 1.0
+
 DATA_SAMPLING = 1.0
+
+PROBA_STRICT_FILTERING = True
+STRICT_PROBA_THRESHOLD = 0.01
+
+# if enable resampling, it means you want to resample the dataset according to the probability of the
+# commit message being instructions
+PROBA_SOFT_RESAMPLING = False
+SAMPLE_REPEAT_TIMES = 1
+SOFT_PROBA_THRESHOLD = 0.1
+LOW_QUALITY_SAMPLING_PROB = 0.1
+
+assert not (PROBA_STRICT_FILTERING and PROBA_SOFT_RESAMPLING), "You can only enable one of the two options: ENABLE_PROBA_FILTERING and ENABLE_RESAMPLING"
+
 
 # the ratio to control how many examples are fully shown in the model input, 0.2 means 20% examples will have
 # the full code context such as the whole code file as the input
@@ -25,7 +39,25 @@ FULL_RANGE_FRAC = 0.2
 MIN_RANGE = 0
 MAX_RANGE = 32
 
-# the
+dataset_description = "This dataset is built with the following parameters: \n" \
+                        f"The sampling parameters to balance the code modification range as:\n" \
+                        f" SHORT_SAMPLING: {SHORT_SAMPLING}\n" \
+                        f" LONG_SAMPLING: {LONG_SAMPLING}\n" \
+                        f" MD_SAMPLING: {MD_SAMPLING}\n" \
+                        f"The sampling parameters to balance the programming language as:\n" \
+                        f" DATA_SAMPLING: {DATA_SAMPLING}\n" \
+                        f"The sampling parameters to strictly filter the dataset using it's proba of being a good instruction as:\n" \
+                        f" PROBA_STRICT_FILTERING: {PROBA_STRICT_FILTERING}\n" \
+                        f" STRICT_PROBA_THRESHOLD: {STRICT_PROBA_THRESHOLD}\n" \
+                        f"The sampling parameters to resample the dataset using it's proba of being a good instruction as:\n" \
+                        f" PROBA_SOFT_RESAMPLING: {PROBA_SOFT_RESAMPLING}\n" \
+                        f" SOFT_PROBA_THRESHOLD: {SOFT_PROBA_THRESHOLD}\n" \
+                        f" SAMPLE_REPEAT_TIMES: {SAMPLE_REPEAT_TIMES}\n" \
+                        f" LOW_QUALITY_SAMPLING_PROB: {LOW_QUALITY_SAMPLING_PROB}\n" \
+                        f"The sampling parameters to control the code context range as:\n" \
+                        f" FULL_RANGE_FRAC: {FULL_RANGE_FRAC}\n" \
+                        f" MIN_RANGE: {MIN_RANGE}\n" \
+                        f" MAX_RANGE: {MAX_RANGE}\n"
 
 DATA_EXT = {"json", "yml", "xml", "html"}
 
@@ -166,9 +198,10 @@ ds = concatenate_datasets(ds_list)
 
 print("The dataset size is: {}".format(len(ds)))
 
-ds = ds.filter(lambda x: x["proba"] >= 0.9, num_proc=30)
+if PROBA_STRICT_FILTERING:
+    ds = ds.filter(lambda x: x["proba"] >= STRICT_PROBA_THRESHOLD, num_proc=30)
+    print("After proba strict filtering, the dataset size is {}".format(len(ds)))
 
-print("After proba filtering, the dataset size is: {}".format(len(ds)))
 
 ds = ds.filter(lambda x: len(x["old_contents"]) < 100_000, num_proc=30)
 
@@ -230,6 +263,22 @@ ds_clean = ds.filter(commit_filter, num_proc=30)
 
 print("After commit filtering, the dataset size is {}".format(len(ds_clean)))
 
+if PROBA_SOFT_RESAMPLING:
+    # repeat the dataset to make it larger
+    ds_clean = concatenate_datasets([ds_clean] * SAMPLE_REPEAT_TIMES)
+
+    def sub_sampling_based_on_proba(example):
+        proba = example["proba"]
+        if proba > SOFT_PROBA_THRESHOLD:
+            return True
+        elif random.random() < LOW_QUALITY_SAMPLING_PROB:
+            return True
+        return False
+
+
+    ds_clean = ds_clean.filter(sub_sampling_based_on_proba, num_proc=30)
+    print("After high proba filtering, the dataset size is {}".format(len(ds_clean)))
+
 
 def prepare_code(example):
     if np.random.random() < FULL_RANGE_FRAC:
@@ -257,10 +306,16 @@ def prepare_code(example):
 
 ds_clean = ds_clean.map(prepare_code, num_proc=30)
 
+# remove the samples that are too long
+ds_clean = ds_clean.filter(lambda x: x["content"] < 4.0 * 2048, num_proc=30)
+
 ds_final = ds_clean.remove_columns(
     ["subject", "message", "new_contents", "old_contents", "returncode", "stderr", "old_change_start", "old_change_end",
      "old_change_range", "new_change_start", 'new_change_end', 'new_change_range', 'n_inserts', 'n_deletes',
      'n_changes'])
 
 print("Finish the data cleaning, the final dataset size is {}".format(len(ds_final)))
+
+# add metadata
+ds_final.info.description = dataset_description
 ds_final.push_to_hub(PUSH_DATASET_NAME, private=True)
