@@ -163,7 +163,7 @@ def clean_issues_and_refs(example):
     if "#" in subject[-1]:
         subject = subject[:-1]
 
-    example["subject"] = " ".join(subject)
+    example["subject"] = " ".join(subject).strip()
 
     return example
 
@@ -194,7 +194,6 @@ ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
 ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
 
 print("After empty message filtering due to messages with []: :, the dataset size is: {}".format(len(ds)))
-
 
 ds = ds.map(get_line_diff_range, num_proc=NUM_PROC)
 
@@ -237,10 +236,6 @@ def filter_messages(example):
 
     # commit message are hashes like 0239-2a41, but we do not want to remove english words like "debug"
     if re.match(r"^[a-f0-9]+(?:-[a-f0-9]+)*$", lower_subject):
-        return False
-
-    # weird messages that started with a whitespace and only contained one word
-    if lower_subject.startswith(" ") and len(lower_subject.strip().split()) == 1:
         return False
 
     return True
