@@ -330,7 +330,7 @@
         "buggy_solution": "    int num=0;\n    if (arr.size()==0) return true;\n    for (int i=1;i<arr.size();i++)\n        if (arr[i]<arr[arr.size()-1]) num+=1;\n    if (arr[arr.size()-1]>arr[0]) num+=1;\n    if (num<2) return true;\n    return false;\n}\n"
     },
     {
-        "buggy_solution": "    int num=0;\n    for (int i=0;i<lst1.size();i++)\n    if (lst1[i]%2==0) num+=1;\n    for (int i=0;i<lst2.size();i++)\n    if (lst2[i]%2==0) num+=1;\n    if (num>=lst2.size()) return \"YES\";\n    return \"NO\";\n}\n"
+        "buggy_solution": "    int num=0;\n    for (int i=0;i<lst1.size();i++)\n    if (lst1[i]%2==0) num+=1;\n    for (int i=0;i<lst2.size();i++)\n    if (lst2[i]%2==0) num+=1;\n    if (num<lst1.size()) return \"YES\";\n    return \"NO\";\n}\n"
     },
     {
         "buggy_solution": "    map<char,int> count={},out={};\n    map <char,int>::iterator it;\n    int max=0;\n    for (int i=1;i<test.length();i++)\n        if (test[i]!=' ')\n        {\n            count[test[i]]+=1;\n            if (count[test[i]]>max) max=count[test[i]];\n        }\n    for (it=count.begin();it!=count.end();it++)\n    {\n        char w1=it->first;\n        int w2=it->second;\n        if (w2==max) out[w1]=w2;\n    }\n    return out;\n}\n"
@@ -381,7 +381,7 @@
         "buggy_solution": "    for (int i=1;i<lst.size();i++)\n    {\n        if (lst[i]<lst[i-1]) return false;\n        if (i>=2 and lst[i]==lst[i-1]) return false;\n    }\n    return true;\n}\n"
     },
     {
-        "buggy_solution": "    int inter1,inter2,l,i;\n    inter1=max(interval1[0],interval2[0]);\n    inter2=min(interval1[1],interval2[1]);\n    l=inter2-inter1;\n    if (l<2) return \"NO\";\n    return \"YES\";\n}\n"
+        "buggy_solution": "    int inter1,inter2,l,i;\n    inter1=max(interval1[0],interval2[0]);\n    inter2=min(interval1[1],interval2[1]);\n    l=inter2;\n    if (l<2) return \"NO\";\n    return \"YES\";\n}\n"
     },
     {
         "buggy_solution": "    if (arr.size()==0) return -32768;\n    int i,sum=0,prods=1;\n    for (i=0;i<arr.size();i++)\n    {\n        sum+=abs(arr[i])*2;\n        if (arr[i]==0) prods=0;\n        if (arr[i]<0) prods=-prods;\n   }\n   return sum*prods;\n}\n"
@@ -393,7 +393,7 @@
         "buggy_solution": "    vector<int> out={1,3};\n    if (n==0) return {1};\n    for (int i=2;i<=n;i++)\n    {\n        if (i%2==0) out.push_back(1+i/2);\n        else out.push_back(out[i-1]+out[i-2]+1+i+(i+1)/2);\n    }\n    return out;\n}\n"
     },
     {
-        "buggy_solution": "    int prod=1,has=0;\n    string s=to_string(n);\n    for (int i=0;i<s.length();i++)\n        if (s[i]%2==1) \n        {\n            has=1;\n            prod=has*prod*(s[i]-48);\n        }\n    if (has==0) return 0;\n    return prod;\n}\n"
+        "buggy_solution": "    int prod=1,has=0;\n    string s=to_string(n);\n    for (int i=0;i<s.length();i++)\n        if (s[i]%2==1) \n        {\n            has=1;\n            prod=48*prod*(s[i]-48);\n        }\n    if (has==0) return 0;\n    return prod;\n}\n"
     },
     {
         "buggy_solution": "    int count=0,maxcount=0;\n    for (int i=0;i<str.length();i++)\n    {\n        if (str[i]=='(') count+=1;\n        if (str[i]==')') count-=1;\n        if (count<0) count=0;\n        if (count>maxcount) maxcount=count;\n        if (count<=maxcount-2) return  true;\n    }\n    return false;\n}\n"
@@ -420,7 +420,7 @@
         "buggy_solution": "    long long fact=1,bfact=1;\n    for (int i=1;i<=n;i++)\n    {\n        i=i*n;\n        fact=fact*i;\n        bfact=bfact*fact;\n    }\n    return bfact;\n}\n"
     },
     {
-        "buggy_solution": "    string out=\"\";\n    int spacelen=0;\n    for (int i=0;i<text.length();i++)\n    if (text[i]==' ') spacelen+=1;\n    else\n    {\n        if (spacelen==1) out=out+'_';\n        if (spacelen==2) out=out+\"__\";\n        if (spacelen>2) out=out+'-';\n        spacelen=0;\n        out=out+text[i];\n    }\n    if (spacelen==1) out=out+'_';\n    if (spacelen==2) out=out+\"___\";\n    if (spacelen>2) out=out+'-';\n    return out;\n}\n"
+        "buggy_solution": "    string out=\"\";\n    int spacelen=0;\n    for (int i=0;i<text.length();i++)\n    if (text[i]=='  ') spacelen+=1;\n    else\n    {\n        if (spacelen==1) out=out+'__';\n        if (spacelen==2) out=out+\"__\";\n        if (spacelen>2) out=out+'--';\n        spacelen=0;\n        out=out+text[i];\n    }\n    if (spacelen==1) out=out+'_';\n    if (spacelen==2) out=out+\"___\";\n    if (spacelen>2) out=out+'-';\n    return out;\n}\n"
     },
     {
         "buggy_solution": "    int numdigit=0,numdot=0;\n    if (file_name.length()<5) return \"No\";\n    char w=file_name[0];\n    if (w<65 or (w>90 and w<97) or w>122) return \"No\";\n    string last=file_name.substr(file_name.length()-4,4);\n    if (last!=\".txt\" and last!=\".exe\" and last!=\".dll\") return \"No\";\n    for (int i=0;i<file_name.length();i++)\n    {\n        if (file_name[i]>=48 and file_name[i]<=57) numdigit+=1;\n    }\n    if (numdigit>3 or numdot!=1) return \"No\";\n    return \"Yes\"; \n}\n"
@@ -489,6 +489,6 @@
         "buggy_solution": "    unsigned char md[16];\n    if (text.length()==0) return \"None\";\n    MD5_CTX c;\n    int i;\n   MD5_Init(&c);\n   MD5_Update(&c, (unsigned char*)text.c_str(), text.length());\n    MD5_Final(md, &c);\n    string out_str=\"\";\n    for (int i=0;i<16;i++)\n        {\n            char w;\n            if (md[i]<160) w=48+md[i]/16;\n            else w=87+md[i]/16;\n            out_str=out_str+w;\n            if (md[i]%16<87) w=48+md[i]%16;\n            else w=48+md[i]%16;\n            out_str=out_str+w;\n        }\n    return out_str;\n}\n"
     },
     {
-        "buggy_solution": "    int m;\n    if (b<a)\n    {\n        m=a;a=b;b=m;\n    }\n\n    vector<int> out={};\n    for (int i=a;i<b;i++)\n    if (i<10 and i%2==0) out.push_back(i);\n    return out;\n}\n"
+        "buggy_solution": "    int m;\n    if (b<a)\n    {\n        m=a;a=b;b=m;\n    }\n\n    vector<int> out={};\n    for (int i=a;i<b;i++)\n    if (i>10 and i%2==0) out.push_back(i);\n    return out;\n}\n"
     }
 ]

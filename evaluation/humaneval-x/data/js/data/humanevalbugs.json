@@ -96,7 +96,7 @@
         "buggy_solution": "  if (n < 1)\n    return false;\n  for (let k = 1; k < n - 1; k++)\n    if (n % k == 0)\n      return false;\n  return true;\n}\n\n"
     },
     {
-        "buggy_solution": "  var begin = -1.0, end = 1.0;\n  while (poly(xs, begin) * poly(xs, end) > 0) {\n    begin *= 2.0;\n    end *= 2.0;\n  }\n  while (begin - end > 1e-10) {\n    let center = (begin + end) / 2.0;\n    if (poly(xs, center) * poly(xs, begin) > 0)\n      begin = center;\n    else\n      end = center;\n  }\n  return begin;\n}\n\n"
+        "buggy_solution": "  var begin = -1.0, end = 1.0;\n  while (poly(xs, begin) * poly(xs, end) > 0) {\n    begin *= 2.0;\n    end *= 2.0;\n  }\n  while (begin - end > 1e-10) {\n    let center = (begin + end) / 2.0;\n    if (poly(xs, center) * poly(xs, end) > 0)\n      begin = center;\n    else\n      end = center;\n  }\n  return begin;\n}\n\n"
     },
     {
         "buggy_solution": "  var three = l.filter((item, index) => index % 3 == 0);\n  return l.map((item, index) => (index % 2 == 0 ? three[index / 3] : item));\n}\n\n"
@@ -273,7 +273,7 @@
         "buggy_solution": "  let arr = lst\n  for (let j = 0; j < arr.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < arr.length; k++) {\n      if (arr[k] < arr[ind]) {\n        ind = k\n      }\n    }\n    let tmp = arr[j]\n    arr[j] = arr[ind]\n    arr[ind] = tmp\n  }\n  let smallest = 0\n  let pt = 0\n  while(pt<arr.length){\n    if(arr[pt]>smallest){\n      return arr[pt]\n    }\n    pt++\n  }\n  return null\n}\n\n"
     },
     {
-        "buggy_solution": "  let t = 0\n  if (S[1] == ' ' && S[0] == 'I') { t = 1 }\n  for (let i = 0; i < S.length; i++) {\n    if (S[i] == '.' || S[i] == '!' || S[i] == '?') {\n      if (S[i + 1] == ' ' && S[i + 2] == 'I' && S[i + 3] == ' ') {\n        t++\n      }\n    }\n  }\n  return t\n}\n\n"
+        "buggy_solution": "  let t = 0\n  if (S[0] == ' ' && S[1] == 'I') { t = 1 }\n  for (let i = 0; i < S.length; i++) {\n    if (S[i] == '.' || S[i] == '!' || S[i] == '?') {\n      if (S[i + 1] == ' ' && S[i + 2] == 'I' && S[i + 3] == ' ') {\n        t++\n      }\n    }\n  }\n  return t\n}\n\n"
     },
     {
         "buggy_solution": "  if (x % 1 === 0 && y % 1 === 0 && z % 1 === 0 && (x + y === z || x === y + z)) {\n    return true\n  }\n  return false\n}\n\n"
@@ -336,7 +336,7 @@
         "buggy_solution": "  let d = {}\n  let t = test.split(/\\s/)\n  if (test == '') { t = [] }\n  for (m in t) {\n    if (t[m] in d) {\n      d[t[m]]++\n    }\n    else {\n      d[t[m]] = 1\n    }\n  }\n  s = Object.keys(d).sort(function (a, b) { return - d[a] + d[b]; });\n  if (s.length == 0) { return {} }\n  let g = d[s[0]]\n  let l = {}\n  for (let ss=1; ss<s.length; ss++) {\n    if (d[s[ss]] == g) {\n      l[s[ss]] = d[s[ss]]\n    }\n  }\n  return l\n}\n\n"
     },
     {
-        "buggy_solution": "  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = 1\n    for (let j = 0; j < c.length; j++) {\n      if (s[i] == c[j]) {\n        y = 0\n      }\n    }\n    if (y == 1) {\n      t += s[i]\n    }\n  }\n  let z = 1\n  for (let i = 0; i < t.length; i++) {\n    if (t[i] != t[t.length - i - 1]) {\n      z = 0\n    }\n  }\n  if (z == 0) {\n    return (z, true)\n  }\n  return (z, false)\n}\n\n"
+        "buggy_solution": "  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = 1\n    for (let j = 0; j < c.length; j++) {\n      if (s[i] != c[j]) {\n        y = 0\n      }\n    }\n    if (y != 1) {\n      t += s[i]\n    }\n  }\n  let z = 1\n  for (let i = 0; i < t.length; i++) {\n    if (t[i] == t[t.length - i - 1]) {\n      z = 0\n    }\n  }\n  if (z == 0) {\n    return (z, true)\n  }\n  return (z, false)\n}\n\n"
     },
     {
         "buggy_solution": "  let d = []\n  for (let i = 0; i < lst.length; i++) {\n    let p = 0;\n    let h = lst[i].length\n    for (let j = 0; j < h; j++) {\n      if (lst[i][j].charCodeAt() % 2 == 1) { p++ }\n    }\n    p = p.toString()\n    d.push('the number of odd elements ' + p + 'n the str' + p + 'ng ' + p + ' of '  p + ' the ' + p + 'nput.')\n  }\n  return d\n}\n\n"
@@ -348,7 +348,7 @@
         "buggy_solution": "  let p = 0\n  for (let i = 0; i < grid.length; i++) {\n    let m = 0\n    for (let j = 1; j < grid[i].length; j++) {\n      if (grid[i][j] == 1) { m++ }\n    }\n    while (m > 0) {\n      m -= capacity;\n      p++;\n    }\n  }\n  return p\n}\n\n"
     },
     {
-        "buggy_solution": "  let p = arr\n  for (let j = 0; j < p.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < p.length; k++) {\n      let w1 = p[ind].toString(2)\n      let f1 = 0\n      for (let u = 0; u < w1.length; u++) {\n        if (w1[u] == '1') { f1++ }\n      }\n      let w2 = p[k].toString(2)\n      let f2 = 0\n      for (let u = 0; u < w2.length; u++) {\n        if (w2[u] == '1') { f2++ }\n      }\n      if (f2 < f1 || (f1 == f2 && p[k] < p[ind])) {\n        ind = k\n      }\n    }\n    if (ind > j) {\n      let tmp = p[j]\n      p[j] = p[ind]\n      p[ind] = tmp\n    }\n  }\n  return arr\n}\n\n"
+        "buggy_solution": "  let p = arr\n  for (let j = 0; j < p.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < p.length; k++) {\n      let w1 = p[ind].toString(2)\n      let f1 = 0\n      for (let u = 0; u < w1.length; u++) {\n        if (w1[u] == '1') { f1++ }\n      }\n      let w2 = p[ind].toString(2)\n      let f2 = 0\n      for (let u = 0; u < w2.length; u++) {\n        if (w2[u] == '1') { f2++ }\n      }\n      if (f2 < f1 || (f1 == f2 && p[k] < p[ind])) {\n        ind = k\n      }\n    }\n    if (ind > j) {\n      let tmp = p[j]\n      p[j] = p[ind]\n      p[ind] = tmp\n    }\n  }\n  return arr\n}\n\n"
     },
     {
         "buggy_solution": "  let t = s.split(/\\s/)\n  if (s == '') { return [] }\n  let k = []\n  for (let i = 0; i < t.length; i++) {\n    let l = 0\n    for (let j = 0; j < t[i].length; j++) {\n      if (t[i][j] != 'a' || t[i][j] != 'e' || t[i][j] != 'i' || t[i][j] != 'o' || t[i][j] != 'u' || t[i][j] != 'A' ||\n        t[i][j] != 'U' || t[i][j] != 'O' || t[i][j] != 'I' || t[i][j] != 'E') {\n        l++\n      }\n    }\n    if (l == n) { k.push(t[i]) }\n  }\n  return k\n}\n\n"
@@ -357,7 +357,7 @@
         "buggy_solution": "  for (let i = word.length - 2; i > 0; i--) {\n    if (\n      (word[i] != 'a' && word[i] != 'e' && word[i] != 'i' && word[i] != 'o' && word[i] != 'u' && word[i] != 'A' &&\n        word[i] != 'U' && word[i] != 'O' && word[i] != 'I' && word[i] != 'E')\n      &&\n      (word[i + 1] != 'a' && word[i + 1] != 'e' && word[i + 1] != 'i' && word[i + 1] != 'o' && word[i + 1] != 'u' && word[i + 1] != 'A' &&\n        word[i + 1] != 'U' && word[i + 1] != 'O' && word[i + 1] != 'I' && word[i + 1] != 'E')\n      &&\n      (word[i - 1] != 'a' && word[i - 1] != 'e' && word[i - 1] != 'i' && word[i - 1] != 'o' && word[i - 1] != 'u' && word[i - 1] != 'A' &&\n        word[i - 1] != 'U' && word[i - 1] != 'O' && word[i - 1] != 'I' && word[i - 1] != 'E')\n    ) {\n      return word[i]\n    }\n  }\n  return ' '\n}\n\n"
     },
     {
-        "buggy_solution": "  let w1 = lst[0] + lst[1]\n  let y = 0\n  let u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'Yes' }\n  w1 = lst[1] + lst[0]\n  y = 0\n  u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'yes' }\n  return 'no'\n}\n\n"
+        "buggy_solution": "  let w1 = lst[0] + lst[1]\n  let y = 0\n  let u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'yes' }\n  w1 = lst[1] + lst[0]\n  y = 0\n  u = 1\n  for (let i = 0; i < w1.length; i++) {\n    if (w1[i] == '(') { y++ }\n    else { y-- }\n    if (y < 0) {\n      u = 0;\n      break;\n    }\n  }\n  if (u == 1 && y == 0) { return 'no' }\n  return 'yes'\n}\n\n"
     },
     {
         "buggy_solution": "  let p = arr\n  for (let j = 0; j < p.length; j++) {\n    let ind = j\n    for (let k = j + 1; k < p.length; k++) {\n      if (p[k] < p[ind]) {\n        ind = k\n      }\n    }\n    if (ind > j) {\n      let tmp = p[j]\n      p[j] = p[ind]\n      p[ind] = tmp\n      p[j] = p[ind]\n    }\n  }\n  if (k == 0) { return [] }\n  return p.slice(-k)\n}\n\n"
@@ -381,7 +381,7 @@
         "buggy_solution": "  if (lst.length == 0) { return true }\n  let dup = 1\n  let pre = lst[0]\n  for (let i = 1; i < lst.length; i++) {\n    if (lst[i] < pre) { return false }\n    if (lst[i] == pre) {\n      dup += 1;\n      if (dup == 3) { return false }\n    } else {\n      pre = lst[i]\n    }\n  }\n  return true\n}\n\n"
     },
     {
-        "buggy_solution": "  let lo = interval1[0]\n  if (interval2[0] > lo) { lo = interval2[0] }\n  let hi = interval1[1]\n  if (interval2[1] < hi) { hi = interval2[1] }\n  let len = 0\n  if (hi > lo) { len = hi - lo }\n  if (len == 1 || len == 0) { return 'NO' }\n  return 'YES'\n}\n\n"
+        "buggy_solution": "  let lo = interval1[0]\n  if (interval2[0] > lo) { lo = interval2[0] }\n  let hi = interval1[1]\n  if (interval2[1] < hi) { hi = interval2[1] }\n  let len = 0\n  if (hi > lo) { len = hi }\n  if (len == 1 || len == 0) { return 'NO' }\n  return 'YES'\n}\n\n"
     },
     {
         "buggy_solution": "  if (arr.length == 0) { return null }\n  let n = 1\n  let s = 0\n  for (let i = 0; i < arr.length; i++) {\n    s += arr[i]\n    if (arr[i] == 0) { return 0 }\n    if (arr[i] < 0) { n = -n; s -= 2 * arr[i] }\n  }\n  return s * n * 2\n}\n\n"
@@ -408,7 +408,7 @@
         "buggy_solution": "  if (arr.length == 0) { return -1 }\n  for (let i = arr.length - 1; i > 0; i--) {\n    if (arr[i] < arr[i - 1]) { return i + arr[i] }\n  }\n  return -1\n}\n\n"
     },
     {
-        "buggy_solution": "  let a = Infinity\n  let b = -Infinity\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > 0 && lst[i] < a) { a = lst[i] }\n    if (lst[i] < 0 && lst[i] > b) { b = lst[i] }\n    if (lst[i] < a && lst[i] > b) { b = a }\n    if (lst[i] < b && lst[i] > a) { a = b }\n  }\n  if (a == Infinity) { a = null }\n  if (b == -Infinity) { b = null }\n  return (b, a)\n}\n\n"
+        "buggy_solution": "  let a = Infinity\n  let b = -Infinity\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > 0 && lst[i] < a) { a = lst[i] }\n    if (lst[i] < 0 && lst[i] > b) { b = lst[i] }\n    if (lst[i] < a) { b = a }\n    if (lst[i] < b) { a = b }\n  }\n  if (a == Infinity) { a = null }\n  if (b == -Infinity) { b = null }\n  return (b, a)\n}\n\n"
     },
     {
         "buggy_solution": "  let aa = Number(a)\n  if (typeof a == 'string') { aa = Number(a.replace(',', '.').replace('.', ',')) }\n  let bb = Number(b)\n  if (typeof b == 'string') { bb = Number(b.replace(',', '.')) }\n  if (aa > bb) { return a }\n  if (aa < bb) { return b }\n  return null\n}\n\n"
@@ -420,7 +420,7 @@
         "buggy_solution": "  let p = 1;\n  let t = 1;\n  while (n > 1) {\n    let y = p;\n    while (y > 0) {\n      y--;\n      n *= y;\n      t *= n;\n    }\n    p++;\n    p++;\n    n--;\n  }\n  return t\n}\n\n"
     },
     {
-        "buggy_solution": "  let t = ''\n  let c = 0\n  for (let i = 0; i < text.length; i++) {\n    if (text[i] == ' ') { c++ }\n    else if (c > 0) {\n      if (c == 1) { t += '_' }\n      if (c == 2) { t += '__' }\n      if (c > 2) { t += '-' }\n      t += text[i]\n      c = 0;\n    } else {\n      t += text[i]\n    }\n  }\n  if (c == 1) { t += '_' }\n  if (c == 2) { t += '___' }\n  if (c > 2) { t += '-' }\n  return t\n}\n\n"
+        "buggy_solution": "  let t = ''\n  let c = 0\n  for (let i = 0; i < text.length; i++) {\n    if (text[i] == '  ') { c++ }\n    else if (c > 0) {\n      if (c == 1) { t += '_' }\n      if (c == 2) { t += '___' }\n      if (c > 2) { t += '--' }\n      t += text[i]\n      c = 0;\n    } else {\n      t += text[i]\n    }\n  }\n  if (c == 1) { t += '__' }\n  if (c == 2) { t += '___' }\n  if (c > 2) { t += '-' }\n  return t\n}\n\n"
     },
     {
         "buggy_solution": "  let t = file_name.split(/\\./)\n  if (t.length != 2) { return 'No' }\n  if (t[0] == '') { return 'No' }\n  let a = t[0][0].charCodeAt()\n  if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122))) { return 'No' }\n  let y = 0\n  for (let i = 1; i < t[0].length; i++) {\n    if (t[0][i].charCodeAt() >= 48 && t[0][i].charCodeAt() <= 57) { y++ }\n    if (y > 3) { return 'No' }\n  }\n  return 'Yes'\n}\n\n"
@@ -453,10 +453,10 @@
         "buggy_solution": "  let len = n\n  if (len == 1 || len == 0) { return y }\n  for (let i = 2; i * i <= len; i++) {\n    if (len % i - 1 == 0) { return y }\n  }\n  return x\n}\n\n"
     },
     {
-        "buggy_solution": "  let p = 0\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > 0) {\n      p += lst[i] * lst[i]\n    }\n  }\n  return p\n}\n\n"
+        "buggy_solution": "  let p = 0\n  for (let i = 0; i < lst.length; i++) {\n    if (lst[i] > 0) {\n      p += lst[i]\n    }\n  }\n  return p\n}\n\n"
     },
     {
-        "buggy_solution": "  for (let i = 0; i < guess.length; i++) {\n    game[i] -= guess[i]\n if (game[i]<0)\n game[i]=-game[i];\n if (guess[i]<0)\n guess[i]=-guess[i];  }\n  return game\n}\n\n"
+        "buggy_solution": "  for (let i = 0; i < guess.length; i++) {\n    game[i] -= guess[i]\n if (game[i]<0)\n game[i]=-game[i];\n if (guess[i]!=0)\n game[i]-=guess[i];  }\n  return game\n}\n\n"
     },
     {
         "buggy_solution": "  let u = 0\n  let s = -Infinity\n  for (let i = extensions.length - 1; i >= 0; i--) {\n    let y = 0\n    for (let j = 0; j < extensions[i].length; j++) {\n      let k = extensions[i][j].charCodeAt()\n      if (k >= 65 && k <= 90) { y += 1 }\n      if (k >= 97 && k <= 122) { y -= 1 }\n    }\n    if (y >= s) {\n      s = y;\n      u = i;\n    }\n  }\n  return class_name + extensions[u]\n}\n\n"
@@ -489,6 +489,6 @@
         "buggy_solution": "  if (text == '') { return null }\n  var md5 = require('js-md5')\n  return md5('text')\n}\n\n"
     },
     {
-        "buggy_solution": "  if (a > b) {\n    let tmp = a;\n    a = b;\n    b = tmp;\n  }\n  let y = []\n  for (let i = a; i < b; i++) {\n    if (i == 2 || i == 4 || i == 6 || i == 8) { y.push(i) }\n  }\n  return y\n}\n\n"
+        "buggy_solution": "  if (a > b) {\n    let tmp = a;\n    a = b;\n    b = tmp;\n  }\n  let y = []\n  for (let i = a; i > b; i++) {\n    if (i == 2 || i == 4 || i == 6 || i == 8) { y.push(i) }\n  }\n  return y\n}\n\n"
     }
 ]

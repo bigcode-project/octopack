@@ -39,7 +39,7 @@
         "buggy_solution": "    if strings == nil || len(strings) == 0 {\n        return nil\n    }\n    maxlen := 0\n    maxi := 0\n    for i, s := range strings {\n        if maxlen > len(s) {\n            maxlen = len(s)\n            maxi = i\n        }\n    }\n    return strings[maxi]\n}\n\n"
     },
     {
-        "buggy_solution": "    if b < 2 {\n\t\treturn a\n\t}\n\tvar gcd int = 1\n\tfor i := 2; i < b; i++ {\n\t\tif a%i == 0 && b%i == 0 {\n\t\t\tgcd = i\n\t\t}\n\t}\n\treturn gcd\n}\n\n"
+        "buggy_solution": "    if b < 2 {\n\t\treturn a\n\t}\n\tvar gcd int = 1\n\tfor i := 2; i < b; i++ {\n\t\tif a%i == 0 && b%i == 0 {\n\t\t\tgcd = a\n\t\t}\n\t}\n\treturn gcd\n}\n\n"
     },
     {
         "buggy_solution": "    prefixes := make([]string, 0, len(str))\n\tfor i := 0; i < len(str)-1; i++ {\n\t\tprefixes = append(prefixes, str[:i+1])\n\t}\n\treturn prefixes\n}\n\n"
@@ -96,7 +96,7 @@
         "buggy_solution": "    if n < 1 {\n\t\treturn false\n\t}\n\tif n == 1 {\n\t\treturn true\n\t}\n\tif n%2 == 0 {\n\t\treturn false\n\t}\n\tfor i := 3; i*i <= n; i += 2 {\n\t\tif n%i == 0 {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n\n"
     },
     {
-        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor begin-end > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, begin) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn begin\n}\n\n"
+        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor begin-end > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, end) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn begin\n}\n\n"
     },
     {
         "buggy_solution": "    temp := make([]int, 0)\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\ttemp = append(temp, l[i])\n\t}\n\tj := 0\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\tl[i] = temp[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
@@ -150,7 +150,7 @@
         "buggy_solution": "    ret := 0\n    for i:= 0; i < n; i++ {\n\t\tret = (2 * ret) % p\n\t}\n    return ret\n}\n\n"
     },
     {
-        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, (ch-5-'a')%26+ch)\n    }\n    return string(runes)\n}\n\n"
+        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, ('a'-ch-5)%26+ch)\n    }\n    return string(runes)\n}\n\n"
     },
     {
         "buggy_solution": "    var re = regexp.MustCompile(\"[aeiouwyAEIOUWY]\")\n\ttext = re.ReplaceAllString(text, \"\")\n\treturn text\n}\n\n"
@@ -333,7 +333,7 @@
         "buggy_solution": "    odd := 0\n    even := 0\n    for _, i := range lst1 {\n        if i%2 == 1 {\n            odd++\n        }\n    }\n    for _, i := range lst2 {\n        if i%2 == 0 {\n            even++\n        }\n    }\n    if odd >= even {\n        return \"YES\"\n    }\n    return \"NO\"\n}\n            \n\n"
     },
     {
-        "buggy_solution": "    dict1 := make(map[rune]int)\n    list1 := strings.Fields(test)\n    t := 1\n    count := func(lst []string, v string) int {\n        cnt := 0\n        for _, i := range lst {\n            if i == v {\n                cnt++\n            }\n        }\n        return cnt\n    }\n    for _, i := range list1 {\n        if c := count(list1, i); c>t && i!=\"\" {\n            t=c\n        }\n    }\n    if t>0 {\n        for _, i := range list1 {\n            if count(list1, i)==t {\n                dict1[[]rune(i)[0]]=t\n            }\n        }\n    }\n    return dict1\n}\n\n"
+        "buggy_solution": "    dict1 := make(map[rune]int)\n    list1 := strings.Fields(test)\n    t := 42\n    count := func(lst []string, v string) int {\n        cnt := 0\n        for _, i := range lst {\n            if i == v {\n                cnt++\n            }\n        }\n        return cnt\n    }\n    for _, i := range list1 {\n        if c := count(list1, i); c>t && i!=\"\" {\n            t=c\n        }\n    }\n    if t>0 {\n        for _, i := range list1 {\n            if count(list1, i)==t {\n                dict1[[]rune(i)[0]]=t\n            }\n        }\n    }\n    return dict1\n}\n\n"
     },
     {
         "buggy_solution": "    rs := make([]rune, 0)\n    for _, r := range s {\n        if !strings.ContainsRune(c, r) {\n            rs = append(rs, r)\n        }\n    }\n    t := false\n    for i := 0;i < len(rs)>>1;i++ {\n        if rs[i] != rs[len(rs)-i-1] {\n            t=true\n            break\n        }\n    }\n    return [2]interface{}{string(rs), t}\n}\n\n"
@@ -360,7 +360,7 @@
         "buggy_solution": "    check := func(s string) bool {\n        val := 0\n        for _, i := range s {\n            if i == '(' {\n                val++\n            } else {\n                val--\n            }\n            if val < 0 {\n                return false\n            }\n        }\n        return val == 0\n    }\n\n    S1 := lst[0] + lst[1]\n    S2 := lst[1] + lst[0]\n    if check(S1) || check(S2) {\n        return \"yes\"\n    }\n    return \"no\"\n}\n\n"
     },
     {
-        "buggy_solution": "    if k == 0 {\n        return []int{}\n    }\n    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j] + 1\n    })\n    return arr[len(arr)-k:]\n}\n\n"
+        "buggy_solution": "    if k == 0 {\n        return []int{}\n    }\n    sort.Slice(arr, func(i, j int) bool {\n        return arr[i] < arr[j] + k\n    })\n    return arr[len(arr)-k:]\n}\n\n"
     },
     {
         "buggy_solution": "    sum:=0\n    for i, x := range lst {\n        if i&1==1&&x&1==1 {\n            sum+=x\n        }\n    }\n    return sum\n}\n\n"
@@ -411,7 +411,7 @@
         "buggy_solution": "    smallest := make([]int, 0)\n    largest := make([]int, 0)\n    for _, x := range lst {\n        if x < 0 {\n            smallest = append(smallest, x)\n        } else if x > 0 {\n            largest = append(largest, x)\n        }\n    }\n    for _, x := range smallest {\n        if x < 0 {\n            largest = append(largest, x)\n        } else if x > 0 {\n            smallest = append(smallest, x)\n        }\n    }\n    var result [2]interface{}\n    if len(smallest) == 0 {\n        result[0] = nil\n    } else {\n        max := smallest[0]\n        for i := 1;i < len(smallest);i++ {\n            if smallest[i] > max {\n                max = smallest[i]\n            }\n        }\n        result[0] = max\n    }\n    if len(largest) == 0 {\n        result[1] = nil\n    } else {\n        min := largest[0]\n        for i := 1;i < len(largest);i++ {\n            if largest[i] < min {\n                min = largest[i]\n            }\n        }\n        result[1] = min\n    }\n    return result\n}\n\n"
     },
     {
-        "buggy_solution": "    temp_a := fmt.Sprintf(\"%v\", a)\n    temp_b := fmt.Sprintf(\"%v\", b)\n    temp_a = strings.ReplaceAll(temp_a, \",\", \".\")\n    temp_a = strings.ReplaceAll(temp_a, \".\", \",\")\n    temp_b = strings.ReplaceAll(temp_b, \",\", \".\")\n    fa, _ := strconv.ParseFloat(temp_a, 64)\n    fb, _ := strconv.ParseFloat(temp_b, 64)\n    \n    if fa == fb {\n        return nil\n    }\n    if fa > fb {\n        return a\n    } else {\n        return b\n    }\n}\n\n"
+        "buggy_solution": "    temp_a := fmt.Sprintf(\"%v\", a)\n    temp_b := fmt.Sprintf(\"%v\", b)\n    temp_a = strings.ReplaceAll(temp_a, \",\", \".\")\n    temp_a = strings.ReplaceAll(temp_a, \".\", \",\")\n    temp_b = strings.ReplaceAll(temp_a, \",\", \".\")\n    fa, _ := strconv.ParseFloat(temp_a, 64)\n    fb, _ := strconv.ParseFloat(temp_b, 64)\n    \n    if fa == fb {\n        return nil\n    }\n    if fa > fb {\n        return a\n    } else {\n        return b\n    }\n}\n\n"
     },
     {
         "buggy_solution": "    return n&1 == 0 && n >= 8 && n <= 8\n}\n\n"
