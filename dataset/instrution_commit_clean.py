@@ -282,8 +282,7 @@ if PROBA_SOFT_RESAMPLING:
 
 def prepare_code(example):
     if np.random.random() < FULL_RANGE_FRAC:
-        example["content"] = f"<commit_before>{example['old_contents']}<commit_msg>{example['subject']}<commit_after>{example['new_contents']}"
-        example["size"] = len(example["content"])
+        example["size"] = len(f"<commit_before>{example['old_contents']}<commit_msg>{example['subject']}<commit_after>{example['new_contents']}")
     else:
         start_offset = np.random.randint(MIN_RANGE, MAX_RANGE)
         end_offset = np.random.randint(MIN_RANGE, MAX_RANGE)
@@ -299,18 +298,21 @@ def prepare_code(example):
 
         code_before = "\n".join(old_lines[old_start:old_end])
         code_after = "\n".join(new_lines[new_start:new_end])
-        example["content"] = f"<commit_before>{code_before}<commit_msg>{example['subject']}<commit_after>{code_after}"
-        example["size"] = len(example["content"])
+
+        # rewrite the old and new contents
+        example["old_contents"] = code_before
+        example["new_contents"] = code_after
+        example["size"] = len(f"<commit_before>{code_before}<commit_msg>{example['subject']}<commit_after>{code_after}")
     return example
 
 
 ds_clean = ds_clean.map(prepare_code, num_proc=30)
 
 # remove the samples that are too long
-ds_clean = ds_clean.filter(lambda x: x["content"] < 4.0 * 2048, num_proc=30)
+ds_clean = ds_clean.filter(lambda x: x["size"] < 4.0 * 2048, num_proc=30)
 
 ds_final = ds_clean.remove_columns(
-    ["subject", "message", "new_contents", "old_contents", "returncode", "stderr", "old_change_start", "old_change_end",
+    ["message", "returncode", "stderr", "old_change_start", "old_change_end",
      "old_change_range", "new_change_start", 'new_change_end', 'new_change_range', 'n_inserts', 'n_deletes',
      'n_changes'])
 
