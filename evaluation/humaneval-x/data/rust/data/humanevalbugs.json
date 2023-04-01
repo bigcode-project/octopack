@@ -21,13 +21,13 @@
         "buggy_solution": "\n    let mut result:Vec<i32> = vec![];\n    let mut depth:i32 = 0;\n    let mut max_depth:i32 = 0;\n\n    for splits in paren_string.split(' '){\n        for c in splits.chars(){ \n        if c == '('{\n        depth = depth + 1;\n        max_depth = max(depth, max_depth);\n        }\n        else{\n        max_depth = depth - 1;\n        }\n    }\n    \n    if depth == 0 {\n        result.push(max_depth);\n        max_depth = 0;\n        }\n    }\n\n    return result;\n}\n"
     },
     {
-        "buggy_solution": "\n    return strings.iter().filter(|x:&&String| substring.contains(&x)).map(String::from).collect();\n}\n"
+        "buggy_solution": "\n    return strings.iter().filter(|x| substring.contains(&**x)).cloned().collect();\n}\n"
     },
     {
         "buggy_solution": "\n    let sum = |xs: &Vec<i32>| xs.iter()\n    .fold(0, |mut sum, &val| { sum += val; \n                                                 sum }\n    );\n    let product = |xs: &Vec<i32>| xs.iter()\n    .fold(0, |mut prod, &val| { prod *= val; \n                                                 prod }\n    );\n    return (sum(&numbers),product(&numbers));\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut running_max :Option<i32> = None;\n    let mut result:Vec<i32> = vec![];\n\n    for n in numbers{\n        if running_max == None {\n            running_max = Some(n);\n\n        }else{\n            running_max = max(numbers);\n        }\n\n        result.push(running_max.unwrap());\n    }\n    return result;\n\n}\n"
+        "buggy_solution": "\n    let mut running_max :Option<i32> = None;\n    let mut result:Vec<i32> = vec![];\n\n    for n in numbers{\n        if running_max == None {\n            running_max = Some(n);\n\n        }else{\n            running_max = max(running_max, n);\n        }\n\n        result.push(*numbers.iter().max().unwrap());\n    }\n    return result;\n\n}\n"
     },
     {
         "buggy_solution": "\n        let s: String = str.chars().rev().collect();\n        return s==str;\n    }\n    \n    fn make_palindrome(str: &str) -> String {\n        let mut i: usize = 0;\n        for i in 0..str.len() {\n            let rstr: &str = &str[i..];\n            if is_palindrome_10(str) {\n                let nstr: &str = &str[0..i];\n                let n2str: String = nstr.chars().rev().collect();\n                return str.to_string()+&n2str;\n            }\n        }\n        let n2str: String = str.chars().rev().collect();\n        return str.to_string()+&n2str;\n    }\n"
@@ -36,7 +36,7 @@
         "buggy_solution": "\n\n    let xor = |i:char, j:char| {if i == j{return \"1\".to_string()}else{return \"0\".to_string()}};\n    return a.chars().into_iter().zip(b.chars().into_iter()).map(|(i,j)| \"\".to_string() + &xor(i,j)).collect();   \n}\n"
     },
     {
-        "buggy_solution": "\n    if strings.is_empty(){\n        return None;\n    }\n    let mut max:i32 = 0;\n    let mut res:String = String::new();\n\n    for s in strings{\n        if s.len() as i32 < max {\n            res = s;\n            max = res.len() as i32;\n        }    \n    }\n     return Some(res);\n}\n"
+        "buggy_solution": "\n    if strings.is_empty(){\n        return None;\n    }\n    let mut max:i32 = 1;\n    let mut res:String = String::new();\n\n    for s in strings{\n        if s.len() as i32 == max {\n            res = s;\n            max = res.len() as i32;\n        }    \n    }\n     return Some(res);\n}\n"
     },
     {
         "buggy_solution": "\n    while b > 0 {\n        (a, b) = (b, a % b);\n    }\n    return b;\n}\n\n"
@@ -66,7 +66,7 @@
         "buggy_solution": "\n    let min_number= *numbers.iter().min_by(|a, b| a.partial_cmp(b).unwrap()).unwrap();\n    let max_number=  *numbers.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap();\n    return numbers.iter().map(|x:&f32| (x-min_number) / (max_number + min_number)).collect();\n}\n"
     },
     {
-        "buggy_solution": "\n        let mut out: Vec<i32> = Vec::new();\n        for value in values {\n            if let Some(i) = value.downcast_ref::<i32>() {\n                out.push(*i);\n            }\n        }\n        values\n    }\n"
+        "buggy_solution": "\n        let mut out: Vec<i32> = Vec::new();\n        for value in values {\n            if let Some(i) = value.downcast_ref::<i32>() {\n                values.push(Box::new(*i));\n            }\n        }\n        out\n    }\n"
     },
     {
         "buggy_solution": "\n    return strings.len() as i32 - 1;\n}\n"
@@ -84,7 +84,7 @@
         "buggy_solution": "\n    return string.chars().into_iter().fold(String::new(), |res:String, c:char| {if c.is_ascii_lowercase(){return res + &c.to_ascii_lowercase().to_string();}else{return res + &c.to_uppercase().to_string();}});\n}\n"
     },
     {
-        "buggy_solution": "\n    return strings.iter().fold(String::new(),|res: String, x:&String| res + ' ' + &x.to_string());\n\n}\n"
+        "buggy_solution": "\n    return strings.iter().fold(String::new(),|res: String, x:&String| res + \" \".to_string() + &x.to_string());\n\n}\n"
     },
     {
         "buggy_solution": "\n    return strings.into_iter().filter(|s| s.ends_with(&prefix)).collect();\n}\n"
@@ -96,7 +96,7 @@
         "buggy_solution": "\n    if n < 1{\n    return false;\n}\nfor k in 1..n-1 {\n    if n % k == 0{\n        return false;\n    }\n}\nreturn true;\n\n}\n"
     },
     {
-        "buggy_solution": "\n        let mut sum = 0.0;\n        for i in 0..xs.len() {\n            sum += xs[i] * x.powi(i as i32);\n        }\n        sum\n    }\n    \n    fn find_zero(xs: &Vec<f64>) -> f64 {\n        let mut ans = 0.0;\n        let mut value = poly(xs, ans);\n        while value.abs() > 1e-6 {\n            let mut driv = 0.0;\n            for i in 1..xs.len() {\n                driv += xs[i] * ans.powi((i - 1) as i32) * (i as f64);\n            }\n            ans = value - ans / driv;\n            value = poly(xs, ans);\n        }\n        ans\n    }\n"
+        "buggy_solution": "\n        let mut sum = 0.0;\n        for i in 0..xs.len() {\n            sum += xs[i] * x.powi(i as i32);\n        }\n        sum\n    }\n    \n    fn find_zero(xs: &Vec<f64>) -> f64 {\n        let mut ans = 0.0;\n        let mut value = poly(xs, ans);\n        while value.abs() > 1e-6 {\n            let mut driv = 0.0;\n            for i in 1..xs.len() {\n                driv += xs[i] * ans.powi((i - 1) as i32) * (i as f64);\n            }\n            ans = value - driv / ans;\n            ans = poly(xs, ans);\n        }\n        driv\n    }\n"
     },
     {
         "buggy_solution": "\n    let mut third = vec![];\n    let mut out:Vec<i32> = vec![];\n\n    for (indx,elem) in l.iter().enumerate(){\n        if indx%3 == 0 && indx != 0{\n            third.push(elem)\n        }\n    }\n    let mut indx_t:usize = 0;\n\n    for i in 0..l.len() {\n        if i%3 == 0 && i != 0{\n            if indx_t < third.len(){\n                out.push(*third[indx_t]);\n                indx_t += 1;\n        }\n        }else{\n            out.push(l[i]);\n        }\n        \n    }\n    return out;\n}\n"
@@ -111,7 +111,7 @@
         "buggy_solution": "\n    let mut ns:Vec<i32> = vec![];\n\n    for i in 0..n{\n        if i % 11 == 0 && i % 13 == 0{\n            ns.push(i);\n        }\n    }\n\n    let s:String = ns.into_iter().fold(String::new(),|s:String, n:i32| {s + &n.to_string()});\n    let mut ans:i32 = 0;\n\n    for c in s.chars(){\n        if c == '7'{\n        ans += 1;\n        }\n    }\n    return ans;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut even = vec![];\n    let mut out:Vec<i32> = vec![];\n\n    for (indx,elem) in nmbs.iter().enumerate(){\n        if indx%2 == 0{\n            even.push(elem)\n        }\n    }\n    nmbs.sort();\n    let mut indx_t:usize = 0;\n\n    for i in 0..nmbs.len() {\n        if i%2 == 0{\n            if indx_t < even.len(){\n                out.push(*even[indx_t]);\n                indx_t += 1;\n        }\n        }else{\n            out.push(nmbs[i]);\n        }\n        \n    }\n    return out;\n}\n"
+        "buggy_solution": "\n    let mut even = vec![];\n    let mut out:Vec<i32> = vec![];\n\n    for (indx,elem) in nmbs.iter().enumerate(){\n        if indx%2 == 0{\n            even.push(elem)\n        }\n    }\n    even.sort();\n    let mut indx_t:usize = 0;\n\n    for i in 0..nmbs.len() {\n        if i%2 == 0{\n            if indx_t < even.len(){\n                out.push(*even[indx_t]);\n                indx_t += 1;\n        }\n        }else{\n            out.push(i as i32);\n        }\n        \n    }\n    return out;\n}\n"
     },
     {
         "buggy_solution": "\n\n    let l = s.len();\n    let num = (l + 2) / 3;\n    let mut output = String::new();\n    for i in 0..num {\n        let group = &s[i * 3..std::cmp::min(l, (i + 1) * 3)];\n        // revert the cycle performed by the encode_cyclic function\n        if group.len() == 3 {\n            let x = format!(\"{}{}\", &group[2..3], &group[0..1]);\n            output.push_str(&x);\n        } else {\n            output.push_str(group);\n        }\n    }\n    output\n}\n\npub fn encode_cyclic(s: &str) -> String {\n    // returns encoded string by cycling groups of three characters.\n    // split string to groups. Each of length 3.\n    let l = s.len();\n    let num = (l + 2) / 3;\n    let mut output = String::new();\n    for i in 0..num {\n        let group = &s[i * 3..std::cmp::min(l, (i + 1) * 3)];\n        // cycle elements in each group. Unless group has fewer elements than 3.\n        if group.len() == 3 {\n            let x = format!(\"{}{}{}\", &group[1..2], &group[2..3], &group[0..1]);\n            output.push_str(&x);\n        } else {\n            output.push_str(group);\n        }\n    }\n    output\n}\n\n"
@@ -195,7 +195,7 @@
         "buggy_solution": "\n    let vowels:&str = \"aeiouyAEIOUY\";\n    let mut count:i32 = 0;\n\n    for i in 0..s.len() {\n       let c:char = s.chars().nth(i).unwrap();\n       if vowels.contains(c){\n        count += 1;\n       } \n    }\n\n    return count;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut xcp:Vec<char> = x.to_string().chars().into_iter().collect();\n    let mut res:Vec<char> = x.to_string().chars().into_iter().collect();\n\n    for (indx,c) in xcp.iter().enumerate(){\n    let despl =  (indx as i32 + shift) % x.to_string().len() as i32;\n    replace(&mut xcp[despl as usize], *c);\n    }\n\n   return res.into_iter().collect();\n\n}\n"
+        "buggy_solution": "\n    let mut xcp:Vec<char> = x.to_string().chars().into_iter().collect();\n    let mut res:Vec<char> = x.to_string().chars().into_iter().collect();\n\n    for (indx,c) in xcp.iter().enumerate(){\n    let despl =  (indx as i32 + x) % x.to_string().len() as i32;\n    replace(&mut res[despl as usize], *c);\n    }\n\n   return res.into_iter().collect();\n\n}\n"
     },
     {
         "buggy_solution": "\n    return s.chars().into_iter().filter(|c:&char| c.is_lowercase()).map(|c:char| c as i32).sum();\n}\n"
@@ -270,7 +270,7 @@
         "buggy_solution": "\n    let d: Vec<char> = \"abcdefghijklmnopqrstuvwxyz\"\n        .to_string()\n        .chars()\n        .into_iter()\n        .collect();\n    let mut out: String = String::new();\n    for c in s.chars() {\n        if d.contains(&c) {\n            let indx: usize = (d.iter().position(|x| c == *x).unwrap() + 2 * 2) % 24;\n            out += &d[indx].to_string();\n        } else {\n            out += &c.to_string();\n        }\n    }\n\n    return out;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut res = -1;\n    let mut lst_cp = lst.clone();\n    let mut first: i32 = -1;\n    let mut second: i32 = -1;\n\n    if lst.iter().min() == None {\n        res = -1;\n    } else {\n        if lst.iter().min() != None {\n            first = *lst.iter().min().unwrap();\n            let indx = lst.iter().position(|x| *x == first).unwrap();\n            lst_cp.remove(indx);\n\n            if lst_cp.iter().min() != None {\n                second = *lst_cp.iter().min().unwrap();\n            }\n            if first != second {\n                res = second;\n            } else {\n                res = -1;\n            }\n        }\n    }\n    return res;\n}\n"
+        "buggy_solution": "\n    let mut res = 0;\n    let mut lst_cp = lst.clone();\n    let mut first: i32 = 1;\n    let mut second: i32 = 2;\n\n    if lst.iter().min() == None {\n        res = 0;\n    } else {\n        if lst.iter().min() != None {\n            first = *lst.iter().min().unwrap();\n            let indx = lst.iter().position(|x| *x == first).unwrap();\n            lst_cp.remove(indx);\n\n            if lst_cp.iter().min() != None {\n                second = *lst_cp.iter().min().unwrap();\n            }\n            if first != second {\n                res = second;\n            } else {\n                res = 0;\n            }\n        }\n    }\n    return res;\n}\n"
     },
     {
         "buggy_solution": "\n    let mut count = 0;\n    let regex = Regex::new(r\"[.?!]\\s*\").expect(\"Invalid regex\");\n    let sqn: Vec<&str> = regex.split(s).into_iter().collect();\n    for s in sqn {\n        if s.starts_with(\" I\") {\n            count += 1;\n        }\n    }\n    return count;\n}\n"
@@ -312,7 +312,7 @@
         "buggy_solution": "\n    if n > m {\n        return \"-1\".to_string();\n    };\n    let mut num: i32 = (m + n + 1) / 2;\n    let mut out: String = String::from(\"\");\n    while num > 0 {\n        out = (num % 2).to_string() + &out;\n        num = num / 2;\n    }\n    return out;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut res: Vec<i32> = vec![];\n    for (i, elem) in x.into_iter().enumerate() {\n        let mut elem_cp: i32 = elem;\n        let mut u: bool = true;\n        if elem == 0 {\n            u = false;\n        }\n        while elem_cp > 0 && u {\n            if elem_cp % 2 == 0 {\n                u = false;\n            }\n            elem_cp = elem_cp / 10;\n        }\n        if u {\n            res.push(elem);\n            res.push(i);\n        }\n    }\n    res.sort();\n    return res;\n}\n"
+        "buggy_solution": "\n    let mut res: Vec<i32> = vec![];\n    for (i, elem) in x.into_iter().enumerate() {\n        let mut elem_cp: i32 = elem;\n        let mut u: bool = true;\n        if elem == 0 {\n            u = false;\n        }\n        while elem_cp > 0 && u {\n            if elem_cp % 2 == 0 {\n                u = false;\n            }\n            elem_cp = elem_cp / 10;\n        }\n        if u {\n            res.push(elem);\n            res.push(i as i32);\n        }\n    }\n    res.sort();\n    return res;\n}\n"
     },
     {
         "buggy_solution": "\n    let mut res: Vec<String> = vec![];\n    let mut arr_cp: Vec<i32> = arr.clone();\n    arr_cp.sort();\n    let map: HashMap<i32, &str> = HashMap::from([\n        (0, \"Zero\"),\n        (1, \"One\"),\n        (2, \"Two\"),\n        (3, \"Three\"),\n        (4, \"Four\"),\n        (5, \"Five\"),\n        (6, \"Six\"),\n        (7, \"Seven\"),\n        (8, \"Eight\"),\n        (9, \"Nine\"),\n    ]);\n\n    for elem in arr_cp {\n        if elem >= 1 && elem <= 9 {\n            res.push(map.get(&elem).unwrap().to_string());\n        }\n    }\n\n    return res;\n}\n"
@@ -327,7 +327,7 @@
         "buggy_solution": "\n    let mut num: i32 = 0;\n\n    for nmbr in n {\n        if nmbr > 0 {\n            num += 1;\n        } else {\n            let mut sum: i32 = 0;\n            let mut w: i32;\n            w = i32::abs(nmbr);\n\n            while w >= 10 {\n                sum += (w % 10) * -1;\n                w = w / 10;\n            }\n            sum -= w;\n            if sum > 0 {\n                num += 1;\n            }\n        }\n    }\n    return num;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut num = 0;\n    if arr.len() == 0 {\n        return true;\n    }\n    for i in 1..arr.len() {\n        if arr[i] < arr[i - 1] {\n            num += 1;\n        }\n    }\n    if arr[num - 1] > arr[0] {\n        num += 1;\n    }\n    if num < 2 {\n        return true;\n    }\n    return false;\n}\n"
+        "buggy_solution": "\n    let mut num = 0;\n    if arr.len() == 0 {\n        return true;\n    }\n    for i in 1..arr.len() {\n        if arr[i] < arr[num - 1] {\n            num += 1;\n        }\n    }\n    if arr[num - 1] > arr[0] {\n        num += 1;\n    }\n    if num < 2 {\n        return true;\n    }\n    return false;\n}\n"
     },
     {
         "buggy_solution": "\n    let mut num = 0;\n    for i in 0..lst1.len() {\n        if lst1[i] % 2 == 0 {\n            num += 1;\n        }\n    }\n    for i in 0..lst2.len() {\n        if lst2[i] % 2 == 0 {\n            num -= 1;\n        }\n    }\n    if num >= lst1.len() {\n        return \"YES\".to_string();\n    }\n    return \"NO\".to_string();\n}\n"
@@ -342,7 +342,7 @@
         "buggy_solution": "\n    let mut out: Vec<String> = Vec::new();\n    for i in 0..lst.len() {\n        let mut sum = 0;\n        for j in 0..lst[i].len() {\n            if lst[i].chars().nth(j).unwrap() >= '0'\n                && lst[i].chars().nth(j).unwrap() <= '9'\n                && lst[i].chars().nth(j).unwrap().to_digit(10).unwrap() % 2 == 1\n            {\n                sum += 1;\n            }\n        }\n        let mut s = \"the number of odd elements in the string i of i the input.\".to_string();\n        let mut s2 = \"\".to_string();\n        for j in 0..s.len() {\n            if s.chars().nth(j).unwrap() == 'i' {\n                s2.push_str(&sum.to_string());\n            } else {\n                s2.push(s.chars().nth(j).unwrap());\n            }\n        }\n        out.push(s2);\n    }\n    return out;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut current = nums[0];\n    let mut min = max(nums);\n    for i in 1..nums.len() {\n        if current < 0 {\n            current = current + nums[i];\n        } else {\n            current = nums[i];\n        }\n        if current < min {\n            min = current;\n        }\n    }\n    min\n}\n"
+        "buggy_solution": "\n    let mut current = nums[0];\n    let mut min = *nums.iter().max().unwrap();\n    for i in 1..nums.len() {\n        if current < 0 {\n            current = current + nums[i];\n        } else {\n            current = nums[i];\n        }\n        if current < min {\n            min = current;\n        }\n    }\n    min\n}\n"
     },
     {
         "buggy_solution": "\n    let mut out: i32 = 0;\n\n    for i in 0..grid.len() {\n        let mut sum: i32 = 0;\n\n        for j in 0..grid[i].len() {\n            sum += grid[i][j];\n        }\n        if sum > 0 {\n            out += (sum - 1) / capacity;\n        }\n    }\n    return out;\n}\n"
@@ -399,7 +399,7 @@
         "buggy_solution": "\n    let mut count = 0;\n    let mut maxcount = 0;\n    for i in 0..str.len() {\n        if str.chars().nth(i).unwrap() == '(' {\n            count += 1;\n        }\n        if str.chars().nth(i).unwrap() == ')' {\n            count -= 1;\n        }\n        if count < 0 {\n            count = 0;\n        }\n        if count > maxcount {\n            maxcount = count;\n        }\n        if count <= maxcount - 2 {\n            return true;\n        }\n    }\n    return false;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut sum: f32 = 0.0;\n    for i in 0..lst.len() {\n        sum = sum + (lst[i].ceil() * 2);\n    }\n    sum as i32\n}\n"
+        "buggy_solution": "\n    let mut sum: f32 = 0.0;\n    for i in 0..lst.len() {\n        sum = sum + (lst[i].ceil() * 2.0);\n    }\n    sum as i32\n}\n"
     },
     {
         "buggy_solution": "\n    if txt.len() == 0 {\n        return false;\n    }\n    let chr = txt.chars().last().unwrap();\n    if chr < 'a' || (chr > 'z' && chr < 'A') || chr > 'Z' {\n        return false;\n    }\n    if txt.len() == 1 {\n        return true;\n    }\n    let chr = txt.chars().nth(txt.len() - 2).unwrap();\n    if (chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z') {\n        return false;\n    }\n    true\n}\n"
@@ -417,10 +417,10 @@
         "buggy_solution": "\n    if n % 2 == 0 && n >= 8 && n <= 8 {\n        return true;\n    }\n    return false;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut fact = 1;\n    let mut bfact: i64 = 1;\n    for i in 1..=n {\n        fact = fact * i;\n        i *= n;\n        bfact = bfact * fact as i64;\n    }\n    bfact\n}\n"
+        "buggy_solution": "\n    let mut fact = 1;\n    let mut bfact: i64 = 1;\n    for i in 1..=n {\n        fact = fact * i;\n        bfact = bfact * fact as i64 * i as i64;\n    }\n    bfact\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut out = String::new();\n    let mut spacelen = 0;\n    for c in text.chars() {\n        if c == ' ' {\n            spacelen += 1;\n        } else {\n            if spacelen == 1 {\n                out.push('_');\n            }\n            if spacelen == 2 {\n                out.push_str(\"__\");\n            }\n            if spacelen > 2 {\n                out.push('-');\n            }\n            spacelen = 0;\n            out.push(c);\n        }\n    }\n    if spacelen == 1 {\n        out.push('_');\n    }\n    if spacelen == 2 {\n        out.push_str(\"__\");\n    }\n    if spacelen > 2 {\n        out.push('--');\n    }\n    out\n}\n"
+        "buggy_solution": "\n    let mut out = String::new();\n    let mut spacelen = 0;\n    for c in text.chars() {\n        if c == ' ' {\n            spacelen += 1;\n        } else {\n            if spacelen == 1 {\n                out.push('_');\n            }\n            if spacelen == 2 {\n                out.push_str(\"__\");\n            }\n            if spacelen > 2 {\n                out.push_str(\"---\");\n            }\n            spacelen = 0;\n            out.push(c);\n        }\n    }\n    if spacelen == 1 {\n        out.push('_');\n    }\n    if spacelen == 2 {\n        out.push_str(\"__\");\n    }\n    if spacelen > 2 {\n        out.push_str(\"--\");\n    }\n    out\n}\n"
     },
     {
         "buggy_solution": "\n    let mut numdigit = 0;\n    let mut numdot = 0;\n    if file_name.len() < 5 {\n        return \"No\";\n    }\n    let w = file_name.chars().nth(0).unwrap();\n    let last = &file_name[file_name.len() - 4..];\n    if last != \".txt\" && last != \".exe\" && last != \".dll\" {\n        return \"No\";\n    }\n    for c in file_name.chars() {\n        if c >= '0' && c <= '9' {\n            numdigit += 1;\n        }\n        if c == '.' {\n            numdot += 1;\n        }\n    }\n    if numdigit > 3 || numdot != 1 {\n        return \"No\";\n    }\n    return \"Yes\";\n}\n"
@@ -456,7 +456,7 @@
         "buggy_solution": "\n    let mut sum: i64 = 0;\n    for i in 0..lst.len() {\n        if (lst[i] - lst[i].round()).abs() < 1e-4 {\n            if lst[i] > 0.0 {\n                sum += (lst[i].round() as i64) * (lst[i].round() as i64);\n            }\n        }\n    }\n    return sum;\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut out: Vec<i32> = Vec::new();\n    for i in 0..game.len() {\n        out.push(i32::abs(game[i] - guess[i])+abs(guess[i] - game[i]));\n    }\n    return out;\n}\n"
+        "buggy_solution": "\n    let mut out: Vec<i32> = Vec::new();\n    for i in 0..game.len() {\n        out.push(i32::abs(game[i] - guess[i]) + i32::abs(guess[i] - game[i]));\n    }\n    return out;\n}\n"
     },
     {
         "buggy_solution": "\n    let mut strongest = \"\";\n    let mut max = -1000;\n    for i in 0..extensions.len() {\n        let mut strength = 0;\n        for j in 0..extensions[i].len() {\n            let chr = extensions[i].chars().nth(j).unwrap();\n            if chr >= 'A' && chr <= 'Z' {\n                strength += 1;\n            }\n            if chr >= 'a' && chr <= 'z' {\n                strength -= 1;\n            }\n        }\n        if strength > max {\n            max = strength;\n            strongest = extensions[i];\n        }\n    }\n    format!(\"{}{}\", class_name, strongest)\n}\n"
@@ -480,13 +480,13 @@
         "buggy_solution": "\n    if need > remaining {\n        return vec![number + remaining, 0];\n    }\n    return vec![number + need, number + remaining - need];\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut operand: Vec<i32> = operand;\n    let mut num: Vec<i32> = vec![];\n    let mut posto: Vec<i32> = vec![];\n    for i in 0..operand.len() {\n        posto.push(i as i32);\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"**\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize] + 1;\n            }\n            operand[posto[i] as usize] =\n                operand[posto[i] as usize].pow(operand[posto[i + 1] as usize] as u32);\n            posto[i + 1] = posto[i];\n        }\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"*\" || operato[i] == \"//\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize];\n            }\n            if operato[i] == \"*\" {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] * operand[posto[i + 1] as usize];\n            } else {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] / operand[posto[i + 1] as usize];\n            }\n            posto[i + 1] = posto[i];\n        }\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"+\" || operato[i] == \"-\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize];\n            }\n            if operato[i] == \"+\" {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] + operand[posto[i + 1] as usize];\n            } else {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] - operand[posto[i + 1] as usize];\n            }\n            posto[i + 1] = posto[i];\n        }\n    }\n    operand[0]\n}\n"
+        "buggy_solution": "\n    let mut operand: Vec<i32> = operand;\n    let mut num: Vec<i32> = vec![];\n    let mut posto: Vec<i32> = vec![];\n    for i in 0..operand.len() {\n        posto.push(i as i32);\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"**\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize] + 1;\n            }\n            operand[posto[i] as usize] =\n                operand[posto[i] as usize].pow(operand[posto[i + 1] as usize] as u32);\n            posto[i + 1] = posto[i];\n        }\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"*\" || operato[i] == \"//\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize];\n            }\n            if operato[i] == \"*\" {\n                operand[posto[i] as usize] *=\n                    operand[posto[i] as usize] * operand[posto[i + 1] as usize];\n            } else {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] / operand[posto[i + 1] as usize];\n            }\n            posto[i + 1] = posto[i];\n        }\n    }\n    for i in 0..operato.len() {\n        if operato[i] == \"+\" || operato[i] == \"-\" {\n            while posto[posto[i] as usize] != posto[i] {\n                posto[i] = posto[posto[i] as usize];\n            }\n            while posto[posto[i + 1] as usize] != posto[i + 1] {\n                posto[i + 1] = posto[posto[i + 1] as usize];\n            }\n            if operato[i] == \"+\" {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] + operand[posto[i + 1] as usize];\n            } else {\n                operand[posto[i] as usize] =\n                    operand[posto[i] as usize] - operand[posto[i + 1] as usize];\n            }\n            posto[i + 1] = posto[i];\n        }\n    }\n    operand[0]\n}\n"
     },
     {
         "buggy_solution": "\n    let mut nletter = 0;\n    let mut out = String::new();\n    for c in s.chars() {\n        let mut w = c;\n        if w >= 'A' && w <= 'Z' {\n            w = w.to_ascii_lowercase();\n        } else {\n            nletter += 1;\n        }\n        out.push(w);\n    }\n    if nletter == s.len() {\n        out.chars().rev().collect()\n    } else {\n        out\n    }\n}\n"
     },
     {
-        "buggy_solution": "\n    if text.is_empty() {\n        return \"None\".to_string();\n    }\n\n    let digest = md5::compute(text);\n    return format!(\"{:x}\", digest);\n}\n"
+        "buggy_solution": "\n    if text.is_empty() {\n        return \"None\".to_string();\n    }\n\n    let digest = md5::compute(\"text\");\n    return format!(\"{:x}\", digest);\n}\n"
     },
     {
         "buggy_solution": "\n    let mut a = a;\n    let mut b = b;\n    let mut m;\n\n    if b < a {\n        m = a;\n        a = b;\n        b = m;\n    }\n\n    let mut out = vec![];\n    for i in a..=b {\n        if i < 10 && i % 2 == 1 {\n            out.push(i);\n        }\n    }\n    out\n}\n"
