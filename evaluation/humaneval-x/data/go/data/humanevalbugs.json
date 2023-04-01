@@ -96,7 +96,7 @@
         "buggy_solution": "    if n < 1 {\n\t\treturn false\n\t}\n\tif n == 1 {\n\t\treturn true\n\t}\n\tif n%2 == 0 {\n\t\treturn false\n\t}\n\tfor i := 3; i*i <= n; i += 2 {\n\t\tif n%i == 0 {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n\n\n"
     },
     {
-        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor begin-end > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, end) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn begin\n}\n\n"
+        "buggy_solution": "    begin := -1.0\n\tend := 1.0\n\tfor Poly(xs, begin)*Poly(xs, end) > 0 {\n\t\tbegin *= 2\n\t\tend *= 2\n\t}\n\tfor begin-end > 1e-10 {\n\t\tcenter := (begin + end) / 2\n\t\tif Poly(xs, center)*Poly(xs, end) > 0 {\n\t\t\tbegin = center\n\t\t} else {\n\t\t\tend = center\n\t\t}\n\t}\n\treturn end\n}\n\n"
     },
     {
         "buggy_solution": "    temp := make([]int, 0)\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\ttemp = append(temp, l[i])\n\t}\n\tj := 0\n\tfor i := 0; i < len(l); i = i + 3 {\n\t\tl[i] = temp[j]\n\t\tj++\n\t}\n\treturn l\n}\n\n"
@@ -150,7 +150,7 @@
         "buggy_solution": "    ret := 0\n    for i:= 0; i < n; i++ {\n\t\tret = (2 * ret) % p\n\t}\n    return ret\n}\n\n"
     },
     {
-        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, ('a'-ch-5)%26+ch)\n    }\n    return string(runes)\n}\n\n"
+        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, 'a'-ch-5%26+ch)\n    }\n    return s\n}\n\n"
     },
     {
         "buggy_solution": "    var re = regexp.MustCompile(\"[aeiouwyAEIOUWY]\")\n\ttext = re.ReplaceAllString(text, \"\")\n\treturn text\n}\n\n"

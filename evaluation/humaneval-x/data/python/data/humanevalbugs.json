@@ -775,7 +775,7 @@
         "failure_symptoms": "incorrect output"
     },
     {
-        "buggy_solution": "    even_count = 0\n    odd_count = 0\n    for i in str(abs(num)):\n        if int(i)%2==0:\n            even_count +=\n    return (even_count, odd_count)\n",
+        "buggy_solution": "    even_count = 0\n    odd_count = 0\n    for i in str(abs(num)):\n        if int(i)%2==0:\n            even_count +=1\n    return (even_count, odd_count)\n",
         "bug_type": "missing logic",
         "failure_symptoms": "incorrect output"
     },
@@ -811,7 +811,7 @@
     },
     {
         "buggy_solution": "    import hashlib\n    return hashlib.md5('text').hexdigest() if text else None\n",
-        "bug_type": "value misuse",
+        "bug_type": "function misuse",
         "failure_symptoms": "incorrect output"
     },
     {

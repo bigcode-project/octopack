@@ -42,7 +42,7 @@
         "buggy_solution": "    int out,m;\n    while (true){\n        if (a<b) \n        {\n            m=a;a=b;b=m;\n        }\n        a=a%b;\n        if (a==0) return a;\n    }\n}\n"
     },
     {
-        "buggy_solution": "    vector<string> out;\n    string current=\"\";\n    for (int i=0;i<str.length()-1;i++)\n    {\n        current=current+str[i];\n        out.push_back(current);\n    }\n    return out;\n}\n"
+        "buggy_solution": "    vector<string> out;\n    string current=\"\";\n    for (int i=0;i<str.length();i++)\n    {\n        current=current+str[i];\n        out.push_back(current);\n    }\n    out.push_back(current);\n    return out;\n}\n"
     },
     {
         "buggy_solution": "    string out=\"0\";\n    for (int i=1;i<n;i++)\n    out=out+\" \"+to_string(i);\n    return out;\n}\n"
@@ -165,7 +165,7 @@
         "buggy_solution": "    for (int i=0;i<s0.length();i++)\n    if (find(s1.begin(),s1.end(),s0[i])==s1.end())\n        return false;\n    return true;   \n}\n"
     },
     {
-        "buggy_solution": "    int f[1000];\n    f[0]=0;f[1]=1;f[2]=2\n    for (int i=3;i<=n; i++)\n    f[i]=f[i-1]+f[i-2];\n    return f[n];\n}\n"
+        "buggy_solution": "    int f[1000];\n    f[0]=0;f[1]=1;f[2]=2;\n    for (int i=3;i<=n; i++)\n    f[i]=f[i-1]+f[i-2];\n    return f[n];\n}\n"
     },
     {
         "buggy_solution": "    int level=0;\n    for (int i=0;i<brackets.length();i++)\n    {\n        if (brackets[i]=='>') level+=1;\n        if (brackets[i]=='<') level-=1;\n        if (level<0) return false;\n    }\n    if (level!=0) return false;\n    return true;\n}\n"
@@ -420,7 +420,7 @@
         "buggy_solution": "    long long fact=1,bfact=1;\n    for (int i=1;i<=n;i++)\n    {\n        i=i*n;\n        fact=fact*i;\n        bfact=bfact*fact;\n    }\n    return bfact;\n}\n"
     },
     {
-        "buggy_solution": "    string out=\"\";\n    int spacelen=0;\n    for (int i=0;i<text.length();i++)\n    if (text[i]=='  ') spacelen+=1;\n    else\n    {\n        if (spacelen==1) out=out+'__';\n        if (spacelen==2) out=out+\"__\";\n        if (spacelen>2) out=out+'--';\n        spacelen=0;\n        out=out+text[i];\n    }\n    if (spacelen==1) out=out+'_';\n    if (spacelen==2) out=out+\"___\";\n    if (spacelen>2) out=out+'-';\n    return out;\n}\n"
+        "buggy_solution": "    string out=\"\";\n    int spacelen=0;\n    for (int i=0;i<text.length();i++)\n    if (text[i]==' ') spacelen+=1;\n    else\n    {\n        if (spacelen==2) out=out+'_';\n        if (spacelen==3) out=out+\"_\";\n        if (spacelen>3) out=out+'-';\n        spacelen=0;\n        out=out+text[i];\n    }\n    if (spacelen==1) out=out+'_';\n    if (spacelen==2) out=out+\"_\";\n    if (spacelen>2) out=out+'-';\n    return out;\n}\n"
     },
     {
         "buggy_solution": "    int numdigit=0,numdot=0;\n    if (file_name.length()<5) return \"No\";\n    char w=file_name[0];\n    if (w<65 or (w>90 and w<97) or w>122) return \"No\";\n    string last=file_name.substr(file_name.length()-4,4);\n    if (last!=\".txt\" and last!=\".exe\" and last!=\".dll\") return \"No\";\n    for (int i=0;i<file_name.length();i++)\n    {\n        if (file_name[i]>=48 and file_name[i]<=57) numdigit+=1;\n    }\n    if (numdigit>3 or numdot!=1) return \"No\";\n    return \"Yes\"; \n}\n"
@@ -471,7 +471,7 @@
         "buggy_solution": "    string current=\"\";\n    vector<string> rep={\"m\",\"cm\",\"d\",\"cd\",\"c\",\"xc\",\"l\",\"xl\",\"x\",\"ix\",\"v\",\"iv\",\"i\"};\n    vector<int> num={1000,900,500,400,100,90,50,40,10,9,5,4,1};\n    int pos=0;\n    while(number>0)\n    {\n        while (number>=num[pos])\n        {\n            current=current+rep[pos];\n        }\n        if (number>0) pos+=1;\n    }\n    return current;\n}\n"
     },
     {
-        "buggy_solution": "    if (abs(a*a+b*b-c*c)<1e-4 return true;\n    return false;\n}\n"
+        "buggy_solution": "    if (abs(a*a+b*b-c*c)<1e-4) return true;\n    return false;\n}\n"
     },
     {
         "buggy_solution": "    string max=\"\";\n    int maxu=0;\n    for (int i=0;i<words.size();i++)\n    {\n        string unique=\"\";\n        for (int j=0;j<words[i].length();j++)\n            if (find(unique.begin(),unique.end(),words[i][j])==unique.end())\n                unique=unique+words[i][j];\n        if (unique.length()>maxu or unique.length()==maxu)\n        {\n            max=words[i];\n            maxu=unique.length();\n        }\n    }\n    return max;\n}\n"
