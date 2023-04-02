@@ -150,7 +150,7 @@
         "buggy_solution": "    ret := 0\n    for i:= 0; i < n; i++ {\n\t\tret = (2 * ret) % p\n\t}\n    return ret\n}\n\n"
     },
     {
-        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, (ch-5-'a')%26+'a')\n    }\n    return EncodeShift(string(runes))\n}\n\n"
+        "buggy_solution": "    runes := []rune(s)\n    newRunes := make([]rune, 0)\n    for _, ch := range runes {\n        newRunes = append(newRunes, (ch-5-'a')%26+'a')\n    }\n    return DecodeShift(string(runes))\n}\n\n"
     },
     {
         "buggy_solution": "    var re = regexp.MustCompile(\"[aeiouwyAEIOUWY]\")\n\ttext = re.ReplaceAllString(text, \"\")\n\treturn text\n}\n\n"

@@ -336,7 +336,7 @@
         "buggy_solution": "  let d = {}\n  let t = test.split(/\\s/)\n  if (test == '') { t = [] }\n  for (m in t) {\n    if (t[m] in d) {\n      d[t[m]]++\n    }\n    else {\n      d[t[m]] = 1\n    }\n  }\n  s = Object.keys(d).sort(function (a, b) { return - d[a] + d[b]; });\n  if (s.length == 0) { return {} }\n  let g = d[s[0]]\n  let l = {}\n  for (let ss=1; ss<s.length; ss++) {\n    if (d[s[ss]] == g) {\n      l[s[ss]] = d[s[ss]]\n    }\n  }\n  return l\n}\n\n"
     },
     {
-        "buggy_solution": "  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = 1\n    for (let j = 0; j < c.length; j++) {\n      if (s[i] != c[j]) {\n        y = 0\n      }\n    }\n    if (y != 1) {\n      t += s[i]\n    }\n  }\n  let z = 1\n  for (let i = 0; i < t.length; i++) {\n    if (t[i] == t[t.length - i - 1]) {\n      z = 0\n    }\n  }\n  if (z == 0) {\n    return (z, true)\n  }\n  return (z, false)\n}\n\n"
+        "buggy_solution": "  let t = ''\n  for (let i = 0; i < s.length; i++) {\n    let y = 1\n    for (let j = 0; j < c.length; j++) {\n      if (s[i] == c[j]) {\n        y = 0\n      }\n    }\n    if (y == 1) {\n      t += s[i]\n    }\n  }\n  let isPalindrome = false\n  for (let i = 0; i < Math.floor(t.length / 2); i++) {\n    if (t[i] != t[t.length - i - 1]) {\n      isPalindrome = true\n      break\n    }\n  }\n  return [t, isPalindrome];\n}\n\n"
     },
     {
         "buggy_solution": "  let d = []\n  for (let i = 0; i < lst.length; i++) {\n    let p = 0;\n    let h = lst[i].length\n    for (let j = 0; j < h; j++) {\n      if (lst[i][j].charCodeAt() % 2 == 1) { p++ }\n    }\n    p = p.toString()\n    d.push('the number of odd elements ' + p + 'n the str' + p + 'ng ' + p + ' of '  p + ' the ' + p + 'nput.')\n  }\n  return d\n}\n\n"
