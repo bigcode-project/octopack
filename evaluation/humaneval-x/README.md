@@ -19,6 +19,15 @@ task_ids:
 pretty_name: HumanEval-X
 ---
 
+
+### Modifications:
+
+- JS Line 33: Added `testfindZero()\n`, as the test was never called
+- JS Line 113: Changed the scope of the brackets in the `test` to actually test the solution; Previously all tests pass reagardless of the solution; Also rewrote the solution, which was incorrect; Likely the solution was written for the incorrect tests, which passed regardless of the solution
+- JS Line 120: Added `testMatchParens()\n`, as the test was never called
+- JS Line 154: Added `testDoubleTheDifference()\n`, as the test was never called
+- Rust Line 33: Removed the comments that were deactivating the tests (Tests were commented out with `/* */` (idk why))
+
 # HumanEval-X
 
 ## Dataset Description

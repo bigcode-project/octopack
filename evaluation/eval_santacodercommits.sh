@@ -9,6 +9,10 @@
 #SBATCH --account=ajs@v100
 #SBATCH --gres=gpu:1                # number of gpus
 
+source $six_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
+
+cd ~/prod-worksf/code/bigcode/bigcode-evaluation-harness
+
 accelerate launch --config_file config_1a100.yaml main.py \
 --model santacoder-commits \
 --tasks quixbugs \
