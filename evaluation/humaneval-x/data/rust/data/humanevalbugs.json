@@ -27,7 +27,7 @@
         "buggy_solution": "\n    let sum = |xs: &Vec<i32>| xs.iter()\n    .fold(0, |mut sum, &val| { sum += val; \n                                                 sum }\n    );\n    let product = |xs: &Vec<i32>| xs.iter()\n    .fold(0, |mut prod, &val| { prod *= val; \n                                                 prod }\n    );\n    return (sum(&numbers),product(&numbers));\n}\n"
     },
     {
-        "buggy_solution": "\n    let mut running_max :Option<i32> = None;\n    let mut result:Vec<i32> = vec![];\n\n    for n in numbers{\n        if running_max == None {\n            running_max = Some(n);\n\n        }else{\n            running_max = max(running_max, n);\n        }\n\n        result.push(*numbers.iter().max().unwrap());\n    }\n    return result;\n\n}\n"
+        "buggy_solution": "\n    let mut running_max :Option<i32> = None;\n    let mut result:Vec<i32> = vec![];\n\n    for n in numbers{\n        if running_max == None {\n            running_max = Some(n);\n\n        }else{\n            running_max = max(running_max, Some(n));\n        }\n    }\n    return result;\n\n}\n"
     },
     {
         "buggy_solution": "\n        let s: String = str.chars().rev().collect();\n        return s==str;\n    }\n    \n    fn make_palindrome(str: &str) -> String {\n        let mut i: usize = 0;\n        for i in 0..str.len() {\n            let rstr: &str = &str[i..];\n            if is_palindrome_10(str) {\n                let nstr: &str = &str[0..i];\n                let n2str: String = nstr.chars().rev().collect();\n                return str.to_string()+&n2str;\n            }\n        }\n        let n2str: String = str.chars().rev().collect();\n        return str.to_string()+&n2str;\n    }\n"
@@ -66,7 +66,7 @@
         "buggy_solution": "\n    let min_number= *numbers.iter().min_by(|a, b| a.partial_cmp(b).unwrap()).unwrap();\n    let max_number=  *numbers.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap();\n    return numbers.iter().map(|x:&f32| (x-min_number) / (max_number + min_number)).collect();\n}\n"
     },
     {
-        "buggy_solution": "\n        let mut out: Vec<i32> = Vec::new();\n        for value in values {\n            if let Some(i) = value.downcast_ref::<i32>() {\n                values.push(Box::new(*i));\n            }\n        }\n        out\n    }\n"
+        "buggy_solution": "\n        let mut out: Vec<i32> = Vec::new();\n        for value in values {\n            if let Some(i) = value.downcast_ref::<i32>() {\n               out.push(*i);\n               out.push(*i);\n            }\n        }\n        out\n    }\n"
     },
     {
         "buggy_solution": "\n    return strings.len() as i32 - 1;\n}\n"
@@ -84,7 +84,7 @@
         "buggy_solution": "\n    return string.chars().into_iter().fold(String::new(), |res:String, c:char| {if c.is_ascii_lowercase(){return res + &c.to_ascii_lowercase().to_string();}else{return res + &c.to_uppercase().to_string();}});\n}\n"
     },
     {
-        "buggy_solution": "\n    return strings.iter().fold(String::new(),|res: String, x:&String| res + \" \".to_string() + &x.to_string());\n\n}\n"
+        "buggy_solution": "\n    return strings.iter().fold(String::new(), |res, x| format!(\"{} {}\", res, x));\n\n}\n"
     },
     {
         "buggy_solution": "\n    return strings.into_iter().filter(|s| s.ends_with(&prefix)).collect();\n}\n"
@@ -96,7 +96,7 @@
         "buggy_solution": "\n    if n < 1{\n    return false;\n}\nfor k in 1..n-1 {\n    if n % k == 0{\n        return false;\n    }\n}\nreturn true;\n\n}\n"
     },
     {
-        "buggy_solution": "\n        let mut sum = 0.0;\n        for i in 0..xs.len() {\n            sum += xs[i] * x.powi(i as i32);\n        }\n        sum\n    }\n    \n    fn find_zero(xs: &Vec<f64>) -> f64 {\n        let mut ans = 0.0;\n        let mut value = poly(xs, ans);\n        while value.abs() > 1e-6 {\n            let mut driv = 0.0;\n            for i in 1..xs.len() {\n                driv += xs[i] * ans.powi((i - 1) as i32) * (i as f64);\n            }\n            ans = value - driv / ans;\n            ans = poly(xs, ans);\n        }\n        driv\n    }\n"
+        "buggy_solution": "\n        let mut sum = 0.0;\n        for i in 0..xs.len() {\n            sum += xs[i] * x.powi(i as i32);\n        }\n        sum\n    }\n    \n    fn find_zero(xs: &Vec<f64>) -> f64 {\n        let mut driv = 0.0;\n        let mut ans = 0.0;\n        let mut value = poly(xs, ans);\n        while value.abs() > 1e-6 {\n            for i in 1..xs.len() {\n                driv += xs[i] * ans.powi((i - 1) as i32) * (i as f64);\n            }\n            ans = value - driv / ans;\n            value = poly(xs, ans);\n        }\n        ans\n    }\n"
     },
     {
         "buggy_solution": "\n    let mut third = vec![];\n    let mut out:Vec<i32> = vec![];\n\n    for (indx,elem) in l.iter().enumerate(){\n        if indx%3 == 0 && indx != 0{\n            third.push(elem)\n        }\n    }\n    let mut indx_t:usize = 0;\n\n    for i in 0..l.len() {\n        if i%3 == 0 && i != 0{\n            if indx_t < third.len(){\n                out.push(*third[indx_t]);\n                indx_t += 1;\n        }\n        }else{\n            out.push(l[i]);\n        }\n        \n    }\n    return out;\n}\n"
