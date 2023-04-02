@@ -9,6 +9,24 @@
 #SBATCH --account=ajs@v100
 #SBATCH --gres=gpu:1                # number of gpus
 
+source $six_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
+
+cd ~/prod-worksf/code/bigcode/bigcode-evaluation-harness
+
+accelerate launch --config_file config_1a100.yaml main.py \
+--model santacoder-git-commits \
+--tasks humaneval_x_bugs \
+--do_sample False \
+--n_samples 1 \
+--batch_size 1 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method edit \
+--generations_path generations_humanevalxbugs_santacodergitcommits_greedy.json \
+--output_path evaluation_results_humanevalxbugs_santacodergitcommits_greedy.json \
+--max_length_generation 2048
+
 accelerate launch --config_file config_1a100.yaml main.py \
 --model santacoder-git-commits \
 --tasks quixbugs \
@@ -22,3 +40,4 @@ accelerate launch --config_file config_1a100.yaml main.py \
 --generations_path generations_quixbugs_santacodergitcommits_greedy.json \
 --output_path evaluation_results_quixbugs_santacodergitcommits_greedy.json \
 --max_length_generation 2048
+
