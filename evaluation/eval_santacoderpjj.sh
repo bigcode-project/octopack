@@ -9,9 +9,55 @@
 #SBATCH --account=ajs@v100
 #SBATCH --gres=gpu:1                # number of gpus
 
-source $six_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
+source $ajs_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
+conda activate bigcode
 
-cd ~/prod-worksf/code/bigcode/bigcode-evaluation-harness
+cd /gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
+
+accelerate launch --config_file config_1a100.yaml main.py \
+--model santacoder-git-commits-python-java-javascript \
+--tasks humaneval-x-bugs-python \
+--do_sample False \
+--n_samples 1 \
+--batch_size 1 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method edit \
+--generations_path generations_humanevalxbugspy_santacoderpjj_greedy.json \
+--output_path evaluation_results_humanevalxbugs_santacoderpjj_greedy.json \
+--generation_only \
+--max_length_generation 2048
+
+accelerate launch --config_file config_1a100.yaml main.py \
+--model santacoder-git-commits-python-java-javascript \
+--tasks humaneval-x-bugs-js \
+--do_sample False \
+--n_samples 1 \
+--batch_size 1 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method edit \
+--generations_path generations_humanevalxbugsjs_santacoderpjj_greedy.json \
+--output_path evaluation_results_humanevalxbugs_santacoderpjj_greedy.json \
+--generation_only \
+--max_length_generation 2048
+
+accelerate launch --config_file config_1a100.yaml main.py \
+--model santacoder-git-commits-python-java-javascript \
+--tasks humaneval-x-bugs-java \
+--do_sample False \
+--n_samples 1 \
+--batch_size 1 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method edit \
+--generations_path generations_humanevalxbugsjava_santacoderpjj_greedy.json \
+--output_path evaluation_results_humanevalxbugs_santacoderpjj_greedy.json \
+--generation_only \
+--max_length_generation 2048
 
 accelerate launch --config_file config_1a100.yaml main.py \
 --model santacoder-git-commits-python-java-javascript \

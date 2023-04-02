@@ -16,11 +16,11 @@ if __name__ == "__main__":
             COMMIT_TO_PROBA[ds[i]["commit"]] = ds[i]["proba"]
 
         def map_col(example):
-            example["proba"] = COMMIT_TO_PROBA.get(example["commit"], -1)
+            if example["proba"] == -1:
+                example["proba"] = COMMIT_TO_PROBA.get(example["commit"], -1)
             return example
 
         paths = os.listdir(f"data/{lang}")
         for i in range(len(paths)):
             ds = datasets.load_dataset("json", data_files=[f"data/{lang}/{paths[i]}"])["train"]
-            # -1 are the ones that were previously skipped & need to be added
-            ds.filter(lambda x: x["proba"] == -1).map(map_col).to_json(f"data/{lang}/{paths[i]}", num_proc=NUM_PROC)
+            ds.map(map_col).to_json(f"data/{lang}/{paths[i]}", num_proc=NUM_PROC)

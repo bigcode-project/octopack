@@ -3,15 +3,16 @@
 import json
 import os
 
+paths = [
+    "humaneval-x/data/cpp/data/humaneval.jsonl",
+    "humaneval-x/data/go/data/humaneval.jsonl",
+    "humaneval-x/data/java/data/humaneval.jsonl",
+    "humaneval-x/data/js/data/humaneval.jsonl",
+    "humaneval-x/data/python/data/humaneval.jsonl",
+    "humaneval-x/data/rust/data/humaneval.jsonl",    
+]
+
 if False:
-    paths = [
-        "humaneval-x/data/cpp/data/humaneval.jsonl",
-        "humaneval-x/data/go/data/humaneval.jsonl",
-        "humaneval-x/data/java/data/humaneval.jsonl",
-        "humaneval-x/data/js/data/humaneval.jsonl",
-        "humaneval-x/data/python/data/humaneval.jsonl",
-        "humaneval-x/data/rust/data/humaneval.jsonl",    
-    ]
 
     for p in paths:
         with open(p, "r") as f:
@@ -35,10 +36,14 @@ paths_bugs = [
     "humaneval-x/data/java/data/humanevalbugs.json",
     "humaneval-x/data/js/data/humanevalbugs.json",
     "humaneval-x/data/python/data/humanevalbugs.json",
+    "humaneval-x/data/rust/data/humanevalbugs.json",
 ]
 
 with open("humaneval-x/data/python/data/humanevalbugs.json", "r") as f:
     python_data = json.load(f)
+
+with open("humaneval-x/HumanEval_original.jsonl", "r") as f:
+    he_original = [json.loads(line) for line in f]
 
 for p, p_or in zip(paths_bugs, paths):
     with open(p, "r") as f:
@@ -47,9 +52,13 @@ for p, p_or in zip(paths_bugs, paths):
         data_or = [json.loads(line) for line in f]
     # Write in jsonl format
     with open(p_or.replace(".", "bugs."), "w") as f:
-        for line, line_bugs, line_bugs_py in zip(data_or, data, python_data):
+        for line, line_bugs, line_bugs_py, line_original in zip(data_or, data, python_data, he_original):
             line["buggy_solution"] = line_bugs["buggy_solution"]
             line["bug_type"] = line_bugs_py["bug_type"]
             line["failure_symptoms"] = line_bugs_py["failure_symptoms"]
+            line["entry_point"] = line_original["entry_point"]
+            # Go / Java / JS use camelCase hence need to remove _ & capitalize i.e. "hello_world" -> "HelloWorld"
+            if "/go/" in p or "/java/" in p or "/js/" in p:
+                line["entry_point"] = line["entry_point"].replace("_", " ").title().replace(" ", "")
             f.write(json.dumps(line) + "\n")
 
