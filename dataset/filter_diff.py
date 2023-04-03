@@ -225,7 +225,6 @@ human_eval_solutions = [s for s in load_dataset_column("openai_humaneval", "cano
 # Filter out HEXB docstrings https://github.com/bigcode-project/bigcode-dataset/blob/adb5fcd172b3015272d8ab976c0b53e95c804cd0/decontamination/find_substrings.py
 def human_eval_docstrings():
     docstrings = []
-    # TODO: Rust
     for lang in ["python", "java", "js", "go", "cpp", "rust"]:
         ds = datasets.load_dataset("bigcode/humaneval-x-bugs", lang)["test"]
         docstrings.extend([v['prompt'] for v in ds])
