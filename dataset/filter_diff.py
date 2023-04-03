@@ -236,7 +236,12 @@ ds = ds.filter(lambda x: any([s in x["new_contents"] for s in human_eval_x_bugs_
 
 print("After decontamination, the dataset size is {}".format(len(ds)))
 
-cols_to_select = ["commit", "old_file", "new_file", "old_contents", "diff", "subject", "lang", "size"] + ["proba"] if "proba" in ds.column_names else []
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("bigcode/santacoder")
+# Filter for texts with with less than 2048 tokens
+ds = ds.filter(lambda x: len(tokenizer("<|endoftext|>" + x["new_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["diff"])["input_ids"]) <= 2048, num_proc=NUM_PROC)
+
+cols_to_select = ["commit", "old_file", "new_file", "old_contents", "diff", "subject", "lang"] + ["proba"] if "proba" in ds.column_names else []
 ds = ds.select_columns(cols_to_select)
 
 print("Finished data cleaning, the final dataset size is {}".format(len(ds)))
