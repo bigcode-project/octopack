@@ -18,7 +18,8 @@ echo "START TIME: $(date)"
 
 variant=xp3commits
 
-DATA_OUTPUT_PATH=$six_ALL_CCFRSCRATCH/checkpoints/tr13f-6B3-ml-t0
+DATA_OUTPUT_PATH=/gpfswork/rech/ajs/commun/code/bigcode/finetune
+#$six_ALL_CCFRSCRATCH/checkpoints/tr13f-6B3-ml-t0
 CHECKPOINT_PATH=$DATA_OUTPUT_PATH/checkpoints/$variant
 REPO_PATH=$DATA_OUTPUT_PATH/tr13f-6B3-ml-t0-logs
 TENSORBOARD_PATH=$REPO_PATH/tensorboard/$variant

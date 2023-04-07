@@ -57,8 +57,11 @@ for p, p_or in zip(paths_bugs, paths):
             line["bug_type"] = line_bugs_py["bug_type"]
             line["failure_symptoms"] = line_bugs_py["failure_symptoms"]
             line["entry_point"] = line_original["entry_point"]
-            # Go / Java / JS use camelCase hence need to remove _ & capitalize i.e. "hello_world" -> "HelloWorld"
-            if "/go/" in p or "/java/" in p or "/js/" in p:
+            # Go use camelCase hence need to remove _ & capitalize i.e. "hello_world" -> "HelloWorld"
+            if "/go/" in p:
                 line["entry_point"] = line["entry_point"].replace("_", " ").title().replace(" ", "")
+            # Java / JS use camelCase but with first letter lowercase i.e. "hello_world" -> "helloWorld"
+            elif "/java/" in p or "/js/" in p:
+                line["entry_point"] = line["entry_point"].replace("_", " ").title().replace(" ", "")[0].lower() + line["entry_point"].replace("_", " ").title().replace(" ", "")[1:]
             f.write(json.dumps(line) + "\n")
 
