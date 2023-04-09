@@ -33,7 +33,17 @@ GOOD_ENDS_JP = {"て"}
 GOOD_STARTS = GOOD_STARTS_EN | GOOD_STARTS_ZH | GOOD_STARTS_FR | GOOD_STARTS_ES | GOOD_STARTS_PT | GOOD_STARTS_RU | GOOD_STARTS_KO | GOOD_STARTS_JP
 GOOD_ENDS = GOOD_ENDS_KO | GOOD_ENDS_JP
 
+MODEL = "bloomz"
 LANGUAGES = ["python", "java", "javascript"]
+
+if MODEL == "bloomz":
+    LANGUAGES += ["rust", "go", "c++"]
+elif MODEL == "codegeex":
+    # objective-c is the only one missing; Likely partly mixed in with C in the commits data
+    LANGUAGES += [
+        "rust", "go", "c++", "c", "html", "shell", "php", "html+php", "css", "typescript", "sql", "tex", 
+        "objective-c++", "scala", "kotlin", "pascal", "fortran", "r", "cuda", "c#"
+    ]
 
 # 1.0 mean keep all short commit messages
 SHORT_SAMPLING = 1.0
@@ -46,9 +56,6 @@ MIN_RANGE = 0
 MAX_RANGE = 32
 
 NUM_PROC = 64
-
-
-MODEL = "bloomz"
 
 
 BAD_SUB_MESSAGE = [
@@ -72,7 +79,7 @@ BAD_MESSAGE = [
     "updated readme",
 ]
 
-PUSH_DATASET_NAME = "bigcode/commits-pjj-2048"
+PUSH_DATASET_NAME = "bigcode/commits-pjjrcg-2048"
 
 ### SAMPLE ###
 #BASE_DIR = "data"
@@ -222,7 +229,9 @@ if MODEL == "santacoder":
 elif MODEL == "bloomz":
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-7b1")
-    ds = ds.filter(lambda x: len(tokenizer(f"Instructions: {x['subject']}\nInput: {x['old_contents']} Output: {x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
+    ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}\n\n{x['subject']}\n{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
+elif MODEL == "codegeex":
+    from transformers.models.gpt2 import GPT2TokenizerFast
 
 print("After length filtering, the dataset size is: {}".format(len(ds)))
 
@@ -316,8 +325,9 @@ def prepare_code(example):
 
 def prepare_xp3(example):
     # input_template = "Instructions: {instruction}\nInput: {input} Output: "
-    example["inputs"] = f"Instructions: {example['subject']}\nInput: {example['old_contents']}"
-    example["targets"] = f"Output: {example['new_contents']}"
+    #example["inputs"] = f"Instructions: {example['subject']}\nInput: {example['old_contents']}"
+    example["inputs"] = f"{example['old_contents']}\n\n{example['subject']}"
+    example["targets"] = f"\n{example['new_contents']}"
     return example
 
 
