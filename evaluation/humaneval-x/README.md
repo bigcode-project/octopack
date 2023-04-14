@@ -22,6 +22,7 @@ pretty_name: HumanEval-X
 
 ### Modifications (@Muennighoff):
 
+- Java Line 23: Renamed `filterIntergers` -> `filterIntegers`
 - JS Line 33: Added `testfindZero()\n`, as the test was never called
 - JS Line 113: Changed the scope of the brackets in the `test` to actually test the solution; Previously all tests pass reagardless of the solution; Also rewrote the solution, which was incorrect; Likely the solution was written for the incorrect tests, which passed regardless of the solution
 - JS Line 120: Added `testMatchParens()\n`, as the test was never called

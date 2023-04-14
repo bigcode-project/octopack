@@ -61,16 +61,34 @@ accelerate launch --config_file config_1a100.yaml main.py \
 
 
 
-accelerate launch --config_file config_1a100.yaml main.py \
+accelerate launch main.py \
 --model santacoder \
---tasks quixbugs \
---do_sample False \
---n_samples 1 \
---batch_size 1 \
+--tasks humaneval-x-bugs-python \
+--do_sample True \
+--temperature 0.8 \
+--n_samples 200 \
+--batch_size 20 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---generations_path generations_quixbugs_santacoder_greedy.json \
---output_path evaluation_results_quixbugs_santacoder_greedy.json \
---max_length_generation 1024
+--generations_path generations_humanevalxbugspy_santacoder_temp08.json \
+--output_path evaluation_results_humanevalxbugspy_santacoder_temp08.json \
+--generation_only \
+--max_length_generation 2048
+
+accelerate launch --config_file config_1a100.yaml main.py \
+--model santacoder \
+--tasks humaneval-x-bugs-python \
+--do_sample True \
+--temperature 0.8 \
+--n_samples 200 \
+--batch_size 20 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method prompt \
+--generations_path generations_humanevalxbugspy_santacoder_temp08.json \
+--output_path evaluation_results_humanevalxbugspy_santacoder_temp08.json \
+--generation_only \
+--max_length_generation 2048
