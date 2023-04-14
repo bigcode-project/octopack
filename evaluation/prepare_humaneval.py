@@ -89,6 +89,9 @@ for p, p_or in zip(paths_bugs, paths):
             # Java / JS use camelCase but with first letter lowercase i.e. "hello_world" -> "helloWorld"
             elif "/java/" in p or "/js/" in p:
                 line["entry_point"] = line["entry_point"].replace("_", " ").title().replace(" ", "")[0].lower() + line["entry_point"].replace("_", " ").title().replace(" ", "")[1:]
+            # Special case
+            if (line["entry_point"] == "iscube") and ("/rust/" in p or "/cpp/" in p):
+                line["entry_point"] = "iscuber"
             # Check function name appears in prompt
             if line["entry_point"] not in line["declaration"] + line["prompt"]:
                 if line["entry_point"] in MANUAL_ENTRY_NAMES:
