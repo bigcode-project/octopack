@@ -2,7 +2,7 @@
 #SBATCH --job-name=santacoder
 #SBATCH --partition=gpu_p5
 #SBATCH --constraint=a100
-#SBATCH --nodes=1
+#SBATCH --nodes=3
 #SBATCH --ntasks-per-node=1          # crucial - only 1 task per dist per node!
 #SBATCH --cpus-per-task=64           # number of cores per tasks
 #SBATCH --hint=nomultithread         # we get physical cores not logical
@@ -11,11 +11,18 @@
 #SBATCH --output=%x-%j.out           # output file name
 #SBATCH --account=cnw@a100
 
-set -u # stop on unset variables
+set -x -e
 
 source $six_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
+
+# defining the right environment variables
+export TRANSFORMERS_CACHE=$six_ALL_CCFRWORK/models
+export HF_DATASETS_CACHE=$six_ALL_CCFRWORK/datasets
+export HF_MODULES_CACHE=$six_ALL_CCFRWORK/modules
+export HF_METRICS_CACHE=$six_ALL_CCFRWORK/metrics
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
+
 
 echo "START TIME: $(date)"
 
@@ -34,7 +41,11 @@ WEIGHTS_TRAIN=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_data_paths.t
 # "train: 1.0 0:0.950 /gpfswork/rech/ajs/commun/code/bigcode/finetune/train"
 WEIGHTS_VALID=/gpfswork/rech/ajs/commun/code/bigcode/finetune/valid_data_paths.txt.tmp
 # "validation: 1.0 0.950:1 /gpfswork/rech/ajs/commun/code/bigcode/finetune/train"
-TOKENIZER_FILE=/gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/santacoder/tokenizer.json 
+TOKENIZER_FILE=/gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/santacoder/tokenizer.json
+
+LOG_PATH=$CHECKPOINT_PATH/main_log.txt
+
+cd Megatron-LM
 
 # Changes:
 # Doubled LR
@@ -42,6 +53,8 @@ TOKENIZER_FILE=/gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 # Changed warmup fraction to 1% (from 2%)
 # Changed eval / save intervals
 # Remove fim
+
+# 10000 steps (Using 3x the batch size of QL, so 50K steps would be 150K steps in QL setup)
 
 GPT_ARGS="\
 --tensor-model-parallel-size 1 \
@@ -60,8 +73,8 @@ GPT_ARGS="\
 --global-batch-size 192 \
 --lr 0.0004 \
 --min-lr 0.00004 \
---train-iters 5000 \
---lr-decay-iters 5000 \
+--train-iters 10000 \
+--lr-decay-iters 10000 \
 --lr-decay-style cosine \
 --lr-warmup-fraction 0.01 \
 --weight-decay .1 \
@@ -69,26 +82,31 @@ GPT_ARGS="\
 --clip-grad 1.0 \
 --fp16 \
 --log-interval 10 \
---save-interval 2500 \
+--save-interval 1000 \
 --eval-interval 500 \
 --eval-iters 10 \
 --initial-loss-scale 65536 \
+--valid-num-workers 0 \
+--reset-progress \
+--no-load-rng \
+--no-load-optim \
+--finetune \
+--norm-target-loss \
+--loss-on-targets-only \
 "
 #--fim-rate 0.5 \
-
 
 TENSORBOARD_ARGS="--tensorboard-dir ${CHECKPOINT_PATH}/tensorboard"
 
 CMD=" \
     finetune_mtf.py \
     $GPT_ARGS \
-    --tokenizer-type TokenizerFromFile \
+    --tokenizer-type TokenizerFromFileWithFIM \
     --tokenizer-file $TOKENIZER_FILE \
     --save $CHECKPOINT_PATH \
     --load $CHECKPOINT_PATH \
     --train-weighted-split-paths-path $WEIGHTS_TRAIN \
     --valid-weighted-split-paths-path $WEIGHTS_VALID \
-    --valid_num_workers 0 \
     --structured-logs \
     --structured-logs-dir $CHECKPOINT_PATH/logs \
     $TENSORBOARD_ARGS \
@@ -110,9 +128,19 @@ SRUN_ARGS=" \
     --kill-on-bad-exit=1 \
     "
 
+
+# do not remove or the training will hang and nodes will be lost w/o this workaround
+export CUDA_LAUNCH_BLOCKING=1
+
+# hide duplicated errors using this hack - will be properly fixed in pt-1.12
+export TORCHELASTIC_ERROR_FILE=/tmp/torch-elastic-error.json
+
+# force crashing on nccl issues like hanging broadcast
+export NCCL_ASYNC_ERROR_HANDLING=1
+
 # py-spy top -s -i -n -- $LAUNCHER --node_rank $SLURM_PROCID --role $SLURMD_NODENAME: $CMD
 clear; srun $SRUN_ARGS --jobid $SLURM_JOB_ID bash -c "$LAUNCHER --node_rank \$SLURM_PROCID --role \$SLURMD_NODENAME: $CMD" 2>&1 | tee $LOG_PATH
 
-rm -rf $CHECKPOINT_PATH
+# rm -rf $CHECKPOINT_PATH
 
 echo "END TIME: $(date)"
