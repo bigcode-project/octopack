@@ -201,10 +201,10 @@ ds = ds.filter(lambda x: x["old_contents"] != x["new_contents"], num_proc=NUM_PR
 print("After content equality filtering, the dataset size is: {}".format(len(ds)))
 
 def filter_empty_messages(example):
-    # Require a minimum of 4 chars (even in chinese you can't really write an instruction with <4 chars)
+    # Require a minimum of 3 chars (even in chinese you can't really write an instruction with <3 chars)
     # The git commits data should already be filtered for messages with len > 5
     # Only filter out single alphabetic words (i.e. leave in e.g. Chinese)
-    if len(example["subject"]) < 4 or (len(example["subject"].split()) == 1 and example["subject"].isalpha()):
+    if len(example["subject"]) < 3 or (len(example["subject"].split()) == 1 and example["subject"].isalpha()):
         return False
     return True
 
@@ -236,23 +236,20 @@ def filter_length(example):
 ds = ds.filter(filter_length, num_proc=NUM_PROC)
 """
 
+from transformers import AutoTokenizer
 if MODEL == "santacoder":
-    from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained("bigcode/santacoder")
     # Filter for texts with with less than 2048 tokens
     ds = ds.filter(lambda x: len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 2048, num_proc=NUM_PROC)
 elif MODEL == "bigcode":
-    from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained("bigcode/large-model")
     # Filter for texts with with less than 8192 tokens
     ds = ds.filter(lambda x: len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"] + "<|endoftext|>")["input_ids"]) <= 8192, num_proc=NUM_PROC)
 elif MODEL == "bloomz":
-    from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-7b1")
     ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}\n\n{x['subject']}\n{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
 elif MODEL == "codegeex":
-    from transformers.models.gpt2 import GPT2TokenizerFast
-    tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
     # CodeGeeX has some extra tokenization to use less tokens for many whitespaces so be a bit less strict
     ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}{x['subject']}{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
 
@@ -260,11 +257,11 @@ print("After length filtering, the dataset size is: {}".format(len(ds)))
 
 def filter_messages(example):
     lower_subject = example["subject"].lower()
-
-    # remove samples without desired start words or with low proba
+    
+    # Deprecated proba filtering: `and (("proba" not in example) or (example["proba"] < 0.1)):`
+    # remove samples without desired start words
     if not (lower_subject.startswith(tuple(GOOD_STARTS))) \
-    and not (lower_subject.endswith(tuple(GOOD_ENDS))) \
-    and (("proba" not in example) or (example["proba"] < 0.1)):
+    and not (lower_subject.endswith(tuple(GOOD_ENDS))):
         return False
 
     # remove samples with bad messages
@@ -318,6 +315,8 @@ ds = ds.filter(lambda x: any([s in x["new_contents"] for s in human_eval_x_bugs_
 
 print("After decontamination, the dataset size is {}".format(len(ds)))
 
+# Done lateron now
+"""
 def prepare_code(example):
     if np.random.random() < FULL_RANGE_FRAC:
         example["content"] = f"<commit_before>{example['old_contents']}<commit_msg>{example['subject']}<commit_after>{example['new_contents']}"
@@ -345,6 +344,9 @@ def prepare_code(example):
         example["size"] = len(example["content"])
     return example
 
+ds = ds.map(prepare_code, num_proc=NUM_PROC)
+"""
+
 def prepare_xp3(example):
     # input_template = "Instructions: {instruction}\nInput: {input} Output: "
     #example["inputs"] = f"Instructions: {example['subject']}\nInput: {example['old_contents']}"
@@ -354,7 +356,6 @@ def prepare_xp3(example):
 
 
 if MODEL in ["santacoder", "codegeex"]:
-    # ds = ds.map(prepare_code, num_proc=NUM_PROC)
     cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"] + ["proba"] if "proba" in ds.column_names else []
     ds = ds.select_columns(cols_to_select)
     ds.push_to_hub(PUSH_DATASET_NAME, private=True)
