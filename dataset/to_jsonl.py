@@ -8,5 +8,10 @@ def prepare(example):
     example["targets"] = f"{example['subject']}<commit_after>{example['new_contents']}<|endoftext|>"
     return example
 
+def prepare_code(example):
+    example["inputs"] = f"```\n{example['old_contents']}\n```\n"
+    example["targets"] = f"{example['subject']}\n```\n{example['new_contents']}\n```<|endoftext|>"
+    return example
+
 ds = ds.map(prepare, num_proc=NUM_PROC).select_columns(["inputs", "targets"])
 ds.to_json("out.jsonl", orient="records", lines=True, force_ascii=False, num_proc=NUM_PROC)
