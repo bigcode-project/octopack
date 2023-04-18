@@ -34,18 +34,7 @@ GOOD_ENDS_JP = {"て"}
 GOOD_STARTS = GOOD_STARTS_EN | GOOD_STARTS_ZH | GOOD_STARTS_FR | GOOD_STARTS_ES | GOOD_STARTS_PT | GOOD_STARTS_RU | GOOD_STARTS_KO | GOOD_STARTS_JP
 GOOD_ENDS = GOOD_ENDS_KO | GOOD_ENDS_JP
 
-# 1.0 mean keep all short commit messages
-SHORT_SAMPLING = 1.0
-LONG_SAMPLING = 0.1
-# the ratio to control how many examples are fully shown in the model input, 0.2 means 20% examples will have
-# the full code context such as the whole code file as the input
-FULL_RANGE_FRAC = 0.2
-# the minimum range and the maximum range represent the minimum context lines and the maximum context lines as the code context
-MIN_RANGE = 0
-MAX_RANGE = 32
-
 NUM_PROC = 64
-
 
 BAD_SUB_MESSAGE = [
     "auto commit",
@@ -100,6 +89,15 @@ print("The dataset size is: {}".format(len(ds)))
 
 # Old mechanism for partial files only
 '''
+# 1.0 mean keep all short commit messages
+SHORT_SAMPLING = 1.0
+LONG_SAMPLING = 0.1
+# the ratio to control how many examples are fully shown in the model input, 0.2 means 20% examples will have
+# the full code context such as the whole code file as the input
+FULL_RANGE_FRAC = 0.2
+# the minimum range and the maximum range represent the minimum context lines and the maximum context lines as the code context
+MIN_RANGE = 0
+MAX_RANGE = 32
 def get_line_diff_range(example):
     old_file_start = 0
     old_file_end = 0
