@@ -354,7 +354,7 @@ def prepare_xp3(example):
 
 
 if MODEL in ["santacoder", "codegeex"]:
-    cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"] + ["proba"] if "proba" in ds.column_names else []
+    cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"]
     ds = ds.select_columns(cols_to_select)
     ds.push_to_hub(PUSH_DATASET_NAME, private=True)
 elif MODEL == "bigcode":
