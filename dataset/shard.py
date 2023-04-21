@@ -1,3 +1,18 @@
+"""
+Turns directory like
+abap.jsonl            coldfusion.jsonl                gentoo-eclass.jsonl          jupyter-notebook.jsonl          nimrod.jsonl                          qml.jsonl                 svg.jsonl
+actionscript.jsonl    common-lisp.jsonl               gettext-catalog.jsonl        kit.jsonl                       ninja.jsonl                           r.jsonl                   swift.jsonl
+ada.jsonl             coq.jsonl                       glsl.jsonl                   kotlin.jsonl                    nit.jsonl                             racket.jsonl              systemverilog.jsonl
+agda.jsonl            creole.jsonl                    gnuplot.jsonl                krl.jsonl                       nix.jsonl                             ragel-in-ruby-host.jsonl  tcl.jsonl
+ags-script.jsonl      crystal.jsonl                   go.jsonl                     labview.jsonl                   nsis.jsonl                            raml.jsonl                tcsh.jsonl
+alloy.jsonl           csound.jsonl                    golo.jsonl                   lasso.jsonl                     nu.jsonl                              rdoc.jsonl                tea.jsonl
+antlr.jsonl           css.jsonl                       gosu.jsonl                   latte.jsonl                     numpy.jsonl                           realbasic.jsonl           tex.jsonl
+apacheconf.jsonl      csv.jsonl                       grammatical-framework.jsonl  lean.jsonl                      objective-c++.jsonl                   rebol.jsonl               text.jsonl
+api-blueprint.jsonl   cucumber.jsonl                  graphql.jsonl                less.jsonl                      objective-j.jsonl                     red.jsonl                 textile.jsonl
+apl.jsonl             cuda.jsonl                      graphviz-dot.jsonl           lex.jsonl                       ocaml.jsonl                           redcode.jsonl             thrift.jsonl
+
+into directory with one dir for each language and 500MB shards of its jsonl within that dir.
+"""
 import os
 import json
 

@@ -57,10 +57,10 @@ BAD_MESSAGE = [
     "updated readme",
 ]
 
-PUSH_DATASET_NAME = "bigcode/commits-codegeex"
+PUSH_DATASET_NAME = "bigcodecommits"
 
 
-MODEL = "codegeex"
+MODEL = "bigcode"
 BASE_DIR = "data"
 LANGUAGES = ["python", "java", "javascript"]
 
@@ -69,13 +69,15 @@ if MODEL == "bloomz":
 elif MODEL == "codegeex":
     # objective-c is the only one missing; Likely partly mixed in with C in the commits data
     LANGUAGES += [
-        "rust", "go", "c++", "c", "html", "shell", "php", "html+php", "css", "typescript", "sql", "tex", 
+        "rust", "go", "c++", "c", "html", "shell", "php", "html+php", "css", "typescript", "sql", "tex",
         "objective-c++", "scala", "kotlin", "pascal", "fortran", "r", "cuda", "c#",
     ]
 elif MODEL == "bigcode":
     # Use all languages
-    LANGUAGES = os.listdir(BASE_DIR)
-
+    LANGUAGES = sorted(os.listdir(BASE_DIR))
+    # If running out of memory do them in batches
+    LANGUAGES = LANGUAGES[:10]
+    print(LANGUAGES)
 
 ### SAMPLE ###
 #PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
@@ -358,10 +360,12 @@ if MODEL in ["santacoder", "codegeex"]:
     ds = ds.select_columns(cols_to_select)
     ds.push_to_hub(PUSH_DATASET_NAME, private=True)
 elif MODEL == "bigcode":
-    langs = ds.unique('language')
+    cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
+    ds = ds.select_columns(cols_to_select)
+    langs = ds.unique('lang')
     for lang in langs:
         os.makedirs(PUSH_DATASET_NAME + "/" + lang, exist_ok=True)
-        ds.filter(lambda x: x['language'] == lang).to_json(f"{PUSH_DATASET_NAME}/{lang}/data.jsonl", num_proc=NUM_PROC)
+        ds.filter(lambda x: x['lang'] == lang).to_json(f"{PUSH_DATASET_NAME}/{lang}/data.jsonl", num_proc=NUM_PROC, force_ascii=False)
 elif MODEL == "bloomz":
     ds = ds.map(prepare_xp3, num_proc=NUM_PROC)
     cols_to_select = ["inputs", "targets"]
