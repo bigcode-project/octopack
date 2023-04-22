@@ -16,11 +16,14 @@ TOKENIZER_FILE=/gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 ### Bigcode
 OUTPUT=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_bigcode
 TOKENIZER_FILE=/gpfsscratch/rech/ajs/commun/large-model/tokenizer.json
-
+### commits-8192
+OUTPUT=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_commits8192
+TOKENIZER_FILE=/gpfsscratch/rech/ajs/commun/large-model/tokenizer.json
+sort -u out.jsonl | shuf > dedup.jsonl
 
 cd /gpfswork/rech/ajs/commun/code/bigcode/finetune/Megatron-LM
 python tools/preprocess_data.py \
-    --input ../dedup.jsonl \
+    --input /gpfsscratch/rech/ajs/commun/dedup.jsonl \
     --output-prefix $OUTPUT \
     --dataset-impl mmap \
     --json-key inputs \
@@ -29,7 +32,7 @@ python tools/preprocess_data.py \
     --workers 24 \
     --chunk-size 1000
 python tools/preprocess_data.py \
-    --input ../dedup.jsonl \
+    --input /gpfsscratch/rech/ajs/commun/dedup.jsonl \
     --output-prefix $OUTPUT \
     --dataset-impl mmap \
     --json-key targets \
