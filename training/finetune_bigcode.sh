@@ -36,7 +36,7 @@ WORLD_SIZE=$(($GPUS_PER_NODE*$NNODES))
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
 
 #CHECKPOINT_PATH=/gpfswork/rech/ajs/commun/code/bigcode/finetune/bigcode
-CHECKPOINT_PATH=/gpfsscratch/rech/ajs/commun/large-model-megatron-180k
+CHECKPOINT_PATH=/gpfsscratch/rech/ajs/commun/Bigcode-large-megatron
 WEIGHTS_TRAIN=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_data_paths_big.txt.tmp
 # "train: 1.0 0:0.950 /gpfswork/rech/ajs/commun/code/bigcode/finetune/train_bigcode"
 WEIGHTS_VALID=/gpfswork/rech/ajs/commun/code/bigcode/finetune/valid_data_paths_big.txt.tmp
