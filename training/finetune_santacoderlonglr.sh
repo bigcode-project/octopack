@@ -54,7 +54,6 @@ cd Megatron-LM
 # Changed eval / save intervals
 # Remove fim
 
-# 50000 steps (Using 3x the batch size of QL, so 50K steps would be 150K steps in QL setup)
 
 GPT_ARGS="\
 --tensor-model-parallel-size 1 \

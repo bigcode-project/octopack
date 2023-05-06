@@ -7,9 +7,9 @@
 #SBATCH --cpus-per-task=64           # number of cores per tasks
 #SBATCH --hint=nomultithread         # we get physical cores not logical
 #SBATCH --gres=gpu:8                 # number of gpus
-#SBATCH --time 2:00:00             # maximum execution time (HH:MM:SS)
+#SBATCH --time 20:00:00             # maximum execution time (HH:MM:SS)
 #SBATCH --output=%x-%j.out           # output file name
-#SBATCH --account=cnw@a100
+#SBATCH --account=ajs@a100
 
 set -x -e
 
@@ -52,6 +52,8 @@ cd Megatron-LM
 # Doubled LR
 # 50000 steps (Using 3x the batch size of QL, so 50K steps would be 150K steps in QL setup)
 
+# Pretraining script:
+# https://github.com/bigcode-project/Megatron-LM/blob/22b86119ef3d42879ac949cdf1a37056b0156049/examples/pretrain_bigcode_model.slurm
 GPT_ARGS="\
 --tensor-model-parallel-size 4 \
 --pipeline-model-parallel-size 4 \
@@ -62,26 +64,26 @@ GPT_ARGS="\
 --num-attention-heads 48 \
 --attention-head-type multiquery \
 --init-method-std 0.01275 \
---seq-length 2048 \
+--seq-length 8192 \
 --max-position-embeddings 8192 \
 --attention-dropout 0.1 \
 --hidden-dropout 0.1 \
 --micro-batch-size 1 \
---global-batch-size 512 \
---lr 0.0006 \
---min-lr 0.00006 \
+--global-batch-size 384 \
+--lr 0.00005 \
+--min-lr 0.000005 \
 --train-iters 50000 \
 --lr-decay-iters 50000 \
 --lr-decay-style cosine \
 --lr-warmup-fraction 0.01 \
---weight-decay .1 \
+--weight-decay .05 \
 --adam-beta2 .95 \
 --clip-grad 1.0 \
 --bf16 \
 --log-interval 10 \
---save-interval 5000 \
---eval-interval 2500 \
---eval-iters 10 \
+--save-interval 1000 \
+--eval-interval 1000 \
+--eval-iters 2 \
 --use-distributed-optimizer \
 --valid-num-workers 0 \
 --reset-progress \
