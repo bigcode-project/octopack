@@ -2,7 +2,7 @@
 #SBATCH --job-name=bigcode
 #SBATCH --partition=gpu_p5
 #SBATCH --constraint=a100
-#SBATCH --nodes=4
+#SBATCH --nodes=8
 #SBATCH --ntasks-per-node=1          # crucial - only 1 task per dist per node!
 #SBATCH --cpus-per-task=64           # number of cores per tasks
 #SBATCH --hint=nomultithread         # we get physical cores not logical
@@ -69,11 +69,11 @@ GPT_ARGS="\
 --attention-dropout 0.1 \
 --hidden-dropout 0.1 \
 --micro-batch-size 1 \
---global-batch-size 384 \
+--global-batch-size 128 \
 --lr 0.00005 \
 --min-lr 0.000005 \
---train-iters 50000 \
---lr-decay-iters 50000 \
+--train-iters 10000 \
+--lr-decay-iters 10000 \
 --lr-decay-style cosine \
 --lr-warmup-fraction 0.01 \
 --weight-decay .05 \
