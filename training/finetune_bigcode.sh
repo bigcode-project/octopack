@@ -81,8 +81,8 @@ GPT_ARGS="\
 --clip-grad 1.0 \
 --bf16 \
 --log-interval 10 \
---save-interval 1000 \
---eval-interval 1000 \
+--save-interval 250 \
+--eval-interval 250 \
 --eval-iters 2 \
 --use-distributed-optimizer \
 --valid-num-workers 0 \

@@ -1,4 +1,5 @@
 import datasets
+import random
 
 NUM_PROC = 32
 ds = datasets.load_dataset("commits-8192")["train"]
@@ -14,7 +15,11 @@ def prepare_code(example):
     return example
 
 def prepare_bigcode(example):
-    example["inputs"] = f"<filename>{example['old_file'].split('/')[-1]}<commit_before>{example['old_contents']}<commit_msg>"
+    # With 50% probability add filename
+    if random.random() < 0.5:
+        example["inputs"] = f"<filename>{example['old_file'].split('/')[-1]}<commit_before>{example['old_contents']}<commit_msg>"
+    else:
+        example["inputs"] = f"<commit_before>{example['old_contents']}<commit_msg>"
     example["targets"] = f"{example['subject']}<commit_after>{example['new_contents']}<|endoftext|>"
     return example
 
