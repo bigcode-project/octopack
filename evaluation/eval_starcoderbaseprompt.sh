@@ -25,9 +25,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugspy_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugspy_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugspyprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugspyprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --precision bf16
 
@@ -41,9 +41,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugsjs_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugsjs_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugsjsprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugsjsprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --generation_only \
 --precision bf16
@@ -58,9 +58,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugsjava_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugsjava_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugsjavaprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugsjavaprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --generation_only \
 --precision bf16
@@ -75,9 +75,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugscpp_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugscpp_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugscppprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugscppprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --generation_only \
 --precision bf16
@@ -92,9 +92,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugsgo_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugsgo_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugsgoprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugsgoprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --generation_only \
 --precision bf16
@@ -110,9 +110,9 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method edit \
---save_generations_path generations_humanevalxbugsrust_starcoderbase_temp02.json \
---metric_output_path evaluation_humanevalxbugsrust_starcoderbase_temp02.json \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugsrustprompt_starcoderbase_temp02.json \
+--metric_output_path evaluation_humanevalxbugsrustprompt_starcoderbase_temp02.json \
 --max_length_generation 2048 \
 --generation_only \
 --precision bf16
