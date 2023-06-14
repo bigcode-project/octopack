@@ -2,7 +2,7 @@
 #SBATCH --job-name=eval
 #SBATCH --ntasks=1                   # number of MP tasks
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=10           # number of cores per tasks
+#SBATCH --cpus-per-task=8           # number of cores per tasks
 #SBATCH --hint=nomultithread         # we get physical cores not logical
 #SBATCH --time=10:00:00             # maximum execution time (HH:MM:SS)
 #SBATCH --output=%x-%j.out          # output file name
@@ -15,16 +15,18 @@ conda activate bigcode
 
 cd /gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 
-accelerate launch --config_file config_1a100.yaml main.py \
---model diff-codegen-2b-v2 \
+accelerate launch --config_file config_1a100_fp16.yaml main.py \
+--model diff-codegen-6b-v2 \
 --tasks humaneval-x-bugs-python \
---do_sample False \
---n_samples 1 \
---batch_size 1 \
+--do_sample True \
+--temperature 0.2 \
+--n_samples 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method diff-carper \
---generations_path generations_humanevalxbugspy_codegen6b_greedy.json \
---output_path evaluation_humanevalxbugspy_codegen6b_greedy.json \
---max_length_generation 2048
+--save_generations_path generations_humanevalxbugspy_diffcodegen6b_temp02.json \
+--metric_output_path evaluation_humanevalxbugspy_diffcodegen6b_temp02.json \
+--max_length_generation 1024 \
+--precision fp16

@@ -16,7 +16,7 @@ conda activate bigcode
 cd /gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-python \
 --do_sample True \
 --temperature 0.2 \
@@ -32,7 +32,7 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --precision bf16
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-js \
 --do_sample True \
 --temperature 0.2 \
@@ -49,7 +49,7 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --precision bf16
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-java \
 --do_sample True \
 --temperature 0.2 \
@@ -66,7 +66,7 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --precision bf16
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-cpp \
 --do_sample True \
 --temperature 0.2 \
@@ -83,7 +83,7 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 --precision bf16
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-go \
 --do_sample True \
 --temperature 0.2 \
@@ -101,7 +101,7 @@ accelerate launch --config_file config_1a100_bf16.yaml main.py \
 
 
 accelerate launch --config_file config_1a100_bf16.yaml main.py \
---model /gpfsscratch/rech/ajs/commun/starchat-beta \
+--model /gpfsdswork/projects/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness/starchat-beta \
 --tasks humaneval-x-bugs-rust \
 --do_sample True \
 --temperature 0.2 \
