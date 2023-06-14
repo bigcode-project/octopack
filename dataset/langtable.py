@@ -1,14 +1,18 @@
 # read in the data
 with open('kilobytes.txt') as f:
-    data = f.read()
+    data_kb = f.read()
+
+with open('line_counts.txt') as f:
+    data_l = f.read()
 
 # split the data into lines
-lines = data.strip().split('\n')
+kbs = data_kb.strip().split('\n')
+ls = data_l.strip().split('\n')
 
 # create a dictionary to store the byte counts for each language
 byte_counts = {}
 total_bytes = 0
-for line in lines:
+for line in kbs:
     parts = line.split()
     print(parts)
     kb = int(parts[0]) / 1000 # Convert to megabytes
@@ -17,11 +21,27 @@ for line in lines:
     if name != "total":
         total_bytes += kb
 
+line_counts = {}
+total_lines = 0
+for line in ls:
+    parts = line.split()
+    print(parts)
+    l = int(parts[1])
+    name = parts[0].split("/")[-1][:-1]
+    line_counts[name] = l
+    if name != "total":
+        total_lines += l
+line_counts["total"] = total_lines
+
 # create the markdown table header
-print('| Name | Megabytes | % of total |')
-print('| --- | --- | --- |')
+print('| Name | Megabytes | % of total | Samples | % of total |')
+print('| --- | --- | --- | --- | --- |')
 
 # create the markdown table rows
+# Sort lines acc to byte count 
+
 for name, kb in sorted(byte_counts.items(), key=lambda x: x[1], reverse=True):
     percentage = round(kb / total_bytes * 100, 4)
-    print(f'| {name} | {kb} | {percentage}% |')
+    ls = line_counts[name]
+    l_percentage = round(ls / total_lines * 100, 4)
+    print(f'| {name} | {kb} | {percentage}% | {ls} | {l_percentage}% |')

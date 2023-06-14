@@ -16,102 +16,102 @@ conda activate bigcode
 cd /gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 
 accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
+--model bloom-7b1 \
 --tasks humaneval-x-bugs-python \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
---batch_size 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---save_generations_path generations_humanevalxbugspy_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugspy_santacoder_temp02.json \
+--save_generations_path generations_humanevalxbugspy_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugspy_bloom7b1_temp02.json \
 --max_length_generation 2048 \
 --precision fp16
 
 accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
+--model bloom-7b1 \
 --tasks humaneval-x-bugs-js \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
---batch_size 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---save_generations_path generations_humanevalxbugsjs_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugsjs_santacoder_temp02.json \
+--save_generations_path generations_humanevalxbugsjs_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugsjs_bloom7b1_temp02.json \
 --generation_only \
 --max_length_generation 2048 \
 --precision fp16
 
 accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
+--model bloom-7b1 \
 --tasks humaneval-x-bugs-java \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
---batch_size 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---save_generations_path generations_humanevalxbugsjava_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugsjava_santacoder_temp02.json \
+--save_generations_path generations_humanevalxbugsjava_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugsjava_bloom7b1_temp02.json \
 --generation_only \
 --max_length_generation 2048 \
 --precision fp16
 
 accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
---tasks humaneval-x-bugs-cpp \
---do_sample True \
---temperature 0.2 \
---n_samples 20 \
---batch_size 20 \
---allow_code_execution \
---save_generations \
---trust_remote_code \
---mutate_method prompt \
---save_generations_path generations_humanevalxbugscpp_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugscpp_santacoder_temp02.json \
---generation_only \
---max_length_generation 2048 \
---precision fp16
-
-accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
+--model bloom-7b1 \
 --tasks humaneval-x-bugs-go \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
---batch_size 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---save_generations_path generations_humanevalxbugsgo_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugsgo_santacoder_temp02.json \
+--save_generations_path generations_humanevalxbugsgo_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugsgo_bloom7b1_temp02.json \
 --generation_only \
 --max_length_generation 2048 \
 --precision fp16
 
 accelerate launch --config_file config_1a100_fp16.yaml main.py \
---model santacoder \
---tasks humaneval-x-bugs-rust \
+--model bloom-7b1 \
+--tasks humaneval-x-bugs-cpp \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
---batch_size 20 \
+--batch_size 10 \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
 --mutate_method prompt \
---save_generations_path generations_humanevalxbugsrust_santacoder_temp02.json \
---output_path evaluation_results_humanevalxbugsrust_santacoder_temp02.json \
+--save_generations_path generations_humanevalxbugscpp_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugscpp_bloom7b1_temp02.json \
+--generation_only \
+--max_length_generation 2048 \
+--precision fp16
+
+accelerate launch --config_file config_1a100_fp16.yaml main.py \
+--model bloom-7b1 \
+--tasks humaneval-x-bugs-rust \
+--do_sample True \
+--temperature 0.2 \
+--n_samples 20 \
+--batch_size 10 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method prompt \
+--save_generations_path generations_humanevalxbugsrust_bloom7b1_temp02.json \
+--metric_output_path evaluation_humanevalxbugsrust_bloom7b1_temp02.json \
 --generation_only \
 --max_length_generation 2048 \
 --precision fp16

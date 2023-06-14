@@ -14,7 +14,7 @@ source $six_ALL_CCFRWORK/start-tr13f-6B3-ml-t0
 cd ~/prod-worksf/code/bigcode/bigcode-evaluation-harness
 
 accelerate launch --config_file config_1a100.yaml main.py \
---model codegen-2B-mono \
+--model codegen-2B-multi \
 --tasks quixbugs \
 --do_sample False \
 --n_samples 1 \
@@ -29,7 +29,7 @@ accelerate launch --config_file config_1a100.yaml main.py \
 
 
 accelerate launch --config_file config_1a100.yaml main.py \
---model codegen-2B-mono \
+--model codegen-2B-multi \
 --tasks parity \
 --temperature 0.7 \
 --do_sample True \
@@ -43,7 +43,7 @@ accelerate launch --config_file config_1a100.yaml main.py \
 --output_path evaluation_results_parity_codegen2b_prompt_temp07.json
 
 accelerate launch --config_file config_1a100.yaml main.py \
---model codegen-2B-mono \
+--model codegen-2B-multi \
 --tasks parity \
 --temperature 0.7 \
 --do_sample True \
