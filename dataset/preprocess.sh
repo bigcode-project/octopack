@@ -17,10 +17,15 @@ TOKENIZER_FILE=/gpfswork/rech/ajs/commun/code/bigcode/bigcode-evaluation-harness
 OUTPUT=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_bigcode
 TOKENIZER_FILE=/gpfsscratch/rech/ajs/commun/large-model/tokenizer.json
 ### commits-8192
-OUTPUT=/gpfswork/rech/ajs/commun/code/bigcode/finetune/train_commits8192
 OUTPUT=/gpfsscratch/rech/ajs/commun/train_commits8192
 TOKENIZER_FILE=/gpfsscratch/rech/ajs/commun/large-model/tokenizer.json
-sort -u out_new.jsonl | shuf > dedup.jsonl
+### CUSTOM
+OUTPUT=my_dataset_output_name
+TOKENIZER_FILE=/path/to/tokenizer.json
+INPUT=/path/to/my_dataset.jsonl
+
+# Deduplicate
+sort -u $INPUT.jsonl | shuf > dedup.jsonl
 
 cd /gpfswork/rech/ajs/commun/code/bigcode/finetune/Megatron-LM
 python tools/preprocess_data.py \
