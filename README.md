@@ -1,6 +1,22 @@
 ## WIP: Instruction-tuning Code Models
 
+### Dataset
+
+#### Code Commits
+
+TODO
+
+#### Code Instruct
+
+TODO
+
 ### Fine-tuning
+
+#### Transformers
+
+TODO: Integrate QL's repo
+
+#### Megatron-LM
 
 
 1. Get the StarCoderBase Megatron-LM checkpoint: `git clone https://huggingface.co/bigcode/starcoderbase-megatron`
@@ -14,11 +30,17 @@
 9. Convert the saved checkpoint using the instructions below.
 
 
-#### Checkpoint conversion
+##### Checkpoint conversion
 
 1. Update the paths in `convert_large.sh` & download the marked repos & run it
 
-#### Inference
+
+### Evaluation
+
+TODO
+
+
+#### Other
 
 ```python
 # pip install -q transformers
