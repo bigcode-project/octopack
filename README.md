@@ -5,7 +5,7 @@
 1. Get the StarCoderBase Megatron-LM checkpoint: `git clone https://huggingface.co/bigcode/starcoderbase-megatron`
 2. Get Megatron-LM: `git clone -b mtf https://github.com/bigcode-project/Megatron-LM`
 3. Prepare a Python environment with PyTorch. (TODO: There may be some other packages needed that you will find out about when training fails)
-4. Prepare dataset: Preapre a finetuning dataset in the form of a single jsonl file with two keys: `inputs` & `outputs`. `inputs` should contain the prompt and instruction while `outputs` contains the targets. Loss will only be computed over `outputs`.
+4. Prepare dataset: Preapre a finetuning dataset in the form of a single jsonl file with two keys: `inputs` & `outputs`. `inputs` should contain the prompt and instruction while `outputs` contains the targets. Loss will only be computed over `outputs`. See `dataset/commits_to_jsonl.py` for an example of doing this. In that example we put the instruction (commit message) in the target, but it's better to put it in the input.
 5. Tokenize the fine-tuning dataset by modifying `dataset/preprocess.sh` to point to your jsonl dataset. Also modify the path of the tokenizer, in our case point to the StarCoder's `tokenizer.json` (`wget https://huggingface.co/bigcode/starcoderbase/raw/main/tokenizer.json`). Finally specify an output prefix where the tokenized data will be stored. Then run it with `bash dataset/preprocess.sh`.
 6. Create two files `train_data_paths.txt.tmp` and `valid_data_paths.txt.tmp` that contain the paths to the above created tokenized dataset. For example they could look like `"train: 1.0 0:0.95 output_prefix"` and `"valid: 1.0 0.95:1.0 output_prefix`. In this case the dataset is split into 95% training and 5% validation. The first number is the weight of the dataset, the second number is the start of the dataset and the third number is the end of the dataset.
 7. Rename the checkpoint downloaded to `release` i.e. `mv starcoderbase-megatron/iter* starcoderbase-megatron/release` and create a file `starcoderbase-megatron/latest_checkpointed_iteration.txt` that contains simply `release` (`echo release > starcoderbase-megatron/latest_checkpointed_iteration.txt`).
@@ -15,15 +15,9 @@
 
 #### Checkpoint conversion
 
-- Update the paths in `convert_large.sh` & download the marked repos & run it
-
-
-
-
-
+1. Update the paths in `convert_large.sh` & download the marked repos & run it
 
 #### Other
-
 
 for idx in ["00001", "00002", "00003", "00004", "00005", "00006", "00007"]:
     x = torch.load(f"/gpfsscratch/rech/ajs/commun/Bigcode-large-megatron_conv/base/shard2/pytorch_model-{idx}-of-00007.bin")
