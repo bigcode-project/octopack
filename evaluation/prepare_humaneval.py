@@ -1,7 +1,6 @@
-### Prepare HumanEval data for manual adding bugs (Easiest in json format in VSCode with formatting) ###
-
 import json
 import os
+from create_instructions import python_instruct, cpp_instruct, java_instruct, javascript_instruct, rust_instruct, go_instruct
 
 paths = [
     "humaneval-x/data/cpp/data/humaneval.jsonl",
@@ -12,8 +11,9 @@ paths = [
     "humaneval-x/data/rust/data/humaneval.jsonl",    
 ]
 
-if False:
+### Prepare HumanEval data for manual adding bugs (Easiest in json format in VSCode with formatting) ###
 
+if False:
     for p in paths:
         with open(p, "r") as f:
             data = [json.loads(line) for line in f]
@@ -98,6 +98,22 @@ for p, p_or in zip(paths_bugs, paths):
                     line["entry_point"] = MANUAL_ENTRY_NAMES[line["entry_point"]]
                 elif line["entry_point"] not in NOT_IN_DOCSTRING:
                     print("Not in docstring", i, p, line["entry_point"])
+
+            # Add instructions
+            if "/python/" in p:
+                line = python_instruct(line)
+            elif "/cpp/" in p:
+                line = cpp_instruct(line)
+            elif "/java/" in p:
+                line = java_instruct(line)
+            elif "/js/" in p:
+                line = javascript_instruct(line)
+            elif "/go/" in p:
+                line = go_instruct(line)
+            elif "/rust/" in p:
+                line = rust_instruct(line)
+            else:
+                raise NotImplementedError
             
             f.write(json.dumps(line) + "\n")
 
