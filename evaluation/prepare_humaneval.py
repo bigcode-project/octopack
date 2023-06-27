@@ -89,6 +89,9 @@ for p, p_or in zip(paths_bugs, paths):
             # Java / JS use camelCase but with first letter lowercase i.e. "hello_world" -> "helloWorld"
             elif "/java/" in p or "/js/" in p:
                 line["entry_point"] = line["entry_point"].replace("_", " ").title().replace(" ", "")[0].lower() + line["entry_point"].replace("_", " ").title().replace(" ", "")[1:]
+            # Remove metadata from Python
+            elif "/python/" in p:
+                line["test"] = line["test"].replace("METADATA = {\n    'author': 'jt',\n    'dataset': 'test'\n}", "").replace("METADATA = {}", "")
             # Special case
             if (line["entry_point"] == "iscube") and ("/rust/" in p or "/cpp/" in p):
                 line["entry_point"] = "iscuber"
