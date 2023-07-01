@@ -135,9 +135,20 @@ def check_leetcode(example):
 ds = ds.filter(check_leetcode, num_proc=NUM_PROC)
 print("After leetcode filtering, the dataset size is: {}".format(len(ds)))
 
+# Filter for anything with <5 words
+def check_words(example):
+    if len(example["subject"].split()) < 4:
+        return False
+    return True
 
-cols_to_select = ["old_contents", "new_contents", "subject"]
-ds = ds.select_columns(cols_to_select)
-ds.to_json(f"commits.jsonl", num_proc=NUM_PROC, force_ascii=False)
+ds = ds.filter(check_words, num_proc=NUM_PROC)
+print("After words filtering, the dataset size is: {}".format(len(ds)))
+
+
+langs = ds.unique('lang')
+for lang in langs:
+    ds.filter(lambda x: x['lang'] == lang).to_json(f"commits-ft/data/{lang}.jsonl", num_proc=NUM_PROC, force_ascii=False)
+    cols_to_select = ["old_contents", "new_contents", "subject"]
+    ds.filter(lambda x: x['lang'] == lang).select_columns(cols_to_select).to_json(f"commits-ft/short/{lang}.jsonl", num_proc=NUM_PROC, force_ascii=False)
 
 

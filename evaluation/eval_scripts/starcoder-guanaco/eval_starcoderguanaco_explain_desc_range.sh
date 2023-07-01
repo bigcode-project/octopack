@@ -18,8 +18,14 @@ LANG=python
 #model=starcoder-guanaco-45
 #name=starcoderguanacosi
 #model=starcoder-guanaco-instruct-500
-name=starcoderguanacoxp3x
-model=starcoder-guanaco-xp3x-45
+#name=starcoderguanacoxp3x
+#model=starcoder-guanaco-xp3x-45
+#name=starcoderguanacocommits
+#model=starcoder-guanaco-commits-35
+#name=starcodersi
+#model=starcoder-si-10
+name=starcoderxgc
+model=starcoder-xgc-130
 
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<164; i++)); do

@@ -13,10 +13,12 @@
 source /pfs/lustrep2/scratch/project_462000241/muennighoff/venv/bin/activate
 cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harness
 LANG=python
+name=starcodersi
+model=starcoder-si-10
 #name=starcoderguanaco
 #model=starcoder-guanaco-45
-name=starcoderguanacosi
-model=starcoder-guanaco-instruct-500
+#name=starcoderguanacosi
+#model=starcoder-guanaco-instruct-500
 #name=starcoderguanacoxp3x
 #model=starcoder-guanaco-xp3x-45
 

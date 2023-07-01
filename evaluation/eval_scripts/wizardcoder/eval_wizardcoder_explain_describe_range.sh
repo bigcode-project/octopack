@@ -12,10 +12,10 @@
 
 source /pfs/lustrep2/scratch/project_462000241/muennighoff/venv/bin/activate
 cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harness
-LANG=java
+LANG=go
 
 # Iterate through all possible combinations of config and run the jobs
-for ((i=1; i<164; i++)); do
+for ((i=0; i<164; i++)); do
     eval_script="./eval_$LANG-$i.slurm"
     SAVE_GEN_PATH=generations_hexexplaindesc$LANG\_wizardcoder_$i.json
     METRIC_OUTPUT_PATH=evaluation_hexexplaindesc$LANG\_wizardcoder_$i.json

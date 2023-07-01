@@ -13,8 +13,8 @@
 source /pfs/lustrep2/scratch/project_462000241/muennighoff/venv/bin/activate
 cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harness
 
-accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 20888 main.py \
---model starchat-beta \
+accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 25900 main.py \
+--model starcoder-si-10 \
 --tasks humaneval-x-bugs-python \
 --do_sample True \
 --temperature 0.2 \
@@ -23,8 +23,8 @@ accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 20888
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method prompt \
---save_generations_path generations_humanevalxbugspy_starchatbeta_temp02.json \
---metric_output_path evaluation_humanevalxbugspy_starchatbeta_temp02.json \
+--mutate_method instruct-qa \
+--save_generations_path generations_humanevalxbugspy_starcodersi_temp02.json \
+--metric_output_path evaluation_humanevalxbugspy_starcodersi_temp02.json \
 --max_length_generation 2048 \
 --precision bf16
