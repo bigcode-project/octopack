@@ -13,19 +13,19 @@
 
 source /pfs/lustrep2/scratch/project_462000241/muennighoff/venv/bin/activate
 cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harness
-LANG=python
+LANG=java
 #name=starcoderguanaco
 #model=starcoder-guanaco-45
 #name=starcoderguanacosi
 #model=starcoder-guanaco-instruct-500
 #name=starcoderguanacoxp3x
 #model=starcoder-guanaco-xp3x-45
-#name=starcoderguanacocommits
-#model=starcoder-guanaco-commits-35
+name=starcoderguanacocommits
+model=starcoder-guanaco-commits-35
 #name=starcodersi
 #model=starcoder-si-10
-name=starcoderxgc
-model=starcoder-xgc-130
+#name=starcoderxgc
+#model=starcoder-xgc-130
 
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<164; i++)); do

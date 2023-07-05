@@ -92,9 +92,6 @@ for p, p_or in zip(paths_bugs, paths):
             # Remove metadata from Python
             elif "/python/" in p:
                 line["test"] = line["test"].replace("METADATA = {\n    'author': 'jt',\n    'dataset': 'test'\n}", "").replace("METADATA = {}", "")
-            # Special case
-            if (line["entry_point"] == "iscube") and ("/rust/" in p or "/cpp/" in p):
-                line["entry_point"] = "iscuber"
             # Check function name appears in prompt
             if line["entry_point"] not in line["declaration"] + line["prompt"]:
                 if line["entry_point"] in MANUAL_ENTRY_NAMES:

@@ -16,8 +16,8 @@ cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harnes
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<164; i++)); do
     eval_script="./eval_wizardgo_$i.slurm"
-    SAVE_GEN_PATH=generations_hexgeneratego_wizardcoder_$i.json
-    METRIC_OUTPUT_PATH=evaluation_hexgeneratego_wizardcoder_$i.json
+    SAVE_GEN_PATH=generations_hexgeneraterust_wizardcoder_$i.json
+    METRIC_OUTPUT_PATH=evaluation_hexgeneraterust_wizardcoder_$i.json
     # Skip if exists
     if [ -f $SAVE_GEN_PATH ]; then
         echo "Skipping $i"
@@ -42,7 +42,7 @@ cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harnes
 
 accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port $PORT main.py \
 --model WizardCoder-15B-V1.0 \
---tasks humaneval-x-generate-go \
+--tasks humaneval-x-generate-rust \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \

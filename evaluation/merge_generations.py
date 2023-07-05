@@ -42,8 +42,8 @@ python main.py \
 --save_generations \
 --trust_remote_code \
 --mutate_method starcodercommit \
---load_generations_path generations_humanevalxexplaingeneratepy_starcoderguanacocommits2_temp02.json \
---metric_output_path evaluation_humanevalxexplaingeneratepy_starcoderguanacocommits2_temp02.json \
+--load_generations_path generations_hexexplaingencpp_starcoderguanacocommits.json \
+--metric_output_path evaluation_hexexplaingencpp_starcoderguanacocommits.json \
 --max_length_generation 2048 \
 --precision bf16
 
