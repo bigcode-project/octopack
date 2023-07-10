@@ -59,6 +59,20 @@ BAD_MESSAGE = [
     "updated readme",
 ]
 
+LANG_TO_EXTENSIONS = {
+    "python": [".py"],
+    "java": [".java"],
+    "javascript": [".js"],
+    "rust": [".rs"],
+    "go": [".go"],
+    "c++": [".cpp"],
+    "c": [".c", ".h"],
+    "html": [".html"],
+    "shell": ["sh", "bash", "zsh", "csh", "slurm"],
+    "xml": [".xml"],
+}
+
+
 PUSH_DATASET_NAME = "smallcommits_v2"
 
 
@@ -76,200 +90,210 @@ elif MODEL == "codegeex":
     ]
 elif MODEL == "starcoder":
     # Use all languages
-    LANGUAGES = ["c++"] #, "java", "javascript", "rust", "go", "c++"]
+    LANGUAGES = sorted(os.listdir(BASE_DIR))
+    DONE = ["c", "c++", "go", "java", "javascript", "python", "rust", "xml", "html", "php"]
+    #LANGUAGES = ["c++"] #, "java", "javascript", "rust", "go", "c++"]
+    LANGUAGES = [lang for lang in LANGUAGES if (lang not in DONE) and not(lang.startswith("."))]
 
 ### SAMPLE ###
 #PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
 #print(PATHS)
 
 ### FULL ###
-PATHS = sorted([os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)])
-print(PATHS)
 
-for i in range(len(PATHS) // 10 + 1):
-        
-    start = i * 10
-    end = (i + 1) * 10
-    paths = PATHS[start:end]
-    print(paths)
-    # Clean cache dir
-    if os.path.exists("cache"):
-        shutil.rmtree("cache")
-    lang_capitalized = LANGUAGES[0].capitalize()
-    if os.path.exists(f"{PUSH_DATASET_NAME}/{lang_capitalized}/data_{start}_{end}.jsonl"):
-        print(f"Skipping {start} to {end} as it already exists")
-        continue
+for L in LANGUAGES[350:]:
 
-    ds = datasets.load_dataset("json", data_files=paths, num_proc=NUM_PROC)["train"]
-    print("The dataset size is: {}".format(len(ds)))
+    PATHS = sorted([os.path.join(BASE_DIR, L, f) for f in os.listdir(BASE_DIR + "/" + L)])
+    print(PATHS)
 
-    def clean_issues_and_refs(example):
-        """
-        Remove first word if 
-            - [ ] in first word
-            - : in first word
+    for i in range(len(PATHS) // 10 + 1):
+            
+        start = i * 10
+        end = (i + 1) * 10
+        paths = PATHS[start:end]
+        print(paths)
+        # Clean cache dir
+        if os.path.exists("cache"):
+            shutil.rmtree("cache")
+        lang_capitalized = LANGUAGES[0].capitalize()
+        if os.path.exists(f"{PUSH_DATASET_NAME}/{lang_capitalized}/data_{start}_{end}.jsonl"):
+            print(f"Skipping {start} to {end} as it already exists")
+            continue
 
-        Remove final word if
-            - [ ] in final word
-            - (# ) in final word
+        ds = datasets.load_dataset("json", data_files=paths, num_proc=NUM_PROC)["train"]
+        print("The dataset size is: {}".format(len(ds)))
 
-        E.g. 
-        - [benchmark] Fix billing project (#9671) -> Fix billing project
-        - demo/python/cmd.py: Fix struct.unpack format for Python 3 -> Fix struct.unpack format for Python 3
-        """
-        if len(example["subject"]) == 0:
-            return example
-        example["subject"] = example["subject"].strip().replace("[skip ci]", "")
+        def clean_issues_and_refs(example):
+            """
+            Remove first word if 
+                - [ ] in first word
+                - : in first word
 
-        subject = example["subject"].strip().split()
+            Remove final word if
+                - [ ] in final word
+                - (# ) in final word
 
-        if (len(subject) > 0) and (subject[0].startswith("[") and subject[0].endswith("]")):
-            subject = subject[1:]
+            E.g. 
+            - [benchmark] Fix billing project (#9671) -> Fix billing project
+            - demo/python/cmd.py: Fix struct.unpack format for Python 3 -> Fix struct.unpack format for Python 3
+            """
+            if len(example["subject"]) == 0:
+                return example
+            example["subject"] = example["subject"].strip().replace("[skip ci]", "")
 
-        if (len(subject) > 0) and (subject[0].endswith(":")):
-            subject = subject[1:]
+            subject = example["subject"].strip().split()
 
-        if (len(subject) > 0) and (subject[-1].startswith("[") and subject[-1].endswith("]")):
-            subject = subject[:-1]
+            if (len(subject) > 0) and (subject[0].startswith("[") and subject[0].endswith("]")):
+                subject = subject[1:]
 
-        """
-        if (len(subject) > 0) and ("#" in subject[-1]):
-            # Also remove if e.g. Fixed (#1234) ; Closes (#1234)
-            if (len(subject) > 1) and any([word.lower() in subject[-2].lower() for word in ["Fix", "Close", "Resolve"]]):
-                subject = subject[:-2]
-            else:
+            if (len(subject) > 0) and (subject[0].endswith(":")):
+                subject = subject[1:]
+
+            if (len(subject) > 0) and (subject[-1].startswith("[") and subject[-1].endswith("]")):
                 subject = subject[:-1]
-        
-        # Remove Fix #1234
-        if (len(subject) > 1) and ("#" in subject[1]):
-            subject = subject[2:]
-        
-        # Alternative filter out all #
-        """
 
-        example["subject"] = " ".join(subject).strip()
+            """
+            if (len(subject) > 0) and ("#" in subject[-1]):
+                # Also remove if e.g. Fixed (#1234) ; Closes (#1234)
+                if (len(subject) > 1) and any([word.lower() in subject[-2].lower() for word in ["Fix", "Close", "Resolve"]]):
+                    subject = subject[:-2]
+                else:
+                    subject = subject[:-1]
+            
+            # Remove Fix #1234
+            if (len(subject) > 1) and ("#" in subject[1]):
+                subject = subject[2:]
+            
+            # Alternative filter out all #
+            """
 
-        return example
+            example["subject"] = " ".join(subject).strip()
 
-    # Did not improve results
-    # ds = ds.filter(lambda x: x["proba"] >= 0.9, num_proc=30)
-    # print("After proba filtering, the dataset size is: {}".format(len(ds)))
+            return example
 
-    ds = ds.filter(lambda x: len(x["old_contents"]) < 50_000, num_proc=NUM_PROC)
+        # Did not improve results
+        # ds = ds.filter(lambda x: x["proba"] >= 0.9, num_proc=30)
+        # print("After proba filtering, the dataset size is: {}".format(len(ds)))
 
-    print("After content length filtering, the dataset size is: {}".format(len(ds)))
+        ds = ds.filter(lambda x: len(x["old_contents"]) < 50_000, num_proc=NUM_PROC)
 
-    ds = ds.filter(lambda x: len(x["new_contents"]) != 0, num_proc=NUM_PROC)
+        print("After content length filtering, the dataset size is: {}".format(len(ds)))
 
-    print("After empty new content filtering, the dataset size is: {}".format(len(ds)))
+        ds = ds.filter(lambda x: len(x["new_contents"]) != 0, num_proc=NUM_PROC)
 
-    ds = ds.filter(lambda x: x["old_contents"] != x["new_contents"], num_proc=NUM_PROC)
+        print("After empty new content filtering, the dataset size is: {}".format(len(ds)))
 
-    print("After content equality filtering, the dataset size is: {}".format(len(ds)))
+        ds = ds.filter(lambda x: x["old_contents"] != x["new_contents"], num_proc=NUM_PROC)
 
-    ds = ds.filter(lambda x: "#" not in x["subject"], num_proc=NUM_PROC)
+        print("After content equality filtering, the dataset size is: {}".format(len(ds)))
 
-    print("After hashtag filtering, the dataset size is: {}".format(len(ds)))
+        ds = ds.filter(lambda x: "#" not in x["subject"], num_proc=NUM_PROC)
 
-    ds = ds.filter(lambda x: (len(x["new_file"].split(".")) > 1) and (x["new_file"].split(".")[-1] in ("cc", "cpp")), num_proc=NUM_PROC)
+        print("After hashtag filtering, the dataset size is: {}".format(len(ds)))
 
-    print("After filtering for python extension, the dataset size is {}".format(len(ds)))
+        extensions = LANG_TO_EXTENSIONS.get(L, [])
+        if len(extensions) > 0:
+            ds = ds.filter(lambda x: (len(x["new_file"].split(".")) > 1) and (x["new_file"].split(".")[-1] in extensions), num_proc=NUM_PROC)
+        else:
+            ds = ds.filter(lambda x: len(x["new_file"].split(".")) > 1, num_proc=NUM_PROC)
 
-    ds = ds.filter(lambda x: x["new_file"].split("/")[-1].split(".")[-2] not in x["subject"], num_proc=NUM_PROC)
+        print("After filtering for python extension, the dataset size is {}".format(len(ds)))
 
-    print("After filtering out the filename from the subject, the dataset size is: {}".format(len(ds)))
+        ds = ds.filter(lambda x: (len(x["new_file"].split("/")[-1].split(".")) < 2) or (x["new_file"].split("/")[-1].split(".")[-2] not in x["subject"]), num_proc=NUM_PROC)
 
-    def filter_empty_messages(example):
-        if (10 < len(example["subject"]) < 1000) and (4 < len(example["subject"].split()) < 1000):
+        print("After filtering out the filename from the subject, the dataset size is: {}".format(len(ds)))
+
+        def filter_empty_messages(example):
+            if (10 < len(example["subject"]) < 1000) and (4 < len(example["subject"].split()) < 1000):
+                return True
+            return False
+
+        ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+
+        print("After empty message filtering, the dataset size is: {}".format(len(ds)))
+
+        ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
+
+        ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+
+        print("After empty message filtering due to messages with []:, the dataset size is: {}".format(len(ds)))
+
+        ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
+
+        print("After filtering for capitalized subjects: {}".format(len(ds)))
+
+        from transformers import AutoTokenizer
+        if MODEL == "santacoder":
+            tokenizer = AutoTokenizer.from_pretrained("bigcode/santacoder")
+            # Filter for texts with with less than 2048 tokens
+            ds = ds.filter(lambda x: len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 2048, num_proc=NUM_PROC)
+        elif MODEL == "starcoder":
+            tokenizer = AutoTokenizer.from_pretrained("bigcode/starcoder")
+            # Filter for texts with with less than 8192 tokens
+        # ds = ds.filter(lambda x: 50 <= len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"] + "<|endoftext|>")["input_ids"]) <= 1024, num_proc=NUM_PROC)
+            ds = ds.filter(lambda x: 50 <= len(tokenizer(x["old_contents"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 768, num_proc=NUM_PROC)
+
+        elif MODEL == "bloomz":
+            tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-7b1")
+            ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}\n\n{x['subject']}\n{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
+        elif MODEL == "codegeex":
+            tokenizer = AutoTokenizer.from_pretrained("gpt2")
+            # CodeGeeX has some extra tokenization to use less tokens for many whitespaces so be a bit less strict
+            ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}{x['subject']}{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
+
+        print("After length filtering, the dataset size is: {}".format(len(ds)))
+
+        def filter_messages(example):
+            lower_subject = example["subject"].lower()
+            
+            # Deprecated proba filtering: `and (("proba" not in example) or (example["proba"] < 0.1)):`
+            # remove samples without desired start words
+            if not (lower_subject.startswith(tuple(GOOD_STARTS))):
+                return False
+
+            # remove samples with bad messages
+            if lower_subject in BAD_MESSAGE:
+                return False
+
+            # remove samples with bad subwords
+            if any(bad_msg in lower_subject for bad_msg in BAD_SUB_MESSAGE):
+                return False
+
+            # version updates (e.g. v1.1.0)
+            if re.match(r"(?:v)?\d+\.\d+\.\d+(?=$|\S)", lower_subject):
+                return False
+
+            # commit message are hashes like 0239-2a41, but we do not want to remove english words like "debug"
+            if re.match(r"^[a-f0-9]+(?:-[a-f0-9]+)*$", lower_subject):
+                return False
+
             return True
-        return False
 
-    ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+        ds = ds.filter(filter_messages, num_proc=NUM_PROC)
 
-    print("After empty message filtering, the dataset size is: {}".format(len(ds)))
+        print("After message filtering, the dataset size is {}".format(len(ds)))
 
-    ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
-
-    ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
-
-    print("After empty message filtering due to messages with []:, the dataset size is: {}".format(len(ds)))
-
-    ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
-
-    print("After filtering for capitalized subjects: {}".format(len(ds)))
-
-    from transformers import AutoTokenizer
-    if MODEL == "santacoder":
-        tokenizer = AutoTokenizer.from_pretrained("bigcode/santacoder")
-        # Filter for texts with with less than 2048 tokens
-        ds = ds.filter(lambda x: len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 2048, num_proc=NUM_PROC)
-    elif MODEL == "starcoder":
-        tokenizer = AutoTokenizer.from_pretrained("bigcode/starcoder")
-        # Filter for texts with with less than 8192 tokens
-    # ds = ds.filter(lambda x: 50 <= len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"] + "<|endoftext|>")["input_ids"]) <= 1024, num_proc=NUM_PROC)
-        ds = ds.filter(lambda x: 50 <= len(tokenizer(x["old_contents"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 768, num_proc=NUM_PROC)
-
-    elif MODEL == "bloomz":
-        tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-7b1")
-        ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}\n\n{x['subject']}\n{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
-    elif MODEL == "codegeex":
-        tokenizer = AutoTokenizer.from_pretrained("gpt2")
-        # CodeGeeX has some extra tokenization to use less tokens for many whitespaces so be a bit less strict
-        ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}{x['subject']}{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
-
-    print("After length filtering, the dataset size is: {}".format(len(ds)))
-
-    def filter_messages(example):
-        lower_subject = example["subject"].lower()
-        
-        # Deprecated proba filtering: `and (("proba" not in example) or (example["proba"] < 0.1)):`
-        # remove samples without desired start words
-        if not (lower_subject.startswith(tuple(GOOD_STARTS))):
-            return False
-
-        # remove samples with bad messages
-        if lower_subject in BAD_MESSAGE:
-            return False
-
-        # remove samples with bad subwords
-        if any(bad_msg in lower_subject for bad_msg in BAD_SUB_MESSAGE):
-            return False
-
-        # version updates (e.g. v1.1.0)
-        if re.match(r"(?:v)?\d+\.\d+\.\d+(?=$|\S)", lower_subject):
-            return False
-
-        # commit message are hashes like 0239-2a41, but we do not want to remove english words like "debug"
-        if re.match(r"^[a-f0-9]+(?:-[a-f0-9]+)*$", lower_subject):
-            return False
-
-        return True
-
-    ds = ds.filter(filter_messages, num_proc=NUM_PROC)
-
-    print("After message filtering, the dataset size is {}".format(len(ds)))
-
-    def prepare_xp3(example):
-        # input_template = "Instructions: {instruction}\nInput: {input} Output: "
-        #example["inputs"] = f"Instructions: {example['subject']}\nInput: {example['old_contents']}"
-        example["inputs"] = f"{example['old_contents']}\n\n{example['subject']}"
-        example["targets"] = f"\n{example['new_contents']}"
-        return example
+        def prepare_xp3(example):
+            # input_template = "Instructions: {instruction}\nInput: {input} Output: "
+            #example["inputs"] = f"Instructions: {example['subject']}\nInput: {example['old_contents']}"
+            example["inputs"] = f"{example['old_contents']}\n\n{example['subject']}"
+            example["targets"] = f"\n{example['new_contents']}"
+            return example
 
 
-    if MODEL in ["santacoder", "codegeex"]:
-        cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"]
-        ds = ds.select_columns(cols_to_select)
-        ds.push_to_hub(PUSH_DATASET_NAME, private=True)
-    elif MODEL == "starcoder":
-        cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
-        ds = ds.select_columns(cols_to_select)
-        langs = ds.unique('lang')
-        for lang in langs:
-            os.makedirs(PUSH_DATASET_NAME + "/" + lang, exist_ok=True)
-            ds.filter(lambda x: x['lang'] == lang).to_json(f"{PUSH_DATASET_NAME}/{lang}/data_{start}_{end}.jsonl", num_proc=NUM_PROC, force_ascii=False)
-    elif MODEL == "bloomz":
-        ds = ds.map(prepare_xp3, num_proc=NUM_PROC)
-        cols_to_select = ["inputs", "targets"]
-        ds = ds.select_columns(cols_to_select)
-        ds.to_json("commits.jsonl", orient="records", lines=True, force_ascii=False)
+        if MODEL in ["santacoder", "codegeex"]:
+            cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"]
+            ds = ds.select_columns(cols_to_select)
+            ds.push_to_hub(PUSH_DATASET_NAME, private=True)
+        elif MODEL == "starcoder":
+            cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
+            ds = ds.select_columns(cols_to_select)
+            langs = ds.unique('lang')
+            for lang in langs:
+                os.makedirs(PUSH_DATASET_NAME + "/" + lang, exist_ok=True)
+                ds.filter(lambda x: x['lang'] == lang).to_json(f"{PUSH_DATASET_NAME}/{lang}/data_{start}_{end}.jsonl", num_proc=NUM_PROC, force_ascii=False)
+        elif MODEL == "bloomz":
+            ds = ds.map(prepare_xp3, num_proc=NUM_PROC)
+            cols_to_select = ["inputs", "targets"]
+            ds = ds.select_columns(cols_to_select)
+            ds.to_json("commits.jsonl", orient="records", lines=True, force_ascii=False)

@@ -5,7 +5,15 @@ import sys
 #ds = load_dataset("humaneval-x-bugs", "python", split="test")
 
 process = True
-LANGUAGE = "python"
+LANGUAGE = "go"
+LANGUAGE_TO_ALIASES = {
+    "python": ["python", "Python", "py", "Python3", "python3", "PY"],
+    "java": ["java", "Java"],
+    "js": ["javascript", "Javascript",  "JavaScript", "JS", "js",],
+    "cpp": ["cpp", "c++", "C++", "Cpp", "CPP"],
+    "go": ["go", "Go",],
+    "rust": ["rust", "Rust", "rs"],
+}
 
 path = sys.argv[1] # e.g. completions_python.jsonl
 
@@ -29,21 +37,24 @@ with open(path.replace("jsonl", "json"), "w") as f:
       for samples in c:
         sub_output = []
         for completion in samples["raw_generation"]:
-            completion = completion.replace("\r", "")       
-            if '```' + LANGUAGE in completion: 
-                def_line = completion.index('```' + LANGUAGE)
-                completion = completion[def_line:].strip()
-                completion = completion.replace('```' + LANGUAGE, '')
+            completion = completion.replace("\r", "")
+            for L in LANGUAGE_TO_ALIASES[LANGUAGE]:
+                if '```' + L in completion:
+                    def_line = completion.index('```' + L)
+                    completion = completion[def_line:].strip()
+                    completion = completion.replace('```' + L, '')
+                    # print(completion)
+                    try:
+                        next_line = completion.index('```')
+                        completion = completion[:next_line].strip()
+                    except:
+                        a += 1
+                        print(completion)
+                        print("================\n")
+                    # print(completion)
+                    break
+
                 # print(completion)
-                try:
-                    next_line = completion.index('```')
-                    completion = completion[:next_line].strip()
-                except:
-                    a += 1
-                    print(completion)
-                    print("================\n")
-                # print(completion)
-            
             if LANGUAGE == "python":            
               if "__name__ == \"__main__\"" in completion:
                   next_line = completion.index('if __name__ == "__main__":')

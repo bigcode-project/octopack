@@ -12,7 +12,7 @@
 
 source /pfs/lustrep2/scratch/project_462000241/muennighoff/venv/bin/activate
 cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harness
-LANG=go
+LANG=rust
 
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<1; i++)); do

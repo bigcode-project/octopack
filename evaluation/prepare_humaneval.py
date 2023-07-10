@@ -115,5 +115,22 @@ for p, p_or in zip(paths_bugs, paths):
             else:
                 raise NotImplementedError
             
+            # Reformat Rust to be like the others
+            if "/rust/" in p:
+                # Rust is an ugly language and needs a main function
+                # https://stackoverflow.com/questions/28982814/why-does-compiling-this-program-without-a-main-function-result-in-undefined-ref
+                # https://github.com/roG0d/CodeGeeX/blob/f66205b5f615a4eead9c26d7ec297e14738ea18d/codegeex/benchmark/evaluate_humaneval_x.py#L78
+                # https://github.com/THUDM/CodeGeeX/pull/76#issuecomment-1500653190                
+                main = "fn main(){}"
+                # Insert the prompt before the last appearance of fn in declaration
+                promptfn = line["declaration"].rfind("\nfn ")
+                if "pub fn " in line["declaration"]:
+                    promptpubfn = line["declaration"].rfind("\npub fn ")
+                    if promptpubfn > promptfn:
+                        promptfn = promptpubfn
+
+                decwithprompt = line["declaration"][:promptfn] + "\n" + line["prompt"].strip() + "\n" + line["declaration"][promptfn:].lstrip()
+                line["prompt"] = main + "\n" + decwithprompt
+            
             f.write(json.dumps(line) + "\n")
 
