@@ -63,3 +63,10 @@ inputs = tokenizer.encode("def print_hello_world():", return_tensors="pt").to(de
 outputs = model.generate(inputs, max_new_tokens=1)
 print(tokenizer.decode(outputs[0]))
 ```
+
+
+
+##### Logo
+
+- https://myoctocat.com/build-your-octocat/
+- https://tech-lagoon.com/imagechef/en/white-to-transparent.html?cache=20230710202913&reloaded=true
