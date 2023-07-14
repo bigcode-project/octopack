@@ -52,7 +52,7 @@ accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port $PORT
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method instruct-wizard \
+--mutate_method wizardcoder \
 --save_generations_path $SAVE_GEN_PATH \
 --metric_output_path $METRIC_OUTPUT_PATH \
 --max_length_generation 2048 \

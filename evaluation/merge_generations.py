@@ -32,7 +32,7 @@ with open(out_name, "w") as f:
 
 """
 python main.py \
---model starcoder-guanaco-commits-50 \
+--model starcoder \
 --tasks humaneval-x-generate-cpp \
 --do_sample True \
 --temperature 0.2 \
@@ -42,13 +42,13 @@ python main.py \
 --save_generations \
 --trust_remote_code \
 --mutate_method starcodercommit \
---load_generations_path generations_hexexplaingencpp_starcoderguanacocommits.json \
---metric_output_path evaluation_hexexplaingencpp_starcoderguanacocommits.json \
+--load_generations_path generations_hexexplaingencpp_starcoder.json \
+--metric_output_path evaluation_hexexplaingencpp_starcoder.json \
 --max_length_generation 2048 \
 --precision bf16
 
 python main.py \
---model starcoder-xgc-130 \
+--model bloomz \
 --tasks humaneval-x-generate-python \
 --do_sample True \
 --temperature 0.2 \
@@ -57,9 +57,9 @@ python main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method instruct-qa \
---load_generations_path generations_hexexplaingenpython_starcoderxgc.json \
---metric_output_path evaluation_hexexplaingenpython_starcoderxgc.json \
+--mutate_method instruct \
+--load_generations_path generations_humanevalxexpgenpy_bloomz_temp02.json \
+--metric_output_path evaluation_humanevalxexpgenpy_bloomz_temp02.json \
 --max_length_generation 2048 \
 --precision bf16
 

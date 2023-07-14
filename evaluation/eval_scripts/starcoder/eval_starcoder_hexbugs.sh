@@ -16,7 +16,7 @@ cd /pfs/lustrep2/scratch/project_462000185/muennighoff/bigcode-evaluation-harnes
 
 accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 25900 main.py \
 --model starcoder \
---tasks humaneval-x-bugs-python \
+--tasks humaneval-x-bugs-rust \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 20 \
@@ -25,7 +25,7 @@ accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 25900
 --save_generations \
 --trust_remote_code \
 --mutate_method starcoder \
---save_generations_path generations_humanevalxbugspy_starcoder_temp02.json \
---metric_output_path evaluation_humanevalxbugspy_starcoder_temp02.json \
+--save_generations_path generations_humanevalxbugsrust_starcoder_temp02.json \
+--metric_output_path evaluation_humanevalxbugsrust_starcoder_temp02.json \
 --max_length_generation 1800 \
 --precision bf16

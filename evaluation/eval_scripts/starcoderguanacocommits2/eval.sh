@@ -129,3 +129,20 @@ accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 50749
 --generation_only \
 --precision bf16
 
+
+
+CUDA_VISIBLE_DEVICES=3 accelerate launch --config_file config_1gpus_bf16.yaml --main_process_port 50749 main.py \
+--model gc-80-nofc \
+--tasks humaneval-x-generate-python \
+--do_sample True \
+--temperature 0.2 \
+--n_samples 20 \
+--batch_size 5 \
+--allow_code_execution \
+--save_generations \
+--trust_remote_code \
+--mutate_method instruct-qa \
+--save_generations_path generations_humanevalxgeneratepy_starcodergc_temp02.json \
+--metric_output_path evaluation_humanevalxgeneratepy_starcodergc_temp02.json \
+--max_length_generation 2048 \
+--precision bf16
