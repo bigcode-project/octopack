@@ -123,6 +123,8 @@ for name, kb in sorted(byte_counts.items(), key=lambda x: x[1], reverse=True):
 # Print all languages 
 print("-"*80)
 print('", "'.join([x[0] for x in sorted(byte_counts.items(), key=lambda x: byte_counts[x[0]], reverse=True)]))
+print("-"*80)
+print('", "'.join([x[0] for x in sorted(byte_counts_f.items(), key=lambda x: byte_counts_f[x[0]], reverse=True)]))
 # Print all samples
 print("-"*80)
 print(', '.join([str(x[1]) for x in sorted(line_counts.items(), key=lambda x: line_counts[x[0]], reverse=True)]))
