@@ -76,14 +76,14 @@ accelerate launch main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method instruct-qa \
+--mutate_method octocoder \
 --save_generations_path generations_humanevalfixpy_octocoder.json \
 --metric_output_path evaluation_humanevalfixpy_octocoder.json \
 --max_length_generation 2048 \
 --precision bf16
 ```
 Notes:
-- `mutate_method`: This defines the prompt. Example values are `wizardcoder`, `instructcodet5p`, `starchat` which use the prompting format that is put forth by the respective model creators. You can refer to the actual [evaluation file](https://raw.githubusercontent.com/bigcode-project/bigcode-evaluation-harness/parity/lm_eval/tasks/humanevalpack.py) for how the prompt looks like.
+- `mutate_method`: This defines the prompt. Example values are `octocoder`, `wizardcoder`, `instructcodet5p`, `starchat` which use the prompting format that is put forth by the respective model creators. You can refer to the actual [evaluation file](https://raw.githubusercontent.com/bigcode-project/bigcode-evaluation-harness/parity/lm_eval/tasks/humanevalpack.py) for how the prompt looks like.
 - `allow_code_execution`: This will directly execute the evaluation and save results on your current machine. If you only want to create the generations and evaluate them later, you can add the flag `--generation_only` and then evaluate them using e.g. the Colab notebook we provide in the next section. This is practical for languages you may not have installed on your machine, such as Rust.
 - `tasks`: For HumanEvalPack, the tasks are the following:`'humanevalfixdocs-cpp', 'humanevalfixdocs-go', 'humanevalfixdocs-java', 'humanevalfixdocs-js', 'humanevalfixdocs-python', 'humanevalfixdocs-rust', 'humanevalfixtests-cpp', 'humanevalfixtests-go', 'humanevalfixtests-java', 'humanevalfixtests-js', 'humanevalfixtests-python', 'humanevalfixtests-rust', 'humanevalexplaindescribe-cpp', 'humanevalexplaindescribe-go', 'humanevalexplaindescribe-java', 'humanevalexplaindescribe-js', 'humanevalexplaindescribe-python', 'humanevalexplaindescribe-rust', 'humanevalexplainsynthesize-cpp', 'humanevalexplainsynthesize-go', 'humanevalexplainsynthesize-java', 'humanevalexplainsynthesize-js', 'humanevalexplainsynthesize-python', 'humanevalexplainsynthesize-rust', 'humanevalsynthesize-cpp', 'humanevalsynthesize-go', 'humanevalsynthesize-java', 'humanevalsynthesize-js', 'humanevalsynthesize-python', 'humanevalsynthesize-rust'`. 
     - HumanEvalFix is divided into two parts: One where only tests are provided and no docstrings (main focus of the paper) and one where instead of tests docstrings are provided as the source of truth (appendix). 
@@ -100,7 +100,7 @@ accelerate launch main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method instruct-qa \
+--mutate_method octocoder \
 --save_generations_path generations_humanevalexplaindescribepy_octocoder.json \
 --max_length_generation 2048 \
 --precision bf16
@@ -116,14 +116,14 @@ accelerate launch main.py \
 --allow_code_execution \
 --save_generations \
 --trust_remote_code \
---mutate_method instruct-qa \
+--mutate_method octocoder \
 --load_data_path generations_humanevalexplaindescribepy_octocoder.json \
 --save_generations_path generations_humanevalexplainsynthesizepy_octocoder.json \
 --metric_output_path evaluation_humanevalexplainsynthesizepy_octocoder.json \
 --max_length_generation 2048 \
 --precision bf16
 ```
-    - HumanEvalSynthesize is an extension of HumanEval. If you would like to run with the original HumanEval prompt that relies on pure function continuation you can use the flag `--mutate_method continue`. OctoCoder uses `--mutate_method instruct-qa`.
+- HumanEvalSynthesize is an extension of HumanEval. If you would like to run with the original HumanEval prompt that relies on pure function continuation you can use the flag `--mutate_method continue`. OctoCoder uses `--mutate_method octocoder`.
 
 3. **Evaluate:** If you have only created generations without evaluating them (e.g. by adding the `--generation_only` flag), you can use the notebook at `evaluation/run/humanevalpack_evaluation` or [this colab](https://colab.research.google.com/drive/1tlpGcDPdKKMDqDS0Ihwh2vR_MGlzAPC_?usp=sharing) to evaluate the generations. It contains a section for each programming lanuage where it installs the language first and then given the path to your generations evaluates them providing you with the pass@k scores.
 
