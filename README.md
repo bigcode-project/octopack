@@ -1,23 +1,77 @@
-## WIP: Instruction-tuning Code Models
+# OctoPack: Instruction Tuning Code Large Language Models
 
-### Dataset
+This repository provides an overview of all components from the paper OctoPack: Instruction Tuning Code Large Language Models.
 
-#### Code Commits
+<!-- TOC -->
 
-TODO
+- [OctoPack: Instruction Tuning Code Large Language Models](#octopack-instruction-tuning-code-large-language-models)
+    - [Data](#data)
+        - [CommitPack](#commitpack)
+        - [CommitPackFT](#commitpackft)
+            - [Other](#other)
+    - [Evaluation](#evaluation)
+        - [Creation](#creation)
+        - [Run](#run)
+    - [Training](#training)
+        - [Transformers](#transformers)
+        - [Megatron-LM](#megatron-lm)
+            - [Checkpoint conversion](#checkpoint-conversion)
+        - [Other](#other)
+    - [Citation](#citation)
 
-#### Code Instruct
+<!-- /TOC -->
 
-TODO
+## Data
 
-### Fine-tuning
+### CommitPack
 
-#### Transformers
+1. **BigQuery SQL:** Use BigQuery to select the commit data from the GitHub action data. All SQL commands can be found in `dataset/commitpack/sql`. They are executed in order starting with the first one to to the fifth one. They are separated and executed one-by-one as BigQuery was raising `Resources exceeded` errors during query execution when running all in a single statement. After each SQL query a dataset is created and named as indicated in the filename. E.g. after executing `sql_1_commits_table_base.sql`, you would name the output dataset `commits_table_base`, which is then referenced in the 2nd statement.
+2. **Export:** From BigQuery export the dataset after the final SQL statement inside GCP to a bucket as parquet files. 
+3. **Upload to HF:** Use a GCP compute instance to copy all the parquet files into a Hugging Face dataset and push it. The resulting dataset contains metadata on the commits, [CommitPackMeta](https://huggingface.co/datasets/bigcode/commitpackmeta)
+4. **Scrape GitHub:**
+
+### CommitPackFT
+
+1. **Prepare:** Download CommitPack or follow all its steps to recreate it
+2. **Filter:** Run `python dataset/commitpackft/commitpackft/filter_small.py`
+
+#### Other
+
+- StarCoder Self-Instruct: See [this repository](https://github.com/ArmelRandy/Self-instruct)
+- OASST:
+- xP3x:
+
+## Evaluation
+
+### Creation
+
+1. We use the upper commented out part of the script at `evaluation/create/prepare_humaneval.py` to create a JSON with the solution for each humaneval language in `evaluation/create/humaneval-x/data`. 
+2. We then manually go through each JSON file (e.g. `evaluation/create/humaneval-x/data/cpp/data/humanevalpack.json`) to introduce a bug across all languages in parallel. 
+3. We also make several fixes to the humaneval-x dataset, all of which are documented at the top of `evaluation/create/humaneval-x/README.md`.
+4. We run the lower part of `evaluation/create/prepare_humaneval.py` to turn the JSON files back into JSONL files with the buggy solution, an instruction column and some other metadata. These JSONL files located at e.g. `evaluation/create/humaneval-x/data/cpp/data/humanevalpack.jsonl` are then uploaded into the HF dataset at https://huggingface.co/datasets/bigcode/humanevalpack.
+
+### Run
+
+1. **Setup:** Run the below bash code to setup the evaluation repository. If you want the repository in exactly the state we used it for the paper you can add the the flag `-b parity` to clone the branch we used for the paper. Generally, we recommend using the latest version of the code.
+```bash
+git clone https://github.com/bigcode-project/bigcode-evaluation-harness
+cd bigcode-evaluation-harness
+pip install -q -r requirements.txt
+accelerate config
+```
+2. **Run:**
+3. **Evaluate:** After running the generations you can use the notebook at `evaluation/run/humanevalpack_evaluation` or [this colab](https://colab.research.google.com/drive/1tlpGcDPdKKMDqDS0Ihwh2vR_MGlzAPC_?usp=sharing) to evaluate the generations. It installs the necessary programming languages.
+
+
+## Training
+
+### Transformers
 
 TODO: Integrate QL's repo
 
-#### Megatron-LM
+### Megatron-LM
 
+We did not end up using Megatron-LM fine-tuning for the model in the paper, but implemented it nevertheless. Feel free to follow these instructions to use it:
 
 1. Get the StarCoderBase Megatron-LM checkpoint: `git clone https://huggingface.co/bigcode/starcoderbase-megatron`
 2. Get Megatron-LM: `git clone -b mtf https://github.com/bigcode-project/Megatron-LM`
@@ -30,17 +84,12 @@ TODO: Integrate QL's repo
 9. Convert the saved checkpoint using the instructions below.
 
 
-##### Checkpoint conversion
+#### Checkpoint conversion
 
 1. Update the paths in `convert_large.sh` & download the marked repos & run it
 
 
-### Evaluation
-
-TODO
-
-
-#### Other
+### Other
 
 ```python
 # pip install -q transformers
@@ -64,9 +113,6 @@ outputs = model.generate(inputs, max_new_tokens=1)
 print(tokenizer.decode(outputs[0]))
 ```
 
+## Citation
 
-
-##### Logo
-
-- https://myoctocat.com/build-your-octocat/
-- https://tech-lagoon.com/imagechef/en/white-to-transparent.html?cache=20230710202913&reloaded=true
+TODO
