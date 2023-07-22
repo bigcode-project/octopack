@@ -1,5 +1,7 @@
 # OctoPack: Instruction Tuning Code Large Language Models
 
+![](banner.png)
+
 This repository provides an overview of all components from the paper OctoPack: Instruction Tuning Code Large Language Models.
 
 <!-- TOC -->
@@ -17,7 +19,12 @@ This repository provides an overview of all components from the paper OctoPack: 
         - [Megatron-LM](#megatron-lm)
             - [Checkpoint conversion](#checkpoint-conversion)
         - [Other](#other)
+                - [Checkpoint conversion](#checkpoint-conversion)
+        - [Evaluation](#evaluation)
+            - [Other](#other)
     - [Citation](#citation)
+- [TODO](#todo)
+                - [Logo](#logo)
 
 <!-- /TOC -->
 
@@ -71,8 +78,11 @@ TODO: Integrate QL's repo
 
 ### Megatron-LM
 
+<<<<<<< HEAD
 We did not end up using Megatron-LM fine-tuning for the model in the paper, but implemented it nevertheless. Feel free to follow these instructions to use it:
 
+=======
+>>>>>>> aed9e13d4ecfc5dff7f5299679be892b0252ee32
 1. Get the StarCoderBase Megatron-LM checkpoint: `git clone https://huggingface.co/bigcode/starcoderbase-megatron`
 2. Get Megatron-LM: `git clone -b mtf https://github.com/bigcode-project/Megatron-LM`
 3. Prepare a Python environment with PyTorch. (TODO: There may be some other packages needed that you will find out about when training fails)
@@ -83,6 +93,7 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 8. Modify `training/finetune_starcoderbase.sh` to adapt `CHECKPOINT_PATH` to point to the downloaded Megatron-LM checkpoint, `WEIGHTS_TRAIN` & `WEIGHTS_VALID` to point to the above created txt files, `TOKENIZER_FILE` to StarCoder's `tokenizer.json`, point to your environment and cache locations, and modify the SBATCH settings to suit your setup. Then run it with `bash training/finetune_starcoderbase.sh`. You can interrupt and resume training, however, if you resume, you need to remove `--no_load_optim` and `--no_load_rng` from the command line arguments in the script to load the optimizer and random number generator state from the newly saved checkpoint (we only do not want to load them from starcoderbase).
 9. Convert the saved checkpoint using the instructions below.
 
+<<<<<<< HEAD
 
 #### Checkpoint conversion
 
@@ -90,6 +101,17 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 
 
 ### Other
+=======
+##### Checkpoint conversion
+
+1. Update the paths in `convert_large.sh` & download the marked repos & run it
+
+### Evaluation
+
+TODO
+
+#### Other
+>>>>>>> aed9e13d4ecfc5dff7f5299679be892b0252ee32
 
 ```python
 # pip install -q transformers
@@ -113,6 +135,13 @@ outputs = model.generate(inputs, max_new_tokens=1)
 print(tokenizer.decode(outputs[0]))
 ```
 
+<<<<<<< HEAD
 ## Citation
 
 TODO
+=======
+##### Logo
+
+- https://myoctocat.com/build-your-octocat/
+- https://tech-lagoon.com/imagechef/en/white-to-transparent.html?cache=20230710202913&reloaded=true
+>>>>>>> aed9e13d4ecfc5dff7f5299679be892b0252ee32
