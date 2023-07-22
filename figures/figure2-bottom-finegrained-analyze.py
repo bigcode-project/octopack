@@ -79,7 +79,7 @@ def valid(e):
 if __name__ == "__main__":
     setup_dpi(plt, 200, 20, 10)
 
-    cls_file = Path("./message_category.json")
+    cls_file = Path("./misc/message_category.json")
     with cls_file.open("r") as f:
         cls_data = json.load(f)
 
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     do_draw(job_mapper["left"][False], False)
     do_draw(job_mapper["right"][False], False)
 
-    python_img = image.imread("./python.png")
+    python_img = image.imread("./misc/python.png")
     python_logo = OffsetImage(python_img, zoom=0.13, filterrad=0.001, interpolation="gaussian")
     ab = AnnotationBbox(python_logo, (0, 0), frameon=False)
     ab.set_zorder(-1)
