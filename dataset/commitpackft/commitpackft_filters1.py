@@ -101,7 +101,7 @@ elif MODEL == "starcoder":
 
 ### FULL ###
 
-for L in LANGUAGES[350:]:
+for L in LANGUAGES:
 
     PATHS = sorted([os.path.join(BASE_DIR, L, f) for f in os.listdir(BASE_DIR + "/" + L)])
     print(PATHS)

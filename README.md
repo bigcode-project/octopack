@@ -20,8 +20,6 @@ This repository provides an overview of all components from the paper OctoPack: 
             - [Checkpoint conversion](#checkpoint-conversion)
             - [Other](#other)
     - [Citation](#citation)
-- [TODO](#todo)
-                - [Logo](#logo)
 
 <!-- /TOC -->
 
@@ -36,8 +34,8 @@ This repository provides an overview of all components from the paper OctoPack: 
 
 ### CommitPackFT
 
-1. **Prepare:** Download CommitPack or follow all its steps to recreate it
-2. **Filter:** Run `python dataset/commitpackft/commitpackft/filter_small.py`
+1. **Prepare:** Download [CommitPack]() via e.g. `git clone bigcode/commitpack` or follow all the steps above to recreate it.
+2. **Filter:** Run `python dataset/commitpackft/commitpackft_filters1.py` and `python dataset/commitpackft/commitpackft_filters2.py`. You may want to modify some of the global variables defined in the scripts.
 
 #### Other
 
