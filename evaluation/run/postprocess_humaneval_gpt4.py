@@ -4,7 +4,7 @@ import sys
 
 #ds = load_dataset("humaneval-x-bugs", "python", split="test")
 
-process = True
+process = False
 LANGUAGE = "cpp"
 LANGUAGE_TO_ALIASES = {
     "python": ["python", "Python", "py", "Python3", "python3", "PY"],
@@ -24,11 +24,11 @@ with open(path.replace("jsonl", "json"), "w") as f:
     if process is False:
       if isinstance(c[0]["generation"], str):
         json.dump(
-            [[x["prompt"] + x["generation"]] for x in c], f
+            [[x["prompt"] + x["raw_generation"]] for x in c], f
         )
       else:
         json.dump(
-            [[x["prompt"] + z for z in x["generation"]] for x in c], f
+            [[x["prompt"] + z for z in x["raw_generation"]] for x in c], f
         )
     else:
       # From https://github.com/nlpxucan/WizardLM/blob/main/WizardCoder/src/process_humaneval.py

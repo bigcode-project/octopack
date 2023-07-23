@@ -7,6 +7,7 @@ This repository provides an overview of all components from the paper [OctoPack:
 <!-- TOC -->
 
 - [OctoPack: Instruction Tuning Code Large Language Models](#octopack-instruction-tuning-code-large-language-models)
+    - [Overview](#overview)
     - [Data](#data)
         - [CommitPack](#commitpack)
         - [CommitPackFT](#commitpackft)
@@ -22,6 +23,31 @@ This repository provides an overview of all components from the paper [OctoPack:
     - [Citation](#citation)
 
 <!-- /TOC -->
+
+## Overview
+
+<table>
+<tr>
+<th>Data</t> 
+<td><a href=https://huggingface.co/datasets/bigcode/commitpack>CommitPack</a></td>
+<td>4TB of GitHub commits across 350 programming languages</td>
+</tr>
+<tr>
+<th></t> 
+<td><a href=https://huggingface.co/datasets/bigcode/commitpackft>CommitPackFT</a></td>
+<td>Filtered version of CommitPack for high-quality commit messages that resemble instructions</td>
+</tr>
+<tr>
+<th>Model</t> 
+<td><a href=https://huggingface.co/bigcode/octocoder>OctoCoder</a></td>
+<td>StarCoder (16B parameters) instruction tuned on CommitPackFT + OASST</td>
+</tr>
+<tr>
+<th>Evaluation</t> 
+<td><a href=https://huggingface.co/datasets/bigcode/humanevalpack>HumanEvalPack</a></td>
+<td>Extension of OpenAI's HumanEval to cover 3 scenarios across 6 languages</td>
+</tr>
+</table>
 
 ## Data
 
