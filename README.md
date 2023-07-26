@@ -53,7 +53,7 @@ This repository provides an overview of all components from the paper [OctoPack:
 
 ### CommitPack
 
-CommitPack is uploaded here. To recreate:
+CommitPack is uploaded [here](https://huggingface.co/datasets/bigcode/commitpack). To recreate:
 
 1. **BigQuery SQL:** Use BigQuery to select the commit data from the GitHub action data. All SQL commands can be found in `dataset/commitpack/sql`. They are executed in order starting with the first one to to the fifth one. They are separated and executed one-by-one as BigQuery was raising `Resources exceeded` errors during query execution when running all in a single statement. After each SQL query a dataset is created and named as indicated in the filename. E.g. after executing `sql_1_commits_table_base.sql`, you would name the output dataset `commits_table_base`, which is then referenced in the 2nd statement.
 2. **Export:** From BigQuery export the dataset after the final SQL statement inside GCP to a bucket as parquet files. 
@@ -65,7 +65,7 @@ CommitPack is uploaded here. To recreate:
 
 ### CommitPackFT
 
-CommitPackFT is uploaded here. To recreate:
+CommitPackFT is uploaded [here](https://huggingface.co/datasets/bigcode/commitpackft). To recreate:
 
 1. **Prepare:** Download [CommitPack](https://huggingface.co/datasets/bigcode/commitpack) via e.g. `git clone bigcode/commitpack` or follow all the steps above to recreate it.
 2. **Filter:** Run `python dataset/commitpackft/commitpackft_filters1.py` followed by `python dataset/commitpackft/commitpackft_filters2.py`. You may want to modify some of the global variables defined in the scripts.
