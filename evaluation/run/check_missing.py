@@ -1,3 +1,7 @@
+"""
+Check if there are missing files when generating using the range scripts.
+Usage: `python check_missing.py "generations_humanevalfixpython_wizardcoder*.json"`
+"""
 import sys
 import glob
 
@@ -24,5 +28,3 @@ if __name__ == "__main__":
     file_pattern = sys.argv[1]
 
     find_missing_file(file_pattern)
-
-# Call with `python check_missing.py "generations_hexgeneratecpp_wizardcoder*.json"`
