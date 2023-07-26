@@ -78,7 +78,7 @@ def get_args():
     return parser.parse_args()
 
 
-def chars_token_ratio(dataset, tokenizer, input_column_name="prompt", output_column_name="completion", nb_examples=400):
+def chars_token_ratio(dataset, tokenizer, input_column_name, output_column_name, nb_examples=400):
     """
     Estimate the average number of characters per token in the dataset.
     """
@@ -134,13 +134,13 @@ class ConstantLengthDataset(IterableDataset):
         self,
         tokenizer,
         dataset,
+        input_column_name,
+        output_column_name,
         infinite=False,
         seq_length=1024,
         num_of_sequences=1024,
         chars_per_token=3.6,
-        shuffle=True,
-        input_column_name="prompt",
-        output_column_name="completion"
+        shuffle=True
     ):
         self.tokenizer = tokenizer
         self.concat_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else args.eos_token_id
@@ -367,7 +367,7 @@ def run_training(args, train_data, val_data):
         fp16=not args.no_fp16,
         bf16=args.bf16,
         weight_decay=args.weight_decay,
-        run_name=f"StarCoder-{args.dataset_name.split("/")[-1]}",
+        run_name="StarCoder-"+str(args.dataset_name.split("/")[-1]),
         report_to="wandb",
         ddp_find_unused_parameters=False,
     )
