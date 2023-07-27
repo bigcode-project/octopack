@@ -3,6 +3,7 @@ import os
 
 import torch
 import random
+import warnings
 from accelerate import Accelerator
 from datasets import load_dataset
 from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, set_peft_model_state_dict, get_peft_model_state_dict
@@ -13,7 +14,7 @@ from transformers import TrainerCallback, TrainingArguments, TrainerState, Train
 from transformers.trainer_utils import PREFIX_CHECKPOINT_DIR
 
 """
-Fine-Tune StarCoder on Code Alpaca/SE
+Fine-Tune StarCoder on an instruction dataset
 """
 
 class SavePeftModelCallback(TrainerCallback):
@@ -36,7 +37,7 @@ class SavePeftModelCallback(TrainerCallback):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_path", type=str, default="bigcode/large-model")
+    parser.add_argument("--model_path", type=str, default="bigcode/starcoder")
     parser.add_argument("--dataset_name", type=str, default="HuggingFaceH4/CodeAlpaca_20K")
     parser.add_argument("--subset", type=str)
     parser.add_argument("--split", type=str)
@@ -46,7 +47,7 @@ def get_args():
     parser.add_argument("--num_of_sequences", type=int, default=1000)
 
     parser.add_argument("--input_column_name", type=str, default="prompt")
-    parser.add_argument("--output_column_name", type=str, default=None)
+    parser.add_argument("--output_column_name", type=str)
     parser.add_argument("--targets_only", action="store_true") # default value of False
 
     parser.add_argument("--seq_length", type=int, default=2048)
@@ -270,6 +271,9 @@ def create_datasets(tokenizer, args):
         valid_data = dataset["test"]
         print(f"Size of the train set: {len(train_data)}. Size of the validation set: {len(valid_data)}")
 
+    if not args.output_column_name :
+        warnings.warn("You did not provide a output column name. If you're not going to work on 2 columns, ignore this warning.")
+
     chars_per_token = chars_token_ratio(train_data, tokenizer, args.input_column_name, args.output_column_name)
     print(f"The character to token ratio of the dataset is: {chars_per_token:.2f}")
 
@@ -367,7 +371,7 @@ def run_training(args, train_data, val_data):
         fp16=not args.no_fp16,
         bf16=args.bf16,
         weight_decay=args.weight_decay,
-        run_name="StarCoder-"+str(args.dataset_name.split("/")[-1]),
+        run_name="StarCoder-"+str(args.dataset_name.split('/')[-1]),
         report_to="wandb",
         ddp_find_unused_parameters=False,
     )
