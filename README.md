@@ -1,6 +1,6 @@
 # OctoPack: Instruction Tuning Code Large Language Models
 
-![](banner.png)
+![](visuals/banner.png)
 
 This repository provides an overview of all components from the paper [OctoPack: Instruction Tuning Code Large Language Models](TODO).
 
@@ -17,9 +17,8 @@ This repository provides an overview of all components from the paper [OctoPack:
         - [Creation](#creation)
     - [Training](#training)
         - [Transformers](#transformers)
+        - [OctoGeeX](#octogeex)
         - [Megatron-LM](#megatron-lm)
-            - [Checkpoint conversion](#checkpoint-conversion)
-            - [Other](#other)
     - [Citation](#citation)
 
 <!-- /TOC -->
@@ -166,6 +165,7 @@ accelerate launch main.py \
 --max_length_generation 2048 \
 --precision bf16
 ```
+- Unfortunately, there is some randomness depending on the Python version you use for evaluation and the `batch_size`. We use `batch_size=5` and Python 3.9.13
 - We provide the exact scripts we used in `evaluation/run/eval_scripts` for each model. There is also a `_range.sh` script for each task (e.g. `evaluation/run/eval_scripts/eval_humanevalfix_range.sh`), which runs each sample individually. This is much faster if you have multiple GPUs available. In the `_range.sh` scripts you need to specify the model and language you would like to run. After running it, you will have 164 generation files, which  you need to merge with `python evaluation/run/merge_generations.py "generations_*json"`. Subsequently, you need to run the evaluation as explained in the next step.
 
 3. **Evaluate:** If you have only created generations without evaluating them (e.g. by adding the `--generation_only` flag or using `_range.sh` scripts), you can use the notebook at `evaluation/run/humanevalpack_evaluation` or [this colab](https://colab.research.google.com/drive/1tlpGcDPdKKMDqDS0Ihwh2vR_MGlzAPC_?usp=sharing) to evaluate the generations. It contains a section for each programming lanuage where it installs the language first and then given the path to your generations evaluates them providing you with the pass@k scores.
@@ -182,7 +182,11 @@ To create HumanEvalPack, we follow these steps:
 
 ### Transformers
 
-TODO: Integrate QL's repo
+The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The folder contains a `README.md` with instructions.
+
+### OctoGeeX
+
+
 
 ### Megatron-LM
 
@@ -196,35 +200,8 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 6. Create two files `train_data_paths.txt.tmp` and `valid_data_paths.txt.tmp` that contain the paths to the above created tokenized dataset. For example they could look like `"train: 1.0 0:0.95 output_prefix"` and `"valid: 1.0 0.95:1.0 output_prefix`. In this case the dataset is split into 95% training and 5% validation. The first number is the weight of the dataset, the second number is the start of the dataset and the third number is the end of the dataset.
 7. Rename the checkpoint downloaded to `release` i.e. `mv starcoderbase-megatron/iter* starcoderbase-megatron/release` and create a file `starcoderbase-megatron/latest_checkpointed_iteration.txt` that contains simply `release` (`echo release > starcoderbase-megatron/latest_checkpointed_iteration.txt`).
 8. Modify `training/finetune_starcoderbase.sh` to adapt `CHECKPOINT_PATH` to point to the downloaded Megatron-LM checkpoint, `WEIGHTS_TRAIN` & `WEIGHTS_VALID` to point to the above created txt files, `TOKENIZER_FILE` to StarCoder's `tokenizer.json`, point to your environment and cache locations, and modify the SBATCH settings to suit your setup. Then run it with `bash training/finetune_starcoderbase.sh`. You can interrupt and resume training, however, if you resume, you need to remove `--no_load_optim` and `--no_load_rng` from the command line arguments in the script to load the optimizer and random number generator state from the newly saved checkpoint (we only do not want to load them from starcoderbase).
-9. Convert the saved checkpoint using the instructions below.
+9. Convert the saved checkpoint using the script at `convert_large.sh`. It contains instructions which repos to download.
 
-#### Checkpoint conversion
-
-1. Update the paths in `convert_large.sh` & download the marked repos & run it
-
-#### Other
-
-```python
-# pip install -q transformers
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-checkpoint = "/gpfsscratch/rech/ajs/commun/Bigcode-large-megatron_conv/base/shard"
-checkpoint = "/gpfsscratch/rech/ajs/commun/Bigcode-large-megatron_conv/base3/"
-device = "cuda" # for GPU usage or "cpu" for CPU usage
-
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-model = AutoModelForCausalLM.from_pretrained(
-    checkpoint, 
-    trust_remote_code=True,
-    torch_dtype=torch.bfloat16,
-    low_cpu_mem_usage=True,
-).to(device)
-
-inputs = tokenizer.encode("def print_hello_world():", return_tensors="pt").to(device)
-outputs = model.generate(inputs, max_new_tokens=1)
-print(tokenizer.decode(outputs[0]))
-```
 
 ## Citation
 

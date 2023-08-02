@@ -18,9 +18,12 @@ LANG=python
 name=octocoder
 model=octocoder
 
+name=octogeex
+model=octogeex
+
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<164; i++)); do
-    eval_script="./eval_humanevalexplainsynthesize$LANG\_$i.slurm"
+    eval_script=./eval_humanevalexplainsynthesize$LANG\_$i.slurm
     SAVE_GEN_PATH_GEN=generations_humanevalexplainsynthesize$LANG\_$name\_$i.json
     METRIC_OUTPUT_PATH_GEN=evaluation_humanevalexplain$LANG\_$name\_$i.json
     # Skip if exists

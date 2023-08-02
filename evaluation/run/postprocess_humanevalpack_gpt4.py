@@ -5,8 +5,8 @@ Usage: `python postprocess_humanevalpack_gpt4.py completions_python.jsonl`
 import json
 import sys
 
-process = False
-LANGUAGE = "cpp"
+process = True
+LANGUAGE = "rust"
 LANGUAGE_TO_ALIASES = {
     "python": ["python", "Python", "py", "Python3", "python3", "PY"],
     "java": ["java", "Java"],
@@ -85,8 +85,6 @@ with open(path.replace("jsonl", "json"), "w") as f:
             elif LANGUAGE == "go":
                # Remove package main
                completion = completion.replace("package main", "")
-               
-              
             if "# Example usage" in completion:
                 # print(completion)
                 next_line = completion.index('# Example usage')

@@ -36,7 +36,7 @@ model=octocoder
 
 # Iterate through all possible combinations of config and run the jobs
 for ((i=0; i<164; i++)); do
-    eval_script="./eval__humanevalexplaindescribe$LANG\_$i.slurm"
+    eval_script=./eval_humanevalexplaindescribe$LANG\_$i.slurm
     SAVE_GEN_PATH=generations_humanevalexplaindescribe$LANG\_$name\_$i.json
     METRIC_OUTPUT_PATH=evaluation_humanevalexplaindescribe$LANG\_$name\_$i.json
     # Skip if exists
