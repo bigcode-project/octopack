@@ -16,9 +16,11 @@ This repository provides an overview of all components from the paper [OctoPack:
         - [Run](#run)
         - [Creation](#creation)
     - [Training](#training)
-        - [Transformers](#transformers)
+        - [OctoCoder](#octocoder)
         - [OctoGeeX](#octogeex)
-        - [Megatron-LM](#megatron-lm)
+        - [SantaCoder Finetuning](#santacoder-finetuning)
+        - [SantaCoder Pretraining](#santacoder-pretraining)
+        - [Other](#other)
     - [Citation](#citation)
 
 <!-- /TOC -->
@@ -180,15 +182,23 @@ To create HumanEvalPack, we follow these steps:
 
 ## Training
 
-### Transformers
+### OctoCoder
 
 The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The folder contains a `README.md` with instructions.
 
 ### OctoGeeX
 
+TODO: Qinkai
 
+### SantaCoder Finetuning
 
-### Megatron-LM
+TODO: Qian
+
+### SantaCoder Pretraining
+
+TODO: Binyuan
+
+### Other
 
 We did not end up using Megatron-LM fine-tuning for the model in the paper, but implemented it nevertheless. Feel free to follow these instructions to use it:
 
