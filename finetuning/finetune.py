@@ -193,8 +193,8 @@ class TLConstantLengthDataset(ConstantLengthDataset):
     """
     Target Loss ConstantLengthDataset
     """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     def __iter__(self):
         iterator = iter(self.dataset)
@@ -356,7 +356,6 @@ def run_training(args, train_data, val_data):
         dataloader_drop_last=True,
         evaluation_strategy="steps",
         save_strategy="steps",
-        load_best_model_at_end=True,
         max_steps=args.max_steps,
         eval_steps=args.eval_freq,
         save_steps=args.save_freq,
@@ -371,7 +370,7 @@ def run_training(args, train_data, val_data):
         fp16=not args.no_fp16,
         bf16=args.bf16,
         weight_decay=args.weight_decay,
-        run_name="StarCoder-"+str(args.dataset_name.split('/')[-1]),
+        run_name=f"{args.model_path.split('/')[-1]}-{args.dataset_name.split('/')[-1]}",
         report_to="wandb",
         ddp_find_unused_parameters=False,
     )
