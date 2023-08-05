@@ -42,7 +42,7 @@ The code is designed to a load a dataset from [HuggingFace's datasets Hub](https
 python languages.py \
     --dataset_name_or_path "codeparrot/self-instruct-starcoder" \
     --split "train" \
-    --dataset_text_field \
+    --dataset_text_field "output" \
     --in_backticks \
     --method "guesslang" \
 ```
