@@ -219,11 +219,11 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 
 ## Visuals
 
-- Figure 1: Create the main plot in `visuals/plots.ipynb` or via this colab and then add it to the correct tab in `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
-- Figure 2 (Upper): See `visuals/plots.ipynb` or this colab
+- Figure 1: Create the main plot in `visuals/plots.ipynb` or via [this colab](https://colab.research.google.com/drive/17OIf7rzAeetH9JchYT2RMyPUop1Z12JJ?usp=sharing) and then add it to the correct tab in `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
+- Figure 2 (Upper): See `visuals/plots.ipynb` or [this colab](https://colab.research.google.com/drive/17OIf7rzAeetH9JchYT2RMyPUop1Z12JJ?usp=sharing)
 - Figure 2 (Lower): See `visuals/distribution_tasks.py`
 - Figure 3: See `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
-- Figure 4: See `visuals/plots.ipynb` or this colab
+- Figure 4: See `visuals/plots.ipynb` or [this colab](https://colab.research.google.com/drive/17OIf7rzAeetH9JchYT2RMyPUop1Z12JJ?usp=sharing)
 - Other Figures: Manual
 
 - Table 4: See `visual/distribution_languages.py`
