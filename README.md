@@ -44,6 +44,10 @@ This repository provides an overview of all components from the paper [OctoPack:
 <td><a href=https://huggingface.co/bigcode/octocoder>OctoCoder</a></td>
 <td>StarCoder (16B parameters) instruction tuned on CommitPackFT + OASST</td>
 </tr>
+<th></t> 
+<td><a href=https://huggingface.co/bigcode/octogeex>OctoGeeX</a></td>
+<td>CodeGeeX2 (6B parameters) instruction tuned on CommitPackFT + OASST</td>
+</tr>
 <tr>
 <th>Evaluation</t> 
 <td><a href=https://huggingface.co/datasets/bigcode/humanevalpack>HumanEvalPack</a></td>
