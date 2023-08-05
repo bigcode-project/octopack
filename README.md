@@ -80,7 +80,7 @@ CommitPackFT is uploaded [here](https://huggingface.co/datasets/bigcode/commitpa
 
 - StarCoder Self-Instruct: Uploaded [here](https://huggingface.co/datasets/codeparrot/self-instruct-starcoder), to recreate see [this repository](https://github.com/ArmelRandy/Self-instruct).
 - xP3x: Uploaded [here](https://huggingface.co/datasets/bigcode/xp3x-octopack), to recreate see the script at `dataset/xp3x/filter_xp3x.py`.
-- OASST: Uploaded [here](https://huggingface.co/datasets/Muennighoff/oasst-octopack), to recreate see the script at `dataset/oasst/filter_oasst.py`. Each line in the jsonl file is a conversation tree. We only keep the first two messages of each conversation tree, which are the question and answer.
+- OASST: Uploaded [here](https://huggingface.co/datasets/bigcode/oasst-octopack), to recreate see the script at `dataset/oasst/filter_oasst.py`. Each line in the jsonl file is a conversation tree. We only keep the first two messages of each conversation tree, which are the question and answer.
 
 ## Evaluation
 
