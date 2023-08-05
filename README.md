@@ -21,6 +21,7 @@ This repository provides an overview of all components from the paper [OctoPack:
         - [SantaCoder Finetuning](#santacoder-finetuning)
         - [SantaCoder Pretraining](#santacoder-pretraining)
         - [Other](#other)
+    - [Visuals](#visuals)
     - [Citation](#citation)
 
 <!-- /TOC -->
@@ -212,6 +213,17 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 8. Modify `training/finetune_starcoderbase.sh` to adapt `CHECKPOINT_PATH` to point to the downloaded Megatron-LM checkpoint, `WEIGHTS_TRAIN` & `WEIGHTS_VALID` to point to the above created txt files, `TOKENIZER_FILE` to StarCoder's `tokenizer.json`, point to your environment and cache locations, and modify the SBATCH settings to suit your setup. Then run it with `bash training/finetune_starcoderbase.sh`. You can interrupt and resume training, however, if you resume, you need to remove `--no_load_optim` and `--no_load_rng` from the command line arguments in the script to load the optimizer and random number generator state from the newly saved checkpoint (we only do not want to load them from starcoderbase).
 9. Convert the saved checkpoint using the script at `convert_large.sh`. It contains instructions which repos to download.
 
+## Visuals
+
+- Figure 1: Create the main plot in `visuals/plots.ipynb` or via this colab and then add it to the correct tab in `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
+- Figure 2 (Upper): See `visuals/plots.ipynb` or this colab
+- Figure 2 (Lower): See `visuals/distribution_tasks.py`
+- Figure 3: See `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
+- Figure 4: See `visuals/plots.ipynb` or this colab
+- Other Figures: Manual
+
+- Table 4: See `visual/distribution_languages.py`
+- Other Tables: Manual
 
 ## Citation
 
