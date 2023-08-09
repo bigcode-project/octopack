@@ -197,7 +197,7 @@ TODO: Qinkai
 
 ### SantaCoder Finetuning
 
-TODO: Qian
+See this [repository](https://github.com/SivilTaram/santacoder-finetuning-commit).
 
 ### SantaCoder Pretraining
 
