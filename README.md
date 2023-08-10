@@ -19,7 +19,7 @@ This repository provides an overview of all components from the paper [OctoPack:
         - [OctoCoder](#octocoder)
         - [OctoGeeX](#octogeex)
         - [SantaCoder Finetuning](#santacoder-finetuning)
-        - [SantaCoder Pretraining](#santacoder-pretraining)
+        - [SantaCoder Pretraining SantaCoderPack](#santacoder-pretraining-santacoderpack)
         - [Other](#other)
     - [Visuals](#visuals)
     - [Citation](#citation)
@@ -193,15 +193,15 @@ The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The fo
 
 ### OctoGeeX
 
-TODO: Qinkai
+TODO
 
 ### SantaCoder Finetuning
 
 See this [repository](https://github.com/SivilTaram/santacoder-finetuning-commit).
 
-### SantaCoder Pretraining
+### SantaCoder Pretraining (SantaCoderPack)
 
-TODO: Binyuan
+TODO
 
 ### Other
 
