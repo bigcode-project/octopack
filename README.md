@@ -197,7 +197,7 @@ OctoGeeX is finetuned based on [CodeGeeX2-6B](https://huggingface.co/THUDM/codeg
 | Parameter | Value |
 | --------- | ----- |
 | `tp_size` | 2 |
-| `global_batch_size` | 32 |
+| `global_batch_size` | 48 |
 | `lr` | 5e-5 |
 | `train_step` | 50 |
 | `seq_length` | 8192 |
