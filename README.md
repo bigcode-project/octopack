@@ -193,7 +193,17 @@ The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The fo
 
 ### OctoGeeX
 
-TODO
+OctoGeeX is finetuned based on [CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b) using an internal training framework. The hyperparameters are as follows:
+| Parameter | Value |
+| --------- | ----- |
+| `tp_size` | 2 |
+| `global_batch_size` | 32 |
+| `lr` | 5e-5 |
+| `train_step` | 50 |
+| `seq_length` | 8192 |
+| `precision` | bf16 |
+
+It is also compatible with `finetuning/finetune.py`. 
 
 ### SantaCoder Finetuning
 
