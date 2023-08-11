@@ -7,22 +7,22 @@ This repository provides an overview of all components from the paper [OctoPack:
 <!-- TOC -->
 
 - [OctoPack: Instruction Tuning Code Large Language Models](#octopack-instruction-tuning-code-large-language-models)
-    - [Overview](#overview)
-    - [Data](#data)
-        - [CommitPack](#commitpack)
-        - [CommitPackFT](#commitpackft)
-            - [Other](#other)
-    - [Evaluation](#evaluation)
-        - [Run](#run)
-        - [Creation](#creation)
-    - [Training](#training)
-        - [OctoCoder](#octocoder)
-        - [OctoGeeX](#octogeex)
-        - [SantaCoder Finetuning](#santacoder-finetuning)
-        - [SantaCoder Pretraining SantaCoderPack](#santacoder-pretraining-santacoderpack)
-        - [Other](#other)
-    - [Visuals](#visuals)
-    - [Citation](#citation)
+  - [Overview](#overview)
+  - [Data](#data)
+    - [CommitPack](#commitpack)
+    - [CommitPackFT](#commitpackft)
+      - [Other](#other)
+  - [Evaluation](#evaluation)
+    - [Run](#run)
+    - [Creation](#creation)
+  - [Training](#training)
+    - [OctoCoder](#octocoder)
+    - [OctoGeeX](#octogeex)
+    - [SantaCoder Finetuning](#santacoder-finetuning)
+    - [SantaCoder Pretraining (SantaCoderPack)](#santacoder-pretraining-santacoderpack)
+    - [Other](#other-1)
+  - [Visuals](#visuals)
+  - [Citation](#citation)
 
 <!-- /TOC -->
 
@@ -62,12 +62,12 @@ This repository provides an overview of all components from the paper [OctoPack:
 CommitPack is uploaded [here](https://huggingface.co/datasets/bigcode/commitpack). To recreate:
 
 1. **BigQuery SQL:** Use BigQuery to select the commit data from the GitHub action data. All SQL commands can be found in `dataset/commitpack/sql`. They are executed in order starting with the first one to to the fifth one. They are separated and executed one-by-one as BigQuery was raising `Resources exceeded` errors during query execution when running all in a single statement. After each SQL query a dataset is created and named as indicated in the filename. E.g. after executing `sql_1_commits_table_base.sql`, you would name the output dataset `commits_table_base`, which is then referenced in the 2nd statement.
-2. **Export:** From BigQuery export the dataset after the final SQL statement inside GCP to a bucket as parquet files. 
+2. **Export:** From BigQuery export the dataset after the final SQL statement inside GCP to a bucket as parquet files.
 3. **Upload to HF:** Use a GCP compute instance to copy all the parquet files into a Hugging Face dataset and push it. The resulting dataset contains metadata on the commits, [CommitPackMeta](https://huggingface.co/datasets/bigcode/commitpackmeta)
 4. **Scrape GitHub:** Run the script at `dataset/commitpack/scrape_github.py` to download the files prior and after each git commit from GitHub. It contains some basic filters to remove noise files (relying on the extensions file at `dataset/commitpack/programming_languages.json`) and then uses multi-threading and multi-processing for scraping. It is recommended to run it on a very large instance.
 5. **Shard (optional):** Depending on the size of your files, you may want to shard them at this point using the script at `dataset/commitpack/shard.sh`
 6. **Opt-out & languages:** Run the script at `dataset/commitpack/licenses_langs.py` to remove repositories from users who opted out of the step (first part with `__main__`, needs to be uncommented) and split the large files from the prior step into files for each programming language (second part with `__main__`, currently uncommented). You will likely have to change some of the path names and uncomment parts as necessary
-6. **Shard (optional):** Using the script at `dataset/commitpack/shard.py` you can shard the large jsonl files for each language into smaller chunks with a specified size limit.
+7. **Shard (optional):** Using the script at `dataset/commitpack/shard.py` you can shard the large jsonl files for each language into smaller chunks with a specified size limit.
 
 ### CommitPackFT
 
@@ -87,6 +87,7 @@ CommitPackFT is uploaded [here](https://huggingface.co/datasets/bigcode/commitpa
 ### Run
 
 1. **Setup:** Run the below bash code to setup the evaluation repository. If you want the repository in exactly the state we used it for the paper you can add the the flag `-b octopack` to clone the branch we used for the paper. Generally, we recommend using the latest version of the code.
+
 ```bash
 git clone https://github.com/bigcode-project/bigcode-evaluation-harness
 # If you want the exact paper branch: git clone -b octopack https://github.com/bigcode-project/bigcode-evaluation-harness
@@ -94,7 +95,9 @@ cd bigcode-evaluation-harness
 pip install -q -r requirements.txt
 accelerate config
 ```
+
 2. **Run:** You can then run a task via e.g.
+
 ```bash
 accelerate launch main.py \
 --model bigcode/octocoder  \
@@ -112,13 +115,16 @@ accelerate launch main.py \
 --max_length_generation 2048 \
 --precision bf16
 ```
+
 Notes:
+
 - `accelerate`: You can also directly use `python main.py`. Accelerate has the advantage of automatically handling mixed precision & devices.
 - `prompt`: This defines the prompt. Example values are `octocoder`, `wizardcoder`, `instructcodet5p`, `starchat` which use the prompting format that is put forth by the respective model creators. You can refer to the actual [evaluation file](https://raw.githubusercontent.com/bigcode-project/bigcode-evaluation-harness/parity/lm_eval/tasks/humanevalpack.py) for how the prompt looks like.
 - `allow_code_execution`: This will directly execute the evaluation and save results on your current machine. If you only want to create the generations and evaluate them later, you can add the flag `--generation_only` and then evaluate them using e.g. the Colab notebook we provide in the next section. This is practical for languages you may not have installed on your machine, such as Rust.
-- `tasks`: For HumanEvalPack, the tasks are the following:`'humanevalfixdocs-cpp', 'humanevalfixdocs-go', 'humanevalfixdocs-java', 'humanevalfixdocs-js', 'humanevalfixdocs-python', 'humanevalfixdocs-rust', 'humanevalfixtests-cpp', 'humanevalfixtests-go', 'humanevalfixtests-java', 'humanevalfixtests-js', 'humanevalfixtests-python', 'humanevalfixtests-rust', 'humanevalexplaindescribe-cpp', 'humanevalexplaindescribe-go', 'humanevalexplaindescribe-java', 'humanevalexplaindescribe-js', 'humanevalexplaindescribe-python', 'humanevalexplaindescribe-rust', 'humanevalexplainsynthesize-cpp', 'humanevalexplainsynthesize-go', 'humanevalexplainsynthesize-java', 'humanevalexplainsynthesize-js', 'humanevalexplainsynthesize-python', 'humanevalexplainsynthesize-rust', 'humanevalsynthesize-cpp', 'humanevalsynthesize-go', 'humanevalsynthesize-java', 'humanevalsynthesize-js', 'humanevalsynthesize-python', 'humanevalsynthesize-rust'`. 
-    - HumanEvalFix is divided into two parts: One where only tests are provided and no docstrings (main focus of the paper) and one where instead of tests docstrings are provided as the source of truth (appendix). 
-    - HumanEvalExplain consists of describing first and then synthesizing given the descriptions. You need to run these tasks sequentially. For the describing you can activate `--generation_only` as there is no evaluation yet. For the synthesizing part, you need to provide the descriptions via `--load_data_path`, which will then be used to synthesize answers. `n_samples` is set to 1 for synthesis as we generate 1 answer for each description (multiple samples have already been generated for the descriptions via `n_samples`). See below for an example:
+- `tasks`: For HumanEvalPack, the tasks are the following:`'humanevalfixdocs-cpp', 'humanevalfixdocs-go', 'humanevalfixdocs-java', 'humanevalfixdocs-js', 'humanevalfixdocs-python', 'humanevalfixdocs-rust', 'humanevalfixtests-cpp', 'humanevalfixtests-go', 'humanevalfixtests-java', 'humanevalfixtests-js', 'humanevalfixtests-python', 'humanevalfixtests-rust', 'humanevalexplaindescribe-cpp', 'humanevalexplaindescribe-go', 'humanevalexplaindescribe-java', 'humanevalexplaindescribe-js', 'humanevalexplaindescribe-python', 'humanevalexplaindescribe-rust', 'humanevalexplainsynthesize-cpp', 'humanevalexplainsynthesize-go', 'humanevalexplainsynthesize-java', 'humanevalexplainsynthesize-js', 'humanevalexplainsynthesize-python', 'humanevalexplainsynthesize-rust', 'humanevalsynthesize-cpp', 'humanevalsynthesize-go', 'humanevalsynthesize-java', 'humanevalsynthesize-js', 'humanevalsynthesize-python', 'humanevalsynthesize-rust'`.
+  - HumanEvalFix is divided into two parts: One where only tests are provided and no docstrings (main focus of the paper) and one where instead of tests docstrings are provided as the source of truth (appendix).
+  - HumanEvalExplain consists of describing first and then synthesizing given the descriptions. You need to run these tasks sequentially. For the describing you can activate `--generation_only` as there is no evaluation yet. For the synthesizing part, you need to provide the descriptions via `--load_data_path`, which will then be used to synthesize answers. `n_samples` is set to 1 for synthesis as we generate 1 answer for each description (multiple samples have already been generated for the descriptions via `n_samples`). See below for an example:
+
 ```bash
 accelerate launch main.py \
 --model bigcode/octocoder  \
@@ -154,7 +160,9 @@ accelerate launch main.py \
 --max_length_generation 2048 \
 --precision bf16
 ```
+
 - HumanEvalSynthesize is an extension of HumanEval. If you would like to run with the original HumanEval prompt that relies on pure function continuation you can use the flag `--prompt continue`. OctoCoder uses `--prompt octocoder` as shown in the below script. The below script should reproduce the pass@1 HumanEval score of 46.2% for OctoCoder:
+
 ```bash
 accelerate launch main.py \
 --model bigcode/octocoder  \
@@ -172,6 +180,7 @@ accelerate launch main.py \
 --max_length_generation 2048 \
 --precision bf16
 ```
+
 - Unfortunately, there is some randomness depending on the Python version you use for evaluation and the `batch_size`. We use `batch_size=5` and Python 3.9.13
 - We provide the exact scripts we used in `evaluation/run/eval_scripts` for each model. There is also a `_range.sh` script for each task (e.g. `evaluation/run/eval_scripts/eval_humanevalfix_range.sh`), which runs each sample individually. This is much faster if you have multiple GPUs available. In the `_range.sh` scripts you need to specify the model and language you would like to run. After running it, you will have 164 generation files, which  you need to merge with `python evaluation/run/merge_generations.py "generations_*json"`. Subsequently, you need to run the evaluation as explained in the next step.
 
@@ -180,8 +189,9 @@ accelerate launch main.py \
 ### Creation
 
 To create HumanEvalPack, we follow these steps:
-1. We use the upper commented out part of the script at `evaluation/create/prepare_humaneval.py` to create a JSON with the solution for each humaneval language in `evaluation/create/humaneval-x/data`. 
-2. We then manually go through each JSON file (e.g. `evaluation/create/humaneval-x/data/cpp/data/humanevalpack.json`) to introduce a bug across all languages in parallel. 
+
+1. We use the upper commented out part of the script at `evaluation/create/prepare_humaneval.py` to create a JSON with the solution for each humaneval language in `evaluation/create/humaneval-x/data`.
+2. We then manually go through each JSON file (e.g. `evaluation/create/humaneval-x/data/cpp/data/humanevalpack.json`) to introduce a bug across all languages in parallel.
 3. We also make several fixes to the humaneval-x dataset, all of which are documented at the top of `evaluation/create/humaneval-x/README.md`.
 4. We run the lower part of `evaluation/create/prepare_humaneval.py` to turn the JSON files back into JSONL files with the buggy solution, an instruction column and some other metadata. These JSONL files located at e.g. `evaluation/create/humaneval-x/data/cpp/data/humanevalpack.jsonl` are then uploaded into the HF dataset at https://huggingface.co/datasets/bigcode/humanevalpack.
 
@@ -194,16 +204,17 @@ The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The fo
 ### OctoGeeX
 
 OctoGeeX is finetuned based on [CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b) using an internal training framework. The hyperparameters are as follows:
-| Parameter | Value |
-| --------- | ----- |
-| `tp_size` | 2 |
-| `global_batch_size` | 48 |
-| `lr` | 5e-5 |
-| `train_step` | 50 |
-| `seq_length` | 8192 |
-| `precision` | bf16 |
 
-It is also compatible with `finetuning/finetune.py`. 
+| Parameter             | Value |
+| --------------------- | ----- |
+| `tp_size`           | 2     |
+| `global_batch_size` | 48    |
+| `lr`                | 5e-5  |
+| `train_step`        | 50    |
+| `seq_length`        | 8192  |
+| `precision`         | bf16  |
+
+It is also compatible with `finetuning/finetune.py`.
 
 ### SantaCoder Finetuning
 
@@ -211,7 +222,12 @@ See this [repository](https://github.com/SivilTaram/santacoder-finetuning-commit
 
 ### SantaCoder Pretraining (SantaCoderPack)
 
-TODO
+1. Obtain Megatron-LM by executing `git clone https://github.com/bigcode-project/Megatron-LM`.
+2. Download the dataset: Download a pretraining dataset (commitpack-subset-cf) using the `git clone https://huggingface.co/datasets/bigcode/commitpack-subset-cf`, and merge all jsonl files into one jsonl file. You can name it as you prefer, such as `commitpack_cf.jsonl`.
+3. Move the files `training/preprocess_santacoderpack.sh` and `training/pretraining_santacoderpack.sh` to the `Megatron-LM` directory.
+4. Tokenize the pretraining dataset by modifying `preprocess_santacoderpack.sh` to point to your jsonl file. Also, change the path of the tokenizer to point to StarCoder's `tokenizer.json` by using `wget https://huggingface.co/bigcode/starcoderbase/raw/main/tokenizer.json`. Finally, specify an output prefix where the tokenized data will be stored, and run the script using `bash preprocess_santacoderpack.sh`.
+5. Modify `pretraining_santacoderpack.sh` to adjust the `CHECKPOINT_PATH` so that it points to the saved Megatron-LM checkpoint, and set the `TOKENIZER_FILE` to StarCoder's `tokenizer.json`. Make sure to point to the correct environment and cache locations, and alter any custom settings to fit your setup. Run the script by executing `bash pretraining_santacoderpack.sh`!
+6. Convert the saved checkpoint using the script located at `convert_large.sh`. It contains instructions which repos to download.
 
 ### Other
 
@@ -230,6 +246,7 @@ We did not end up using Megatron-LM fine-tuning for the model in the paper, but 
 ## Visuals
 
 Figures:
+
 - Figure 1: `visuals/main.pdf`, create the main plot in `visuals/plots.ipynb` or via [this colab](https://colab.research.google.com/drive/17OIf7rzAeetH9JchYT2RMyPUop1Z12JJ?usp=sharing) and then add it to the correct tab in `visuals/visuals.drawio` which can be opened with [drawio](https://app.diagrams.net/)
 - Figure 2 (Upper): `visuals/distribution.pdf`, create via `visuals/plots.ipynb` or [colab](https://colab.research.google.com/drive/17OIf7rzAeetH9JchYT2RMyPUop1Z12JJ?usp=sharing)
 - Figure 2 (Lower): `visuals/tasks.pdf`, create via `visuals/distribution_tasks.py`
@@ -238,6 +255,7 @@ Figures:
 - Other Figures: Manual
 
 Tables:
+
 - Table 4: Create via `visual/distribution_languages.py`
 - Other Tables: Manual
 
