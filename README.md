@@ -198,7 +198,7 @@ To create HumanEvalPack, we follow these steps:
 
 ### OctoCoder
 
-The finetuning script to create OctoCoder is at `finetuning/finetune.py`. The folder contains a `README.md` with instructions.
+The finetuning script to create OctoCoder is at `finetuning/starcoder/finetune.py`. The folder contains a `README.md` with instructions.
 
 ### OctoGeeX
 
@@ -217,7 +217,7 @@ It is also compatible with `finetuning/finetune.py`.
 
 ### SantaCoder Finetuning
 
-See this [repository](https://github.com/SivilTaram/santacoder-finetuning-commit).
+The finetuning script for santacoder is at `finetuning/santacoder/finetune.py`. The default hyperparameters are set for the `line diff` format, as described in the Appendix H.
 
 ### SantaCoder Pretraining (SantaCoderPack)
 
