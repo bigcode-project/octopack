@@ -2,7 +2,7 @@
 
 ![](visuals/banner.png)
 
-This repository provides an overview of all components from the paper [OctoPack: Instruction Tuning Code Large Language Models](TODO).
+This repository provides an overview of all components from the paper [OctoPack: Instruction Tuning Code Large Language Models](https://arxiv.org/abs/2308.07124).
 
 <!-- TOC -->
 
@@ -260,4 +260,11 @@ Tables:
 
 ## Citation
 
-TODO
+```bibtex
+@article{muennighoff2023octopack,
+      title={OctoPack: Instruction Tuning Code Large Language Models}, 
+      author={Niklas Muennighoff and Qian Liu and Armel Zebaze and Qinkai Zheng and Binyuan Hui and Terry Yue Zhuo and Swayam Singh and Xiangru Tang and Leandro von Werra and Shayne Longpre},
+      journal={arXiv preprint arXiv:2308.07124},
+      year={2023}
+}
+```
