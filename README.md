@@ -10,7 +10,7 @@ This repository provides an overview of all components from the paper [OctoPack:
 - [Data](#data)
   - [CommitPack](#commitpack)
   - [CommitPackFT](#commitpackft)
-    - [Other](#other)
+  - [Other](#other)
 - [Evaluation](#evaluation)
   - [Run](#run)
   - [Creation](#creation)
@@ -75,7 +75,7 @@ CommitPackFT is uploaded [here](https://huggingface.co/datasets/bigcode/commitpa
 1. **Prepare:** Download [CommitPack](https://huggingface.co/datasets/bigcode/commitpack) via e.g. `git clone bigcode/commitpack` or follow all the steps above to recreate it.
 2. **Filter:** Run `python dataset/commitpackft/commitpackft_filters1.py` followed by `python dataset/commitpackft/commitpackft_filters2.py`. You may want to modify some of the global variables defined in the scripts.
 
-#### Other
+### Other
 
 - StarCoder Self-Instruct: Uploaded [here](https://huggingface.co/datasets/codeparrot/self-instruct-starcoder), to recreate see [this repository](https://github.com/ArmelRandy/Self-instruct).
 - xP3x: Uploaded [here](https://huggingface.co/datasets/bigcode/xp3x-octopack), to recreate see the script at `dataset/xp3x/filter_xp3x.py`.
