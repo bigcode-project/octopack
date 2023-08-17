@@ -1,0 +1,20 @@
+deepspeed finetune.py \
+      --max_input_length 2000 \
+      --dataset_name bigcode/commits-pjj-2048 \
+      --max_steps 250000 \
+      --batch_size 2 \
+      --gradient_accumulation_steps 4 \
+      --learning_rate 5e-5 \
+      --num_warmup_steps 1000 \
+      --eval_freq 10000 \
+      --save_freq 10000 \
+      --log_freq 10 \
+      --num_workers 8 \
+      --bf16 \
+      --data_packing \
+      --compute_loss_on_input \
+      --line_diff \
+      --add_file_name \
+      --deepspeed zero_stage1_config.json \
+      --cache_dir .cache \
+      --output_dir santacoder_line_diff_format
