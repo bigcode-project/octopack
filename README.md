@@ -21,6 +21,7 @@ This repository provides an overview of all components from the paper [OctoPack:
   - [SantaCoder Pretraining (SantaCoderPack)](#santacoder-pretraining-santacoderpack)
   - [Other](#other-1)
 - [Visuals](#visuals)
+- [Licenses](#licenses)
 - [Citation](#citation)
 
 <!-- /TOC -->
@@ -257,6 +258,16 @@ Tables:
 
 - Table 4: Create via `visual/distribution_languages.py`
 - Other Tables: Manual
+
+## Licenses
+
+Everything is licensed as permissively as possible to us. 
+
+CommitPack, CommitPackFT, HumanEvalPack, and all code are licensed under the MIT License of this repository. Note that each sample within CommitPack and CommitPackFT has its own license corresponding to the repository it stems from as indicated by the `license` field. All samples stem from permissively licensed repositories. You can check the [paper appendix](https://arxiv.org/abs/2308.07124) for the licenses we filtered for.
+
+OctoCoder is licensed under the [same license as StarCoder](https://huggingface.co/spaces/bigcode/bigcode-model-license-agreement) (Commercial except for use cases deemed harmful).
+
+OctoGeeX is licensed under the [same license as CodeGeeX2](https://huggingface.co/bigcode/octogeex#license) (Commercial but a form needs to be submitted).
 
 ## Citation
 
