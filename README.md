@@ -144,8 +144,7 @@ accelerate launch main.py \
 
 accelerate launch main.py \
 --model bigcode/octocoder  \
---tasks humanevalexplaindescribe-python \
---generation_only \
+--tasks humanevalexplainsynthesize-python \
 --do_sample True \
 --temperature 0.2 \
 --n_samples 1 \
