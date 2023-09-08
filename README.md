@@ -183,7 +183,13 @@ accelerate launch main.py \
 - Unfortunately, there is some randomness depending on the Python version you use for evaluation and the `batch_size`. We use `batch_size=5` and Python 3.9.13
 - We provide the exact scripts we used in `evaluation/run/eval_scripts` for each model. There is also a `_range.sh` script for each task (e.g. `evaluation/run/eval_scripts/eval_humanevalfix_range.sh`), which runs each sample individually. This is much faster if you have multiple GPUs available. In the `_range.sh` scripts you need to specify the model and language you would like to run. After running it, you will have 164 generation files, which you need to merge with `python evaluation/run/merge_generations.py "generations_*json"`. Subsequently, you need to run the evaluation as explained in the next step.
 
-3. **Evaluate:** If you have only created generations without evaluating them (e.g. by adding the `--generation_only` flag or using the `_range.sh` scripts), you can use the notebook at `evaluation/run/humanevalpack_evaluation` or [this colab](https://colab.research.google.com/drive/1tlpGcDPdKKMDqDS0Ihwh2vR_MGlzAPC_?usp=sharing) to evaluate the generations. It contains a section for each programming language where it installs the language first and then given the path to your generations evaluates them providing you with the pass@k scores.
+3. **Evaluate:** If you have only created generations without evaluating them (e.g. by adding the `--generation_only` flag or using the `_range.sh` scripts), you can use the notebook at `evaluation/run/humanevalpack_evaluation` or [this colab](https://colab.research.google.com/drive/1tlpGcDPdKKMDqDS0Ihwh2vR_MGlzAPC_?usp=sharing) to evaluate the generations. It contains a section for each programming language where it installs the language first and then given the path to your generations evaluates them provides you with the pass@k scores. We use the below versions for the evaluation of each language:
+- Python: `Python 3.9.13 torch 1.13.0+rocm5.2 accelerate 0.20.3 transformers 4.32.1` (for running & evaluating)
+- C++: `11.4.0`  (but newer ones should be fine too)
+- JS: `js-md5@0.7.3`
+- Java: `java version "18" 2022-03-22`
+- Go: `go1.18.4`
+- Rust: `rustc 1.71.1 (eb26296b5 2023-08-03)`
 
 ### Creation
 
