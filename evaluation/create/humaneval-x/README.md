@@ -29,6 +29,7 @@ pretty_name: HumanEval-X
 - JS Line 113: Changed the scope of the brackets in the `test` to actually test the solution; Previously all tests pass reagardless of the solution; Also rewrote the solution, which was incorrect; Likely the solution was written for the incorrect tests, which passed regardless of the solution
 - JS Line 120: Added `testMatchParens()\n`, as the test was never called
 - JS Line 154: Added `testDoubleTheDifference()\n`, as the test was never called
+- Python Line 143: Removed a spurious double quotation mark
 - Rust Line 11: Moved `is_palindrome`  to the declaration / prompt
 - Rust Line 33: Removed the comments that were deactivating the tests (Tests were commented out with `/* */` (See https://github.com/THUDM/CodeGeeX/pull/76#issue-1601406062)) ; Move poly() to the prompt
 - Rust Line 39: Moved the `encode_cyclic` function prior to the `decode_cyclic` function like in other languages
@@ -46,7 +47,7 @@ pretty_name: HumanEval-X
 The dataset contains coding problems in 5 programming languages: Python, C++, Java, JavaScript, and Go.
 
 ## Dataset Structure
-To load the dataset you need to specify a subset among the 5 exiting languages  `[python, cpp, go, java, js]`. By default `python` is loaded. 
+To load the dataset you need to specify a subset among the 5 exiting languages  `[python, cpp, go, java, js]`. By default `python` is loaded.
 
 ```python
 from datasets import load_dataset
@@ -75,10 +76,10 @@ next(iter(data["test"]))
 
 *   ``task_id``: indicates the target language and ID of the problem. Language is one of ["Python", "Java", "JavaScript", "CPP", "Go"].
 *   ``prompt``: the function declaration and docstring, used for code generation.
-*   ``declaration``: only the function declaration, used for code translation. 
+*   ``declaration``: only the function declaration, used for code translation.
 *   ``canonical_solution``: human-crafted example solutions.
 *   ``test``: hidden test samples, used for evaluation.
-*   ``example_test``: public test samples (appeared in prompt), used for evaluation. 
+*   ``example_test``: public test samples (appeared in prompt), used for evaluation.
 
 ## Data Splits
 
