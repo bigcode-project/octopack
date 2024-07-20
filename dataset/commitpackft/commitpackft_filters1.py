@@ -35,7 +35,7 @@ GOOD_ENDS_JP = {"て"}
 GOOD_STARTS = GOOD_STARTS_EN # | GOOD_STARTS_ZH | GOOD_STARTS_FR | GOOD_STARTS_ES | GOOD_STARTS_PT | GOOD_STARTS_RU | GOOD_STARTS_KO | GOOD_STARTS_JP
 GOOD_ENDS = GOOD_ENDS_KO | GOOD_ENDS_JP
 
-NUM_PROC = 64
+NUM_PROC = 4
 
 BAD_SUB_MESSAGE = [
     "auto commit",
@@ -77,7 +77,7 @@ PUSH_DATASET_NAME = "smallcommits_v2"
 
 
 MODEL = "starcoder"
-BASE_DIR = "data"
+BASE_DIR = "dataset/commitpackft/data"
 LANGUAGES = ["python", "java", "javascript"]
 
 if MODEL == "bloomz":
@@ -92,20 +92,20 @@ elif MODEL == "starcoder":
     # Use all languages
     LANGUAGES = sorted(os.listdir(BASE_DIR))
     DONE = ["c", "c++", "go", "java", "javascript", "python", "rust", "xml", "html", "php"]
-    #LANGUAGES = ["c++"] #, "java", "javascript", "rust", "go", "c++"]
-    LANGUAGES = [lang for lang in LANGUAGES if (lang not in DONE) and not(lang.startswith("."))]
+    LANGUAGES = ["java"] #, "java", "javascript", "rust", "go", "c++"]
+    #LANGUAGES = [lang for lang in LANGUAGES if (lang not in DONE) and not(lang.startswith("."))]
 
 ### SAMPLE ###
-#PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
-#print(PATHS)
+PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listdir(BASE_DIR + "/" + lang)][:3]
+# print(PATHS)
+# print(f"Number of samples: {len(PATHS)}")
 
 ### FULL ###
 
 for L in LANGUAGES:
 
     PATHS = sorted([os.path.join(BASE_DIR, L, f) for f in os.listdir(BASE_DIR + "/" + L)])
-    print(PATHS)
-
+    print(PATHS)  
     for i in range(len(PATHS) // 10 + 1):
             
         start = i * 10
@@ -122,7 +122,6 @@ for L in LANGUAGES:
 
         ds = datasets.load_dataset("json", data_files=paths, num_proc=NUM_PROC)["train"]
         print("The dataset size is: {}".format(len(ds)))
-
         def clean_issues_and_refs(example):
             """
             Remove first word if 
@@ -191,7 +190,7 @@ for L in LANGUAGES:
 
         print("After hashtag filtering, the dataset size is: {}".format(len(ds)))
 
-        extensions = LANG_TO_EXTENSIONS.get(L, [])
+        extensions = LANG_TO_EXTENSIONS.get(L, [])   
         if len(extensions) > 0:
             ds = ds.filter(lambda x: (len(x["new_file"].split(".")) > 1) and (x["new_file"].split(".")[-1] in extensions), num_proc=NUM_PROC)
         else:

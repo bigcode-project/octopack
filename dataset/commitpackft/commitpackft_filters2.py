@@ -1,16 +1,21 @@
 import datasets
 import glob
 import os
-NUM_PROC = 4
+NUM_PROC = 1
 
-LANGUAGES = os.listdir("data")
+LANGUAGES = os.listdir("/Users/lambert/projects/summarization/models/run-octopack/octopack/dataset/commitpackft/data")
+
+BASE_DIR = "dataset/commitpackft/data"
+print(f"Number of languages: {len(LANGUAGES)}")
+print(LANGUAGES)
+
 
 for L in LANGUAGES:
 
-    if os.path.exists(f"data/{L}/data.jsonl"):
-        continue
-
-    PATHS = glob.glob(f"data/{L}/*.jsonl")
+    # if os.path.exists(f"data/{L}/data.jsonl"):
+    #     continue
+    print(f"Processing language: {L}")
+    PATHS = glob.glob(f"{BASE_DIR}/{L}/*.jsonl")
     print(PATHS)
     ds = datasets.load_dataset("json", data_files=PATHS, num_proc=NUM_PROC)["train"]
 
@@ -153,7 +158,7 @@ for L in LANGUAGES:
     ds = ds.filter(check_words, num_proc=NUM_PROC)
     print("After words filtering, the dataset size is: {}".format(len(ds)))
 
-    ds.to_json(f"data/{L}/data.jsonl", num_proc=NUM_PROC, force_ascii=False)
+    ds.to_json(f"{BASE_DIR}/{L}/data.jsonl", num_proc=NUM_PROC, force_ascii=False)
     """
     langs = ds.unique('lang')
     for lang in langs:
