@@ -3,7 +3,7 @@ import glob
 import os
 NUM_PROC = 1
 
-LANGUAGES = os.listdir("/Users/lambert/projects/summarization/models/run-octopack/octopack/dataset/commitpackft/data")
+LANGUAGES = os.listdir("dataset/commitpackft/data")
 
 BASE_DIR = "dataset/commitpackft/data"
 print(f"Number of languages: {len(LANGUAGES)}")
