@@ -5,7 +5,7 @@ NUM_PROC = 1
 
 LANGUAGES = os.listdir("dataset/commitpackft/data")
 
-BASE_DIR = "dataset/commitpackft/data"
+BASE_DIR =  "smallcommits_v2"
 print(f"Number of languages: {len(LANGUAGES)}")
 print(LANGUAGES)
 
