@@ -24,3 +24,4 @@ for repo in  commitpackft_repos_list:
             continue
 
 print(f'totat match repos: {len(match_repos)}')
+print(f'we need to scrape {len(methods2test_ds) - len(match_repos)} repos')
