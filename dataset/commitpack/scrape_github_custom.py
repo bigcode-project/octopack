@@ -30,8 +30,6 @@ def run_in_shell(cmd: str, cwd=None, timeout=60):
     return subprocess.run([cmd], capture_output=True, shell=True, cwd=cwd, timeout=timeout)
 
 def get_file_contents(commit, old_file, new_file, repo, cwd=None):
-    completed = run_in_shell("git init", cwd=cwd)
-    completed = run_in_shell("git remote add origin " + repo, cwd=cwd)
     completed = run_in_shell("git fetch --depth 2 origin " + commit, cwd=cwd) # fetch curerent commit up to its parent (depth 2)
      # If it requires authentication
     if completed.returncode != 0:
@@ -50,22 +48,15 @@ def get_file_contents(commit, old_file, new_file, repo, cwd=None):
     return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
 
 def get_diff(ex):
-    # commit_id = ex["commit"]
     repos = list(set(ex["url"].split(",")))
-    # old_file = ex["old_file"]
-    # new_file = ex["new_file"]
-    # Initialize
-    returncode = 0
-    stderr = "unknown"
+   
     for i, repo in enumerate(repos):
-        #repo = "https://xxx:xxx@github.com/" + repo + ".git"
         # Create a random directory to store the repo
         random_dir = CWD + "/" + str(random.randint(0, 1000000))
         # Can take very long when running many processes
         run_in_shell("mkdir " + random_dir, timeout=300)
         try:
             print(f'repo: {repo}')
-
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
             completed = run_in_shell("git clone " + repo, cwd=random_dir)
@@ -77,28 +68,22 @@ def get_diff(ex):
             # Get latest commit hash
             commit_id = commits[0]
             print(f'commit_id: {commit_id}')
-
             if completed.returncode != 0:
                 print(f'ERRORC2: {completed}')
                 continue
             #get files modified in this commit
             completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=random_dir + "/" + repo.split("/")[-1])
-
             if completed.returncode != 0:
                 print(f'ERRORC3: {completed}')
                 continue
             files = completed.stdout.decode(errors='ignore').split("\n") # list of files
             # show all files
             print(f'files: {files}')
-
             #Assuminng that file names has not changed between commits
             old_file = files[0]
             new_file = old_file
-
             print(f'new_file: {new_file} --> old_file: {old_file}')
-            print("\n")
-
-            #new_contents, old_contents, returncode, stderr = get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir)
+            new_contents, old_contents, returncode, stderr = get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir)
         
         except Exception as e:
             #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
@@ -133,81 +118,12 @@ if __name__ == "__main__":
     methods2test_path = "dataset/methods2test/repos.jsonl"
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
 
-    ### OPTIONAL FILTERING ###
-    #"""
-    # java = [".java"]
-    # javascript = [
-    #     ".js",
-    #     "._js",
-    #     ".bones",
-    #     ".es6",
-    #     ".jake",
-    #     ".jsb",
-    #     ".jscad",
-    #     ".jsfl",
-    #     ".jsm",
-    #     ".jss",
-    #     ".njs",
-    #     ".pac",
-    #     ".sjs",
-    #     ".ssjs",
-    #     ".xsjs",
-    #     ".xsjslib"
-    # ]
-    # python = [
-    #     ".py",
-    #     ".bzl",
-    #     ".gyp",
-    #     ".lmi",
-    #     ".pyde",
-    #     ".pyp",
-    #     ".pyt",
-    #     ".pyw",
-    #     ".tac",
-    #     ".wsgi",
-    #     ".xpy"
-    # ]
-
-    # import json
-    # with open("programming-languages.json", "r") as f:
-    #     extensions = json.load(f)
-    # suffices = tuple([suffix for suffices in extensions.values() for suffix in suffices])
-    # def filter_extension(ex):
-    #     return ex["new_file"].endswith(suffices)
-
-    # def filter_extension_python(ex):
-    #     return ex["new_file"].endswith(python)
-
-    # def filter_update(ex):
-    #     return ex["message"] != "Update " + ex["old_file"]
-
-    # filter_msg = ["initial commit", "please\n", "please", "lalala"]
-
-    # def filter_misc(ex):
-    #     return ex["message"] not in filter_msg
-
-    # Removes ~10M
-    # ds = ds.filter(filter_extension, num_proc=NUM_PROC)
-    # print("After Extension filter", len(ds))
-    # Removes ~1M
-    # ds = ds.filter(filter_update, num_proc=NUM_PROC)
-    # print("After Update filter", len(ds))
-    #ds = ds.filter(filter_extension_python, num_proc=NUM_PROC)
-    #print("After Python filter", len(ds))
-    # ds = ds.filter(filter_misc, num_proc=NUM_PROC)
-    # print("After Misc filter", len(ds))
-    #ds = ds.select(range(DEBUG_SIZE))
     START = 8 # Modify for each instance (0 - 7)
     samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
     select_end = START * samples_per_instance + samples_per_instance
     ds = ds.select(range(select_start, select_end))
     print(f"Going from {select_start} till {select_end}")
-
-    #"""
-    ### END FILTERING ###  2048 91339.2
-
-    
 
     ### ALTERNATIVELY LOAD EXISTING SPLIT ###
     """
