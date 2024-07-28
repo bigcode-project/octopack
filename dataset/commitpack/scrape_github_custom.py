@@ -127,8 +127,6 @@ if __name__ == "__main__":
     ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
 
 
-    exit()
-
     START = 8 # Modify for each instance (0 - 7)
     samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
