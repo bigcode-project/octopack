@@ -118,6 +118,17 @@ if __name__ == "__main__":
     methods2test_path = "dataset/methods2test/repos.jsonl"
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
 
+    # set all "test_cases" from the dataset to None,    
+    ds = ds.map(lambda x: {"test_cases": {}})
+    # add the following    {"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "R", "lang": "Java", "license": "", "repos": ""}    
+    ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "R", "lang": "Java", "license": "", "repos": ""}))
+
+    # save the dataset
+    ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
+
+
+    exit()
+
     START = 8 # Modify for each instance (0 - 7)
     samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
