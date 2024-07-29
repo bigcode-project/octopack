@@ -88,11 +88,17 @@ def get_diff(ex):
                             print(f'new_file: {new_file} --> old_file: {old_file}')
                             print(f'getting file contents for {new_file} at ' + str(random_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
                             new_contents, old_contents ,_ ,_= get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir + "/" + repo.split("/")[-1])
+
+                            #get commit message
+                            completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=random_dir + "/" + repo.split("/")[-1])
+                            message = completed.stdout.decode(errors='ignore')
+                            print(f'message: {message} \n')
                             ex["new_contents"] = new_contents
                             ex["old_contents"] = old_contents
                             ex["new_file"] = new_file
                             ex["old_file"] = old_file
                             ex["commit"] = commit_id
+                            ex["message"] = message
         except Exception as e:
             #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
             # Break in case of many repos that all lead us nowhere
