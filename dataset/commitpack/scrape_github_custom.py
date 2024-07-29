@@ -4,6 +4,7 @@ import os
 import random
 import subprocess
 import timeit
+import json
 
 import datasets
 
@@ -51,37 +52,35 @@ def get_file_contents(commit, old_file, new_file, repo, cwd=None):
 
 def get_commit_diff(ex):
    
-    repo = list(ex["url"])
+    repo = ex["url"]
     print(f'repos----------: {repo}')
-   
     # Create a random directory to store the repo
     random_dir = CWD + "/" + str(random.randint(0, 1000000))
     # Can take very long when running many processes
     run_in_shell("mkdir " + random_dir, timeout=300)
-    try:
-        completed = run_in_shell("git init", cwd=random_dir)
-        completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
-        completed = run_in_shell("git clone " + repo, cwd=random_dir)
 
-        #get all commits hash
-        completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
-        commits = completed.stdout.decode(errors='ignore').split("\n")
-        commits = [c.split("\t")[0] for c in commits]
+    with open('methods2test_diff.jsonl', 'a') as file:  # Open the file in append mode
+        try:
+            print(f'processing {repo}..........................................................')
+            completed = run_in_shell("git init", cwd=random_dir)
+            completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
+            completed = run_in_shell("git clone " + repo, cwd=random_dir)
 
-        if completed.returncode != 0:
-            print(f'ERRORC2: {completed}')
-            
-        for commit_id in commits[0:10]:
-            ex['commit'] = commit_id
-            print(f'ex: {ex}')
-            methods2test_commits_ds.update(ex)
-            
-    except Exception as e:
-        #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
-        # Break in case of many repos that all lead us nowhere
-        print(f'ERROR: {e}')
-       
-    finally:
+            #get all commits hash
+            completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
+            commits = completed.stdout.decode(errors='ignore').split("\n")
+            commits = [c.split("\t")[0] for c in commits]
+
+            if completed.returncode != 0:
+                print(f'ERRORC2: {completed}')
+                
+            for commit_id in commits[0:10]:
+                ex['commit'] = commit_id
+                file.write(json.dumps(ex) + "\n")
+               
+        except Exception as e:
+            print(f'ERROR: {e}')
+
         run_in_shell("rm -rf " + random_dir) # clean up again
     return ex
 
@@ -217,5 +216,4 @@ if __name__ == "__main__":
 
     # Running
     build_commit_diff()
-    print(methods2test_commits_ds)
     #run_multi_processing_threading()
