@@ -59,7 +59,7 @@ def get_commit_diff(ex):
     # Can take very long when running many processes
     run_in_shell("mkdir " + random_dir, timeout=300)
 
-    with open('methods2test_diff.jsonl', 'a') as file:  # Open the file in append mode
+    with open('dataset/methods2test/methods2test_diff.jsonl', 'a') as file:  # Open the file in append mode
         try:
             print(f'processing {repo}..........................................................')
             completed = run_in_shell("git init", cwd=random_dir)
@@ -72,13 +72,13 @@ def get_commit_diff(ex):
             commits = [c.split("\t")[0] for c in commits]
 
             if completed.returncode != 0:
-                print(f'ERRORC2: {completed}') 
-            for i , commit_id in enumerate(commits[0:10]):
-
-                if i == len(commits[0:10]) - 1:
-                    ex['is_last_commit'] = True 
-                ex['commit'] = commit_id
-                file.write(json.dumps(ex) + "\n")
+                print(f'ERRORC2: {completed}')
+            if len(commits) > 50:
+                for i , commit_id in enumerate(commits[0:30]):
+                    if i == len(commits[0:30]) - 1:
+                        ex['is_last_commit'] = True 
+                    ex['commit'] = commit_id
+                    file.write(json.dumps(ex) + "\n")
             
         except Exception as e:
             print(f'ERROR: {e}')
@@ -92,6 +92,7 @@ def get_diff(ex):
     # Can take very long when running many processes
     repo_name = repo.split("/")[-1]
     repo_exists = False
+    working_dir = ""
     for path in Path(CWD).rglob('*'):
         if path.is_dir() and path.name == repo_name:
             print(f'repo exists: {path}')
@@ -101,16 +102,19 @@ def get_diff(ex):
     try:
         # Create a random directory to store the repo
         #check if the ramdom directory exists
-        random_dir = CWD + "/" + str(random.randint(0, 1000000))
+        
         if not repo_exists:
+            random_dir = CWD + "/" + str(random.randint(0, 1000000))
             run_in_shell("mkdir " + random_dir, timeout=300)
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
             completed = run_in_shell("git clone " + repo, cwd=random_dir)
-            
+            working_dir = random_dir + "/" + repo.split("/")[-1]
+       
+        
         commit_id = ex['commit']
         #get files modified in this commit
-        print(f'getting all files at ' + str(random_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
+        print(f'getting all files at ' + str(working_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
         completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=working_dir)
         if completed.returncode != 0:
             print(f'ERRORC3: {completed}')
@@ -118,7 +122,7 @@ def get_diff(ex):
         files = completed.stdout.decode(errors='ignore').split("\n") 
         # show all files
         print(f'files: {files}')
-        if len(files) < 10:
+        if len(files) < 25:
             for file in files:
                 if file.endswith(".java"):
                     #Assuminng that file names has not changed between commits
@@ -136,7 +140,7 @@ def get_diff(ex):
                     ex["old_contents"] = old_contents
                     ex["new_file"] = new_file
                     ex["old_file"] = old_file
-                    ex["commit"] = commit_id
+                    ex["commit"] =  commit_id
                     ex["message"] = message
     except Exception as e:
         #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
@@ -145,7 +149,7 @@ def get_diff(ex):
      
     finally:
         if ex['is_last_commit'] == True:
-            run_in_shell("rm -rf " + random_dir) # clean up again
+            run_in_shell("rm -rf " + str(Path(working_dir))) # clean up again
     return ex
       
 
@@ -168,19 +172,25 @@ if __name__ == "__main__":
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
     # set all "test_cases" from the dataset to None,    
     ds = ds.map(lambda x: {"test_cases": {}})
-    ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "R", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
+    ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
     # save the dataset
     ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
-     
 
-    ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_diff.jsonl", num_proc=NUM_PROC)["train"]
-    START = 0 # Modify for each instance (0 - 7)
-    samples_per_instance =  1 * 4 * 25 * 1    # 1 * 4 * 64 * 34 # 8_388_608
+    START = 15 # Modify for each instance (0 - 7)
+    samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
     select_end = START * samples_per_instance + samples_per_instance
     ds = ds.select(range(select_start, select_end))
     print(f"Going from {select_start} till {select_end}")
-
+    
+    # Build commits
+    def build_commit_diff():
+        ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
+    build_commit_diff()
+     
+    # Load ds after commits are processed
+    ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_diff.jsonl", num_proc=NUM_PROC)["train"]
+    
     ### ALTERNATIVELY LOAD EXISTING SPLIT ###
     """
     path = "github-commits-diff/data/diffs_50331648_58720256.jsonl"
@@ -195,10 +205,6 @@ if __name__ == "__main__":
     exit()
     """
     ### END LOAD EXISTING ###
-
-    # def build_commit_diff():
-    #     ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
-
     def run_multi_processing_threading():
         ds.map(get_diff_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True).to_json(f"diffs_{select_start}_{select_end}.jsonl", num_proc=NUM_PROC)
 
@@ -211,5 +217,4 @@ if __name__ == "__main__":
     #    f.write(str(time))
 
     # Running
-    #build_commit_diff()
     run_multi_processing_threading()
