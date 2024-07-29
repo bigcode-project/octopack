@@ -47,6 +47,48 @@ def get_file_contents(commit, old_file, new_file, repo, cwd=None):
     old_contents = run_in_shell("cat " + old_file, cwd=cwd).stdout.decode(errors='ignore')
     return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
 
+def get_commit_diff(ex):
+    repos = list(set(ex["url"].split(",")))
+    print(f'repos----------: {repos}')
+    for i, repo in enumerate(repos):
+        # Create a random directory to store the repo
+        random_dir = CWD + "/" + str(random.randint(0, 1000000))
+        # Can take very long when running many processes
+        run_in_shell("mkdir " + random_dir, timeout=300)
+        try:
+            completed = run_in_shell("git init", cwd=random_dir)
+            completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
+            completed = run_in_shell("git clone " + repo, cwd=random_dir)
+
+            #get all commits hash
+            completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
+            commits = completed.stdout.decode(errors='ignore').split("\n")
+            commits = [c.split("\t")[0] for c in commits]
+
+            if completed.returncode != 0:
+                print(f'ERRORC2: {completed}')
+                continue
+            for commit_id in commits[0:10]:
+             
+                #get commit message
+                completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=random_dir + "/" + repo.split("/")[-1])
+                message = completed.stdout.decode(errors='ignore')
+                print(f'message: {message} \n')
+                ex["commit"] = commit_id
+
+        except Exception as e:
+            #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
+            # Break in case of many repos that all lead us nowhere
+            if i > 10:
+                break
+            continue
+        finally:
+            run_in_shell("rm -rf " + random_dir) # clean up again
+        return ex
+    return ex
+
+
+
 def get_diff(ex):
     repos = list(set(ex["url"].split(",")))
     
@@ -119,8 +161,6 @@ def get_diff_multi_threaded_processed(batch):
         return {k: [dic[k] for dic in results] for k in results[0]}
 
 if __name__ == "__main__":
-    # git clone https://huggingface.co/datasets/bigcode/commitpackmeta
-    # ds = datasets.load_dataset("./commitpackmeta", use_auth_token=True)["train"]
     methods2test_path = "dataset/methods2test/repos.jsonl"
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
 
@@ -131,8 +171,7 @@ if __name__ == "__main__":
 
     # save the dataset
     ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
-
-
+     
     START = 8 # Modify for each instance (0 - 7)
     samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
