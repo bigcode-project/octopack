@@ -94,6 +94,7 @@ def get_diff(ex):
     repo_exists = False
     for path in Path(CWD).rglob('*'):
         if path.is_dir() and path.name == repo_name:
+            print(f'repo exists: {path}')
             repo_exists = True
             working_dir = path
             break
@@ -143,12 +144,10 @@ def get_diff(ex):
         print(f'ERROR: {e}')
      
     finally:
-        if ex['is_last_commit']:
+        if ex['is_last_commit'] == True:
             run_in_shell("rm -rf " + random_dir) # clean up again
-            return ex
-        else:
-            return ex
-
+    return ex
+      
 
 def get_commits_multi_threaded_processed(batch):
     with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
@@ -169,7 +168,6 @@ if __name__ == "__main__":
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
     # set all "test_cases" from the dataset to None,    
     ds = ds.map(lambda x: {"test_cases": {}})
-    # add the following    {"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "R", "lang": "Java", "license": "", "repos": ""}    
     ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "R", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
     # save the dataset
     ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
@@ -177,7 +175,7 @@ if __name__ == "__main__":
 
     ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_diff.jsonl", num_proc=NUM_PROC)["train"]
     START = 0 # Modify for each instance (0 - 7)
-    samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
+    samples_per_instance =  1 * 4 * 25 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
     select_end = START * samples_per_instance + samples_per_instance
     ds = ds.select(range(select_start, select_end))
