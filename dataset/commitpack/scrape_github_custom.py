@@ -59,7 +59,7 @@ def get_commit_diff(ex):
     # Can take very long when running many processes
     run_in_shell("mkdir " + random_dir, timeout=300)
 
-    with open('dataset/methods2test/methods2test_diff.jsonl', 'a') as file:  # Open the file in append mode
+    with open('dataset/methods2test/methods2test_commits.jsonl', 'a') as file:  # Open the file in append mode
         try:
             print(f'processing {repo}..........................................................')
             completed = run_in_shell("git init", cwd=random_dir)
@@ -99,61 +99,64 @@ def get_diff(ex):
             repo_exists = True
             working_dir = path
             break
-    try:
-        # Create a random directory to store the repo
-        #check if the ramdom directory exists
+    with open('dataset/methods2test/methods2test.jsonl', 'a') as methods2test_file:  # Open the file in append mode
+        try:
+            # Create a random directory to store the repo
+            #check if the ramdom directory exists
+            
+            if not repo_exists:
+                random_dir = CWD + "/" + str(random.randint(0, 1000000))
+                run_in_shell("mkdir " + random_dir, timeout=300)
+                completed = run_in_shell("git init", cwd=random_dir)
+                completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
+                completed = run_in_shell("git clone " + repo, cwd=random_dir)
+                working_dir = random_dir + "/" + repo.split("/")[-1]
         
-        if not repo_exists:
-            random_dir = CWD + "/" + str(random.randint(0, 1000000))
-            run_in_shell("mkdir " + random_dir, timeout=300)
-            completed = run_in_shell("git init", cwd=random_dir)
-            completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
-            completed = run_in_shell("git clone " + repo, cwd=random_dir)
-            working_dir = random_dir + "/" + repo.split("/")[-1]
-       
-        
-        commit_id = ex['commit']
-        #get files modified in this commit
-        print(f'getting all files at ' + str(working_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
-        completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=working_dir)
-        if completed.returncode != 0:
-            print(f'ERRORC3: {completed}')
-        
-        files = completed.stdout.decode(errors='ignore').split("\n") 
-        # show all files
-        print(f'files: {files}')
-        if len(files) < 25:
-            for file in files:
-                if file.endswith(".java"):
-                    #Assuminng that file names has not changed between commits
-                    new_file = file
-                    old_file = file
-                    print(f'new_file: {new_file} --> old_file: {old_file}')
-                    print(f'getting file contents for {new_file} at ' + str(working_dir) + "for commit " + commit_id + "...\n")
-                    new_contents, old_contents ,_ ,_ = get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
+            
+            commit_id = ex['commit']
+            #get files modified in this commit
+            print(f'getting all files at ' + str(working_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
+            completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=working_dir)
+            if completed.returncode != 0:
+                print(f'ERRORC3: {completed}')
+            
+            files = completed.stdout.decode(errors='ignore').split("\n") 
+            # show all files
+            print(f'files: {files}')
+            if len(files) < 25:
+                for file in files:
+                    if file.endswith(".java"):
+                        #Assuminng that file names has not changed between commits
+                        new_file = file
+                        old_file = file
+                        print(f'new_file: {new_file} --> old_file: {old_file}')
+                        print(f'getting file contents for {new_file} at ' + str(working_dir) + "for commit " + commit_id + "...\n")
+                        new_contents, old_contents ,_ ,_ = get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
 
-                    #get commit message
-                    completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
-                    message = completed.stdout.decode(errors='ignore')
-                    print(f'message: {message} \n')
-                    ex["new_contents"] = new_contents
-                    ex["old_contents"] = old_contents
-                    ex["new_file"] = new_file
-                    ex["old_file"] = old_file
-                    ex["commit"] =  commit_id
-                    ex["message"] = message
-    except Exception as e:
-        #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
-        # Break in case of many repos that all lead us nowhere
-        print(f'ERROR: {e}')
-        print(f'Working dir causing this error: {working_dir}')
+                        #get commit message
+                        completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
+                        message = completed.stdout.decode(errors='ignore')
+                        print(f'message: {message} \n')
+                        ex["new_contents"] = new_contents
+                        ex["old_contents"] = old_contents
+                        ex["new_file"] = new_file
+                        ex["old_file"] = old_file
+                        ex["commit"] =  commit_id
+                        ex["message"] = message
+                        methods2test_file.write(json.dumps(ex) + "\n")
 
-     
-    finally:
-        if ex['is_last_commit'] == True:
-            print(f'cleaning up {working_dir}')
-            run_in_shell("rm -rf " + str(Path(working_dir)))  # clean up again
-    return ex
+        except Exception as e:
+            #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
+            # Break in case of many repos that all lead us nowhere
+            print(f'ERROR: {e}')
+            print(f'Working dir causing this error: {working_dir}')
+
+        
+        finally:
+            if ex['is_last_commit'] == True:
+                print(f'cleaning up {working_dir}')
+                run_in_shell("rm -rf " + str(Path(working_dir)))  # clean up again
+        return ex
       
 
 def get_commits_multi_threaded_processed(batch):
@@ -192,7 +195,7 @@ if __name__ == "__main__":
     build_commit_diff()
      
     # Load ds after commits are processed
-    ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_diff.jsonl", num_proc=NUM_PROC)["train"]
+    ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_commits.jsonl", num_proc=NUM_PROC)["train"]
     
     ### ALTERNATIVELY LOAD EXISTING SPLIT ###
     """
