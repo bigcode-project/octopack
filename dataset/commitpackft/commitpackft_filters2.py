@@ -149,14 +149,14 @@ for L in LANGUAGES:
     ds = ds.filter(check_leetcode, num_proc=NUM_PROC)
     print("After leetcode filtering, the dataset size is: {}".format(len(ds)))
 
-    # Filter for anything with <5 words
-    def check_words(example):
-        if len(example["subject"].split()) < 4:
-            return False
-        return True
+    # # Filter for anything with <5 words
+    # def check_words(example):
+    #     if len(example["subject"].split()) < 4:
+    #         return False
+    #     return True
 
-    ds = ds.filter(check_words, num_proc=NUM_PROC)
-    print("After words filtering, the dataset size is: {}".format(len(ds)))
+    # ds = ds.filter(check_words, num_proc=NUM_PROC)
+    # print("After words filtering, the dataset size is: {}".format(len(ds)))
 
     ds.to_json(f"{BASE_DIR}/{L}/data.jsonl", num_proc=NUM_PROC, force_ascii=False)
     """

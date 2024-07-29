@@ -79,17 +79,18 @@ PUSH_DATASET_NAME = "smallcommits_v2"
 
 
 MODEL = "starcoder"
-BASE_DIR = "dataset/commitpackft/data"
+BASE_DIR = "dataset/methods2test/data"     #"dataset/commitpackft/data"
 LANGUAGES = ["python", "java", "javascript"]
 
 if MODEL == "bloomz":
     LANGUAGES += ["rust", "go", "c++"]
 elif MODEL == "codegeex":
     # objective-c is the only one missing; Likely partly mixed in with C in the commits data
-    LANGUAGES += [
-        "rust", "go", "c++", "c", "html", "shell", "php", "html+php", "css", "typescript", "sql", "tex",
-        "objective-c++", "scala", "kotlin", "pascal", "fortran", "r", "cuda", "c#",
-    ]
+    # LANGUAGES += [
+    #     "rust", "go", "c++", "c", "html", "shell", "php", "html+php", "css", "typescript", "sql", "tex",
+    #     "objective-c++", "scala", "kotlin", "pascal", "fortran", "r", "cuda", "c#",
+    # ]
+    LANGUAGES = ["java"]
 elif MODEL == "starcoder":
     # Use all languages
     LANGUAGES = sorted(os.listdir(BASE_DIR))
@@ -208,24 +209,24 @@ for L in LANGUAGES:
 
         print("After filtering out the filename from the subject, the dataset size is: {}".format(len(ds)))
 
-        def filter_empty_messages(example):
-            if (10 < len(example["subject"]) < 1000) and (4 < len(example["subject"].split()) < 1000): #Checks if the subject is between 10 and 1000 characters and the number of words in the subject is between 4 and 1000
-                return True
-            return False
+        # def filter_empty_messages(example):
+        #     if (0 < len(example["subject"]) < 1000000) and (0< len(example["subject"].split()) < 100): #Checks if the subject is between 10 and 1000 characters and the number of words in the subject is between 4 and 1000
+        #         return True
+        #     return False
 
-        ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+        # ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
 
-        print("After empty message filtering, the dataset size is: {}".format(len(ds)))
+        # print("After empty message filtering, the dataset size is: {}".format(len(ds)))
 
-        ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
+        # ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
 
-        ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
+        # ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
 
-        print("After empty message filtering due to messages with []:, the dataset size is: {}".format(len(ds)))
+        # print("After empty message filtering due to messages with []:, the dataset size is: {}".format(len(ds)))
 
-        ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
+        #ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
 
-        print("After filtering for capitalized subjects: {}".format(len(ds)))
+        #print("After filtering for capitalized subjects: {}".format(len(ds)))
 
         from transformers import AutoTokenizer
         if MODEL == "santacoder":
@@ -236,7 +237,7 @@ for L in LANGUAGES:
             tokenizer = AutoTokenizer.from_pretrained("bigcode/starcoder")
             # Filter for texts with with less than 8192 tokens
         # ds = ds.filter(lambda x: 50 <= len(tokenizer("<|endoftext|>" + x["old_contents"] + "<|endoftext|>" + x["subject"] + "<|endoftext|>" + x["new_contents"] + "<|endoftext|>")["input_ids"]) <= 1024, num_proc=NUM_PROC)
-            ds = ds.filter(lambda x: 50 <= len(tokenizer(x["old_contents"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 768, num_proc=NUM_PROC)
+            ds = ds.filter(lambda x: 50 <= len(tokenizer(x["old_contents"] + "<|endoftext|>" + x["new_contents"])["input_ids"]) <= 3000, num_proc=NUM_PROC)
 
         elif MODEL == "bloomz":
             tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-7b1")
@@ -246,7 +247,7 @@ for L in LANGUAGES:
             # CodeGeeX has some extra tokenization to use less tokens for many whitespaces so be a bit less strict
             ds = ds.filter(lambda x: len(tokenizer(f"{x['old_contents']}{x['subject']}{x['new_contents']}")["input_ids"]) <= 2048, num_proc=NUM_PROC)
 
-        print("After length filtering, the dataset size is: {}".format(len(ds))) # This is to ensure that the data can fit in the model's context window
+        print("After length filtering, the dataset size is: {}, model is {}".format(len(ds), MODEL)) # This is to ensure that the data can fit in the model's context window
 
         def filter_messages(example):
             lower_subject = example["subject"].lower()
@@ -274,9 +275,9 @@ for L in LANGUAGES:
 
             return True
 
-        ds = ds.filter(filter_messages, num_proc=NUM_PROC)
+        # ds = ds.filter(filter_messages, num_proc=NUM_PROC)
 
-        print("After message filtering, the dataset size is {}".format(len(ds)))
+        # print("After message filtering, the dataset size is {}".format(len(ds)))
 
         def prepare_xp3(example):
             # input_template = "Instructions: {instruction}\nInput: {input} Output: "
@@ -288,9 +289,14 @@ for L in LANGUAGES:
 
         if MODEL in ["santacoder", "codegeex"]:
             
-            cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "lang", "license", "repos"]
+            cols_to_select = ["name", "url", "commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
             ds = ds.select_columns(cols_to_select)
             ds.push_to_hub(PUSH_DATASET_NAME, private=True)
+            langs = ds.unique('lang')
+            for lang in langs:
+                os.makedirs(PUSH_DATASET_NAME + "/" + lang, exist_ok=True)
+                ds.filter(lambda x: x['lang'] == lang).to_json(f"{PUSH_DATASET_NAME}/{lang}/data_{start}_{end}.jsonl", num_proc=NUM_PROC, force_ascii=False)
+
         elif MODEL == "starcoder":
             cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
             ds = ds.select_columns(cols_to_select)
