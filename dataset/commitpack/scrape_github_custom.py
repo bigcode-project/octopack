@@ -5,6 +5,7 @@ import random
 import subprocess
 import timeit
 import json
+from pathlib import Path
 
 import datasets
 
@@ -25,7 +26,6 @@ NUM_THREADS = 1
 NUM_PROC = 4
 
 # DEBUG_SIZE = 1024
-
 CWD = os.getcwd()
 
 # Shell utils
@@ -86,29 +86,35 @@ def get_commit_diff(ex):
     return ex
 
 
-
-
 def get_diff(ex):
     
     repo = ex["url"]
-    # Create a random directory to store the repo
-    random_dir = CWD + "/" + str(random.randint(0, 1000000))
     # Can take very long when running many processes
-    run_in_shell("mkdir " + random_dir, timeout=300)
+    repo_name = repo.split("/")[-1]
+    repo_exists = False
+    for path in Path(CWD).rglob('*'):
+        if path.is_dir() and path.name == repo_name:
+            repo_exists = True
+            working_dir = path
+            break
     try:
-         #check if the ramdom directory exists
-        if not os.path.exists(random_dir):
+        # Create a random directory to store the repo
+        #check if the ramdom directory exists
+        random_dir = CWD + "/" + str(random.randint(0, 1000000))
+        if not repo_exists:
+            run_in_shell("mkdir " + random_dir, timeout=300)
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
             completed = run_in_shell("git clone " + repo, cwd=random_dir)
             
         commit_id = ex['commit']
         #get files modified in this commit
-        completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=random_dir + "/" + repo.split("/")[-1])
+        print(f'getting all files at ' + str(random_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
+        completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=working_dir)
         if completed.returncode != 0:
             print(f'ERRORC3: {completed}')
         
-        files = completed.stdout.decode(errors='ignore').split("\n") # list of files
+        files = completed.stdout.decode(errors='ignore').split("\n") 
         # show all files
         print(f'files: {files}')
         if len(files) < 10:
@@ -118,11 +124,11 @@ def get_diff(ex):
                     new_file = file
                     old_file = file
                     print(f'new_file: {new_file} --> old_file: {old_file}')
-                    print(f'getting file contents for {new_file} at ' + str(random_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
-                    new_contents, old_contents ,_ ,_= get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir + "/" + repo.split("/")[-1])
+                    print(f'getting file contents for {new_file} at ' + str(working_dir) + "for commit " + commit_id + "...\n")
+                    new_contents, old_contents ,_ ,_= get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
 
                     #get commit message
-                    completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=random_dir + "/" + repo.split("/")[-1])
+                    completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
                     message = completed.stdout.decode(errors='ignore')
                     print(f'message: {message} \n')
                     ex["new_contents"] = new_contents
