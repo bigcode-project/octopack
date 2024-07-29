@@ -30,33 +30,33 @@ def run_in_shell(cmd: str, cwd=None, timeout=60):
     return subprocess.run([cmd], capture_output=True, shell=True, cwd=cwd, timeout=timeout)
 
 def get_file_contents(commit, old_file, new_file, repo, cwd=None):
-    completed = run_in_shell("git fetch --depth 2 origin " + commit, cwd=cwd) # fetch curerent commit up to its parent (depth 2)
+  
+    completed = run_in_shell("git fetch --depth 2 origin " + commit, cwd=cwd)
      # If it requires authentication
     if completed.returncode != 0:
         #print("ERRORC1", completed)
         return ("", "", completed.returncode, completed.stderr.decode(errors='ignore'))
     # Optionally do git diff at the same time (Saving code needs to be added)
     # git_diff = run_in_shell(f"git diff {commit}^ {commit}", cwd=cwd).stdout.decode(errors='ignore')
-    completed = run_in_shell("git checkout FETCH_HEAD -- " + new_file, cwd=cwd) #pointer to the current commit
+    completed = run_in_shell("git checkout FETCH_HEAD -- " + new_file, cwd=cwd)
     new_contents = run_in_shell("cat " + new_file, cwd=cwd).stdout.decode(errors='ignore')
-    completed = run_in_shell("git checkout FETCH_HEAD^ -- " + old_file, cwd=cwd)  #parent of the commit
+    completed = run_in_shell("git checkout FETCH_HEAD^ -- " + old_file, cwd=cwd)
     # If there's only a new file, but no old file
     if completed.returncode != 0:
-        #print("ERRORC2", completed)
         return (new_contents, "", completed.returncode, completed.stderr.decode(errors='ignore'))
     old_contents = run_in_shell("cat " + old_file, cwd=cwd).stdout.decode(errors='ignore')
     return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
 
 def get_diff(ex):
     repos = list(set(ex["url"].split(",")))
-   
+    
+    print(f'repos----------: {repos}')
     for i, repo in enumerate(repos):
         # Create a random directory to store the repo
         random_dir = CWD + "/" + str(random.randint(0, 1000000))
         # Can take very long when running many processes
         run_in_shell("mkdir " + random_dir, timeout=300)
         try:
-            print(f'repo: {repo}')
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
             completed = run_in_shell("git clone " + repo, cwd=random_dir)
@@ -65,26 +65,34 @@ def get_diff(ex):
             completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
             commits = completed.stdout.decode(errors='ignore').split("\n")
             commits = [c.split("\t")[0] for c in commits]
-            # Get latest commit hash
-            commit_id = commits[0]
-            print(f'commit_id: {commit_id}')
+            
+            
             if completed.returncode != 0:
                 print(f'ERRORC2: {completed}')
                 continue
-            #get files modified in this commit
-            completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=random_dir + "/" + repo.split("/")[-1])
-            if completed.returncode != 0:
-                print(f'ERRORC3: {completed}')
-                continue
-            files = completed.stdout.decode(errors='ignore').split("\n") # list of files
-            # show all files
-            print(f'files: {files}')
-            #Assuminng that file names has not changed between commits
-            old_file = files[0]
-            new_file = old_file
-            print(f'new_file: {new_file} --> old_file: {old_file}')
-            new_contents, old_contents, returncode, stderr = get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir)
-        
+            for commit_id in commits[0:10]:
+                #get files modified in this commit
+                completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=random_dir + "/" + repo.split("/")[-1])
+                if completed.returncode != 0:
+                    print(f'ERRORC3: {completed}')
+                    continue
+                files = completed.stdout.decode(errors='ignore').split("\n") # list of files
+                # show all files
+                print(f'files: {files}')
+                if len(files) < 10:
+                    for file in files:
+                        if file.endswith(".java"):
+                            #Assuminng that file names has not changed between commits
+                            new_file = file
+                            old_file = file
+                            print(f'new_file: {new_file} --> old_file: {old_file}')
+                            print(f'getting file contents for {new_file} at ' + str(random_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
+                            new_contents, old_contents ,_ ,_= get_file_contents(commit_id, old_file, new_file, repo, cwd=random_dir + "/" + repo.split("/")[-1])
+                            ex["new_contents"] = new_contents
+                            ex["old_contents"] = old_contents
+                            ex["new_file"] = new_file
+                            ex["old_file"] = old_file
+                            ex["commit"] = commit_id
         except Exception as e:
             #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
             # Break in case of many repos that all lead us nowhere
@@ -93,16 +101,8 @@ def get_diff(ex):
             continue
         finally:
             run_in_shell("rm -rf " + random_dir) # clean up again
-        # ex["new_contents"] = new_contents
-        # ex["old_contents"] = old_contents
-        # ex["returncode"] = returncode
-        # ex["stderr"] = stderr
         return ex
-    # If no repo worked
-    # ex["new_contents"] = ""
-    # ex["old_contents"] = ""
-    # ex["returncode"] = returncode
-    # ex["stderr"] = stderr
+
     return ex
 
 def get_diff_multi_threaded_processed(batch):
