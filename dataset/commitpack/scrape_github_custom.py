@@ -130,7 +130,7 @@ def get_diff(ex):
                     old_file = file
                     print(f'new_file: {new_file} --> old_file: {old_file}')
                     print(f'getting file contents for {new_file} at ' + str(working_dir) + "for commit " + commit_id + "...\n")
-                    new_contents, old_contents ,_ ,_= get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
+                    new_contents, old_contents ,_ ,_ = get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
 
                     #get commit message
                     completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
@@ -146,10 +146,13 @@ def get_diff(ex):
         #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
         # Break in case of many repos that all lead us nowhere
         print(f'ERROR: {e}')
+        print(f'Working dir causing this error: {working_dir}')
+
      
     finally:
         if ex['is_last_commit'] == True:
-            run_in_shell("rm -rf " + str(Path(working_dir))) # clean up again
+            print(f'cleaning up {working_dir}')
+            run_in_shell("rm -rf " + str(Path(working_dir)))  # clean up again
     return ex
       
 
