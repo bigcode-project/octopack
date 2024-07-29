@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+from collections import defaultdict
 import os
 import random
 import subprocess
@@ -21,6 +22,7 @@ git checkout FETCH_HEAD^ -- README.md
 
 NUM_THREADS = 1
 NUM_PROC = 4
+methods2test_commits_ds = defaultdict(list)
 # DEBUG_SIZE = 1024
 
 CWD = os.getcwd()
@@ -48,51 +50,48 @@ def get_file_contents(commit, old_file, new_file, repo, cwd=None):
     return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
 
 def get_commit_diff(ex):
-    repos = list(set(ex["url"].split(",")))
-    print(f'repos----------: {repos}')
-    for i, repo in enumerate(repos):
-        # Create a random directory to store the repo
-        random_dir = CWD + "/" + str(random.randint(0, 1000000))
-        # Can take very long when running many processes
-        run_in_shell("mkdir " + random_dir, timeout=300)
-        try:
-            completed = run_in_shell("git init", cwd=random_dir)
-            completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
-            completed = run_in_shell("git clone " + repo, cwd=random_dir)
+   
+    repo = list(ex["url"])
+    print(f'repos----------: {repo}')
+   
+    # Create a random directory to store the repo
+    random_dir = CWD + "/" + str(random.randint(0, 1000000))
+    # Can take very long when running many processes
+    run_in_shell("mkdir " + random_dir, timeout=300)
+    try:
+        completed = run_in_shell("git init", cwd=random_dir)
+        completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
+        completed = run_in_shell("git clone " + repo, cwd=random_dir)
 
-            #get all commits hash
-            completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
-            commits = completed.stdout.decode(errors='ignore').split("\n")
-            commits = [c.split("\t")[0] for c in commits]
+        #get all commits hash
+        completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
+        commits = completed.stdout.decode(errors='ignore').split("\n")
+        commits = [c.split("\t")[0] for c in commits]
 
-            if completed.returncode != 0:
-                print(f'ERRORC2: {completed}')
-                continue
-            for commit_id in commits[0:10]:
-             
-                #get commit message
-                completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=random_dir + "/" + repo.split("/")[-1])
-                message = completed.stdout.decode(errors='ignore')
-                print(f'message: {message} \n')
-                ex["commit"] = commit_id
-
-        except Exception as e:
-            #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
-            # Break in case of many repos that all lead us nowhere
-            if i > 10:
-                break
-            continue
-        finally:
-            run_in_shell("rm -rf " + random_dir) # clean up again
-        return ex
+        if completed.returncode != 0:
+            print(f'ERRORC2: {completed}')
+            
+        for commit_id in commits[0:10]:
+            ex['commit'] = commit_id
+            print(f'ex: {ex}')
+            methods2test_commits_ds.update(ex)
+            
+    except Exception as e:
+        #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
+        # Break in case of many repos that all lead us nowhere
+        print(f'ERROR: {e}')
+       
+    finally:
+        run_in_shell("rm -rf " + random_dir) # clean up again
     return ex
 
 
 
+
 def get_diff(ex):
-    repos = list(set(ex["url"].split(",")))
     
-    print(f'repos----------: {repos}')
+    repos = list(set(ex["url"].split(",")))
+
     for i, repo in enumerate(repos):
         # Create a random directory to store the repo
         random_dir = CWD + "/" + str(random.randint(0, 1000000))
@@ -153,6 +152,14 @@ def get_diff(ex):
 
     return ex
 
+
+def get_commits_multi_threaded_processed(batch):
+    with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
+        # Convert dict of lists to list of dicts then map to threads
+        results = list(executor.map(get_commit_diff, [dict(zip(batch,t)) for t in zip(*batch.values())]))
+        # Convert list of dicts to dict of lists
+        return {k: [dic[k] for dic in results] for k in results[0]}
+
 def get_diff_multi_threaded_processed(batch):
     with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
         # Convert dict of lists to list of dicts then map to threads
@@ -194,8 +201,11 @@ if __name__ == "__main__":
     """
     ### END LOAD EXISTING ###
 
-    def run_multi_processing_threading():
-        ds.map(get_diff_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True).to_json(f"diffs_{select_start}_{select_end}.jsonl", num_proc=NUM_PROC)
+    def build_commit_diff():
+        ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
+
+    # def run_multi_processing_threading():
+    #     ds.map(get_diff_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True).to_json(f"diffs_{select_start}_{select_end}.jsonl", num_proc=NUM_PROC)
 
     # Benchmarking
     #NUM_TRIALS = 1
@@ -206,4 +216,6 @@ if __name__ == "__main__":
     #    f.write(str(time))
 
     # Running
-    run_multi_processing_threading()
+    build_commit_diff()
+    print(methods2test_commits_ds)
+    #run_multi_processing_threading()
