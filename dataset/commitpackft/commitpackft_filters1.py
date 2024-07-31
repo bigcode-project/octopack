@@ -1,5 +1,6 @@
 from difflib import SequenceMatcher
 from multiprocessing import Pool, Value
+from transformers import AutoTokenizer
 import os
 import random
 import re
@@ -108,7 +109,7 @@ PATHS = [os.path.join(BASE_DIR, lang, f) for lang in LANGUAGES for f in os.listd
 for L in LANGUAGES:
 
     PATHS = sorted([os.path.join(BASE_DIR, L, f) for f in os.listdir(BASE_DIR + "/" + L)])
-    print(PATHS)  
+  
     for i in range(len(PATHS) // 10 + 1):
             
         start = i * 10
@@ -124,6 +125,7 @@ for L in LANGUAGES:
             continue
 
         ds = datasets.load_dataset("json", data_files=paths, num_proc=NUM_PROC)["train"]
+        ds.cleanup_cache_files()
         print("The dataset size is: {}".format(len(ds)))
         def clean_issues_and_refs(example):
             """
@@ -195,40 +197,21 @@ for L in LANGUAGES:
 
         extensions = LANG_TO_EXTENSIONS.get(L, [])
 
-        # print(f'Extensions: {extensions}')
-
-        # if len(extensions) > 0:
-            
-        #     ds = ds.filter(lambda x: (len(x["new_file"].split(".")) > 1) and (x["new_file"].split(".")[-1] in extensions), num_proc=NUM_PROC)
-        # else:
-        #     ds = ds.filter(lambda x: len(x["new_file"].split(".")) > 1, num_proc=NUM_PROC)
-
-        # print("After filtering for python extension, the dataset size is {}".format(len(ds)))
 
         ds = ds.filter(lambda x: (len(x["new_file"].split("/")[-1].split(".")) < 2) or (x["new_file"].split("/")[-1].split(".")[-2] not in x["subject"]), num_proc=NUM_PROC)
 
         print("After filtering out the filename from the subject, the dataset size is: {}".format(len(ds)))
 
-        # def filter_empty_messages(example):
-        #     if (0 < len(example["subject"]) < 1000000) and (0< len(example["subject"].split()) < 100): #Checks if the subject is between 10 and 1000 characters and the number of words in the subject is between 4 and 1000
-        #         return True
-        #     return False
 
-        # ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
-
-        # print("After empty message filtering, the dataset size is: {}".format(len(ds)))
+        ds= ds.filter( lambda x:   len(x["subject"].split()) <  50 , num_proc=NUM_PROC)  #words based filtering
+        ds = ds.filter( lambda x:  len(x["subject"]) < 1000 , num_proc=NUM_PROC)  #caracters based filtering
+       
+        print("After empty message filtering, the dataset size is: {}".format(len(ds)))
 
         # ds = ds.map(clean_issues_and_refs, num_proc=NUM_PROC)
-
-        # ds = ds.filter(filter_empty_messages, num_proc=NUM_PROC)
-
         # print("After empty message filtering due to messages with []:, the dataset size is: {}".format(len(ds)))
-
-        #ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
-
-        #print("After filtering for capitalized subjects: {}".format(len(ds)))
-
-        from transformers import AutoTokenizer
+        # ds = ds.filter(lambda x: x["subject"].strip()[0].isupper(), num_proc=NUM_PROC)
+        # print("After filtering for capitalized subjects: {}".format(len(ds)))
         if MODEL == "santacoder":
             tokenizer = AutoTokenizer.from_pretrained("bigcode/santacoder")
             # Filter for texts with with less than 2048 tokens
