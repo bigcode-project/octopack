@@ -1,12 +1,13 @@
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 import os
+import logging
 import random
 import subprocess
 import timeit
 import json
 from pathlib import Path
-
+import time
 import datasets
 
 """Example
@@ -27,6 +28,12 @@ NUM_PROC = 4
 
 # DEBUG_SIZE = 1024
 CWD = os.getcwd()
+
+# file path to store the results
+commits_file_path = "dataset/methods2test/ry.jsonl"
+
+# file path to store the results
+diffs_file_path = "dataset/methods2test/data/java/methods2test.jsonl"
 
 # Shell utils
 def run_in_shell(cmd: str, cwd=None, timeout=60):
@@ -53,18 +60,25 @@ def get_file_contents(commit, old_file, new_file, repo, cwd=None):
 def get_commit_diff(ex):
    
     repo = ex["url"]
-    print(f'repos----------: {repo}')
+    logging.info(f'repos----------: {repo}')
     # Create a random directory to store the repo
     random_dir = CWD + "/" + str(random.randint(0, 1000000))
     # Can take very long when running many processes
     run_in_shell("mkdir " + random_dir, timeout=300)
 
-    with open('dataset/methods2test/methods2test_commits.jsonl', 'a') as file:  # Open the file in append mode
+    with open(f'{commits_file_path}', 'a') as file:  # Open the file in append mode
         try:
-            print(f'processing {repo}..........................................................')
+            logging.info(f'processing {repo}..........................................................')
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
             completed = run_in_shell("git clone " + repo, cwd=random_dir)
+
+            if completed.returncode != 0:
+                
+                logging.error(f'ERROR: Could not clone {repo}')
+                logging.info(f'removing {random_dir}')
+                run_in_shell("rm -rf " + random_dir + "/" + repo.split("/")[-1])
+
 
             #get all commits hash
             completed = run_in_shell("git ls-remote " + repo, cwd=random_dir + "/" + repo.split("/")[-1])
@@ -73,16 +87,22 @@ def get_commit_diff(ex):
 
             if completed.returncode != 0:
                 print(f'ERRORC2: {completed}')
-            if len(commits) > 50:
-                for i , commit_id in enumerate(commits[0:30]):
-                    if i == len(commits[0:30]) - 1:
-                        ex['is_last_commit'] = True 
-                    ex['commit'] = commit_id
-                    file.write(json.dumps(ex) + "\n")
+            
+            for i , commit_id in enumerate(commits[1:4]):
+                if i == len(commits[1:4]) - 1:
+                    ex['is_last_commit'] = True
+                    logging.info(f'last commit reached: Removing {random_dir}')
+                    run_in_shell("rm -rf " + random_dir)
+                ex['commit'] = commit_id
+                file.write(json.dumps(ex) + "\n")
             
         except Exception as e:
-            print(f'ERROR: {e}')
-        run_in_shell("rm -rf " + random_dir) # clean up again
+            
+            logging.error(f'ERROR: {e}')
+            logging.info(f'removing {random_dir}')
+            run_in_shell("rm -rf " + random_dir)
+    
+        
     return ex
 
 
@@ -118,43 +138,44 @@ def get_diff(ex):
             print(f'getting all files at ' + str(working_dir) + "/" + repo.split("/")[-1] +"for commit " + commit_id + "...\n")
             completed = run_in_shell("git diff-tree --no-commit-id --name-only -r " + f'{commit_id}', cwd=working_dir)
             if completed.returncode != 0:
-                print(f'ERRORC3: {completed}')
+                logging.error(f'Could not get files for commit {commit_id}')
+
             
             files = completed.stdout.decode(errors='ignore').split("\n") 
             # show all files
-            print(f'files: {files}')
-            if len(files) < 25:
-                for file in files:
-                    if file.endswith(".java"):
-                        #Assuminng that file names has not changed between commits
-                        new_file = file
-                        old_file = file
-                        print(f'new_file: {new_file} --> old_file: {old_file}')
-                        print(f'getting file contents for {new_file} at ' + str(working_dir) + "for commit " + commit_id + "...\n")
-                        new_contents, old_contents ,_ ,_ = get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
+        
+           
+            for file in files:
+                if file.endswith(".java"):
+                    #Assuminng that file names has not changed between commits
+                    new_file = file
+                    old_file = file
+                    logging(f'getting file contents for {new_file}  and  {old_file} at ' + str(working_dir) + "for commit " + commit_id + " for repo " + repo + "...")
+                    
+                    new_contents, old_contents ,_ ,_ = get_file_contents(commit_id, old_file, new_file, repo, cwd=working_dir)
 
-                        #get commit message
-                        completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
-                        message = completed.stdout.decode(errors='ignore')
-                        print(f'message: {message} \n')
-                        ex["new_contents"] = new_contents
-                        ex["old_contents"] = old_contents
-                        ex["new_file"] = new_file
-                        ex["old_file"] = old_file
-                        ex["commit"] =  commit_id
-                        ex["message"] = message
-                        methods2test_file.write(json.dumps(ex) + "\n")
+                    #get commit message
+                    completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
+                    message = completed.stdout.decode(errors='ignore')
+                    print(f'message: {message} \n')
+                    ex["new_contents"] = new_contents
+                    ex["old_contents"] = old_contents
+                    ex["new_file"] = new_file
+                    ex["old_file"] = old_file
+                    ex["commit"] =  commit_id
+                    ex["message"] = message
+                    methods2test_file.write(json.dumps(ex) + "\n")
 
         except Exception as e:
             #print("ERROR", commit_id, old_file, new_file, repo, str(random_dir), e)
             # Break in case of many repos that all lead us nowhere
-            print(f'ERROR: {e}')
-            print(f'Working dir causing this error: {working_dir}')
-
+         
+            logging.error(f'{e}. Working dir causing this error: {working_dir}')
         
         finally:
             if ex['is_last_commit'] == True:
-                print(f'cleaning up {working_dir}')
+                logging.info(f'last commit reached: Removing {working_dir}')
+                logging.info(f'cleaning up {working_dir}')
                 run_in_shell("rm -rf " + str(Path(working_dir)))  # clean up again
         return ex
       
@@ -174,6 +195,10 @@ def get_diff_multi_threaded_processed(batch):
         return {k: [dic[k] for dic in results] for k in results[0]}
 
 if __name__ == "__main__":
+   
+    # Add basic logging to the root logger , and save it to a log file 
+    logging.basicConfig(filename='runs.log', level=logging.INFO)
+
     methods2test_path = "dataset/methods2test/repos.jsonl"
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
     
@@ -185,19 +210,35 @@ if __name__ == "__main__":
     ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
     # # save the dataset
     # ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
+    
+    cols_to_select = ["commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
+    logging.info(f"Selecting columns: {cols_to_select}")
+    cols_to_select = ["name", "url", "commit", "old_file", "new_file", "old_contents", "new_contents", "subject", "message", "lang", "license", "repos"]
+    ds = ds.select_columns(cols_to_select)
 
-    START = 15 # Modify for each instance (0 - 7)
-    samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
+    START = 30 # Modify for each instance (0 - 7)
+    samples_per_instance =  1 * 4 * 1 * 1    # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
     select_end = START * samples_per_instance + samples_per_instance
     ds = ds.select(range(select_start, select_end))
-    print(f"Going from {select_start} till {select_end}")
+    logging.info(f"Going from {select_start} till {select_end}")
     
     
     # Build commits
+    
+    logging.info("Building commits...")
+    start = time.time()
     def build_commit_diff():
         ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
     build_commit_diff()
+
+    #compute time in hours
+    hours = int((time.time() - start) / 3600)
+    minutes = int((time.time() - start) / 60) - hours * 60
+    seconds = time.time() - start - hours * 3600 - minutes * 60
+    logging.info(f"Time taken to build commits: {hours}h {minutes}m {seconds}s")
+
+
     # Load ds after commits are processed
     ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_commits.jsonl", num_proc=NUM_PROC)["train"]
     
@@ -227,4 +268,12 @@ if __name__ == "__main__":
     #    f.write(str(time))
 
     # Running
+    start = time.time()
     run_multi_processing_threading()
+     #compute time in hours
+    hours = int((time.time() - start) / 3600)
+    minutes = int((time.time() - start) / 60) - hours * 60
+    seconds = time.time() - start - hours * 3600 - minutes * 60
+    logging.info(f"Time taken to retrieve diffs: {hours}h {minutes}m {seconds}s")
+
+  
