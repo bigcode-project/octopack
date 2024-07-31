@@ -176,11 +176,15 @@ def get_diff_multi_threaded_processed(batch):
 if __name__ == "__main__":
     methods2test_path = "dataset/methods2test/repos.jsonl"
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
+    
+    # Cleanup cache files
+    ds.cleanup_cache_files()
+    
     # set all "test_cases" from the dataset to None,    
     ds = ds.map(lambda x: {"test_cases": {}})
     ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
-    # save the dataset
-    ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
+    # # save the dataset
+    # ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
 
     START = 15 # Modify for each instance (0 - 7)
     samples_per_instance =  1 * 4 * 5 * 1    # 1 * 4 * 64 * 34 # 8_388_608
@@ -189,11 +193,11 @@ if __name__ == "__main__":
     ds = ds.select(range(select_start, select_end))
     print(f"Going from {select_start} till {select_end}")
     
+    
     # Build commits
     def build_commit_diff():
         ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
     build_commit_diff()
-     
     # Load ds after commits are processed
     ds  = datasets.load_dataset("json", data_files="dataset/methods2test/methods2test_commits.jsonl", num_proc=NUM_PROC)["train"]
     
