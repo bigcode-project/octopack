@@ -42,11 +42,34 @@ commits_file_path = "dataset/methods2test/commits.jsonl"
 # file path to store the results
 diffs_file_path = "dataset/methods2test/data/java/methods2test.jsonl"
 
-def save_file(file_path, content , file_name):
-    if not os.path.exists(file_path):
-        os.makedirs(file_path)
-    with open(file_path+file_name, 'w') as file:
-        file.write(content)
+
+
+def get_code_block( file_path: str, start_line: int , end_line:int ) -> dict:
+    """_summary_
+
+    Args:
+        diff_patch_file (str): _description_
+
+    Returns:
+        dict: _description_
+    """
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    
+    logging.info(f'retrieving code block from {file_path} from line {start_line} to {   start_line+ end_line}')
+    code_block = ""
+    for i , code in enumerate(lines):
+        if i+1  ==  start_line + end_line:
+            break
+        elif i+1  >= start_line and i+1 < start_line + end_line:
+            code_block += code
+        else:
+            continue
+        
+    return code_block
+
+
 
 # Shell utils
 def run_in_shell(cmd: str, cwd=None, timeout=60):
@@ -62,28 +85,67 @@ def get_file_contents(repo_name, commit, old_file, new_file,  repo, random_dir, 
         #print("ERRORC1", completed)
         return ("", "", completed.returncode, completed.stderr.decode(errors='ignore'))
     # Optionally do git diff at the same time (Saving code needs to be added)
-    git_diff = run_in_shell(f"git diff {commit}^ {commit}" + " --name-only", cwd=cwd).stdout.decode(errors='ignore')
-  
+    file_path = str(cwd) + "/" + new_file
+ 
     completed = run_in_shell("git checkout FETCH_HEAD -- " + new_file, cwd=cwd)
     new_contents = run_in_shell("cat " + new_file, cwd=cwd).stdout.decode(errors='ignore')
-    new_file_name  = "new_" + new_file.split("/")[-1]+ ".java"
-    
-
+   
     completed = run_in_shell("git checkout FETCH_HEAD^ -- " + old_file, cwd=cwd)
     # If there's only a new file, but no old file
     if completed.returncode != 0:
         #print("ERRORC2", completed)
         return (new_contents, "", completed.returncode, completed.stderr.decode(errors='ignore'))
     old_contents = run_in_shell("cat " + old_file, cwd=cwd).stdout.decode(errors='ignore')
-    old_file_name  = "old_" + old_file.split("/")[-1]+ ".java"
-
-    #if len(git_diff.split("\n")) <=2:
-    # save_file(str(random_dir) + "/" + repo_name + "/", new_contents, new_file_name)
-    # save_file(str(random_dir) + "/" + repo_name + "/", old_contents, old_file_name)
-    # patch = run_in_shell("git diff "+ str(random_dir) + "/" + repo_name + "/" + new_file_name + " " + str(random_dir) + "/" + repo_name + "/" + old_file_name + ">" + str(random_dir) + "/" + repo_name + "/" + "diff.patch", cwd=cwd)
-    patch = run_in_shell(f"git diff  {commit}^   {commit}  --  {new_file}  >  {str(random_dir)}/{repo_name}/diff.patch", cwd=cwd)
+   
+    patch = run_in_shell(f"git diff  {commit}^   {commit}  --  {new_file} | grep -o '^@@.*@@'", cwd=cwd) #>  {str(random_dir)}/{repo_name}/diff.patch
     #logging.info(f'patch: {patch}')
-    logging.info(f'patch contents: {patch.stdout.decode(errors="ignore")}')
+    if patch.returncode != 0:
+        logging.error(f'ERROR: Could not  get patch for {new_file}')
+        return ("", "", patch.returncode, patch.stderr.decode(errors='ignore'))
+    
+    lines =patch.stdout.decode(errors="ignore")
+    lines = lines.replace("@@",'').split("\n")
+    line_pairs = []
+    for line in lines:
+        if line != "":
+            line_pairs.append(line.strip())
+
+    
+    diff = defaultdict(list)
+    
+    #pairs = ['-3,9 +3,11', '-15,6 +17,7', '-132,12 +135,13', '-255,12 +259,11', '-271,30 +274,53']
+    for idx, pair in enumerate(line_pairs):
+        line_num = pair.split(" ")
+
+        old_line = line_num[0].replace("-","") 
+        completed = run_in_shell("git checkout FETCH_HEAD^ -- " + old_file, cwd=cwd)
+        file_path =  str(cwd) + "/" + old_file
+        # logging.info(f'old file path: {file_path}')
+        # logging.info(f'get old line numbers: {old_line}')
+
+        old_line_start = old_line.split(",")[0]
+        offset = old_line.split(",")[1]
+        # logging.info(f'old line start: {int(old_line_start)}')
+        # logging.info(f'old line end: {int(old_line_start) + int(offset)}')
+
+        old_contents_line= get_code_block(file_path, int(old_line_start), int(offset))
+        logging.info(f'old file block: {old_contents_line}\n')
+
+        new_line = line_num[1].replace("+","")   
+        completed = run_in_shell("git checkout FETCH_HEAD -- " + new_file, cwd=cwd)
+
+   
+        new_line_start = new_line.split(",")[0]
+        offset = new_line.split(",")[1]
+        new_contents_line = get_code_block(file_path, int(new_line_start), int(offset))
+        logging.info(f'new file block: {new_contents_line}\n')
+
+        diff['diff_'+str(idx)] = [old_contents_line , new_contents_line]
+
+    patch = run_in_shell(f'git diff {commit}^ {commit}' , cwd=cwd) #>  {str(random_dir)}/{repo_name}/diff.patch
+    logging.info(f'diff dict: {diff}')
+    logging.info(f'patch: {patch.stdout.decode(errors="ignore")}')
+    logging.info(f'current commit: {commit}, current repo: {repo}')
     return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
    
 
@@ -260,17 +322,17 @@ if __name__ == "__main__":
     
     
     # Build commits
-    logging.info("Building commits...")
-    start = time.time()
-    def build_commit_diff():
-        ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
-    build_commit_diff()
+    # logging.info("Building commits...")
+    # start = time.time()
+    # def build_commit_diff():
+    #     ds.map(get_commits_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True)
+    # build_commit_diff()
 
-    #compute time in hours
-    hours = int((time.time() - start) / 3600)
-    minutes = int((time.time() - start) / 60) - hours * 60
-    seconds = time.time() - start - hours * 3600 - minutes * 60
-    logging.info(f"Time taken to build commits: {hours}h {minutes}m {seconds}s")
+    # #compute time in hours
+    # hours = int((time.time() - start) / 3600)
+    # minutes = int((time.time() - start) / 60) - hours * 60
+    # seconds = time.time() - start - hours * 3600 - minutes * 60
+    # logging.info(f"Time taken to build commits: {hours}h {minutes}m {seconds}s")
 
 
     # # Load ds after commits are processed
