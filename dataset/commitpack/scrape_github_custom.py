@@ -32,9 +32,7 @@ MAX_FILES_CHANGED = 1
 
 # DEBUG_SIZE = 1024
 CWD = os.getcwd()
-repos_success =  0 #Successfully cloned
-repos_failed  =   0 #Failed to clone
-total_commits =  0 #Total number of commits
+
 
 # file path to store the results
 commits_file_path = "dataset/methods2test/commits.jsonl"
@@ -83,7 +81,7 @@ def get_file_contents(repo_name, commit, old_file, new_file,  repo, random_dir, 
      # If it requires authentication
     if completed.returncode != 0:
         #print("ERRORC1", completed)
-        return ("", "", completed.returncode, completed.stderr.decode(errors='ignore'))
+        return ("", "",{}, completed.returncode, completed.stderr.decode(errors='ignore'))
     # Optionally do git diff at the same time (Saving code needs to be added)
     file_path = str(cwd) + "/" + new_file
  
@@ -94,14 +92,14 @@ def get_file_contents(repo_name, commit, old_file, new_file,  repo, random_dir, 
     # If there's only a new file, but no old file
     if completed.returncode != 0:
         #print("ERRORC2", completed)
-        return (new_contents, "", completed.returncode, completed.stderr.decode(errors='ignore'))
+        return (new_contents, "",{}, completed.returncode, completed.stderr.decode(errors='ignore'))
     old_contents = run_in_shell("cat " + old_file, cwd=cwd).stdout.decode(errors='ignore')
    
     patch = run_in_shell(f"git diff  {commit}^   {commit}  --  {new_file} | grep -o '^@@.*@@'", cwd=cwd) #>  {str(random_dir)}/{repo_name}/diff.patch
     #logging.info(f'patch: {patch}')
     if patch.returncode != 0:
         logging.error(f'ERROR: Could not  get patch for {new_file}')
-        return ("", "", patch.returncode, patch.stderr.decode(errors='ignore'))
+        return ("", "", {}, patch.returncode, patch.stderr.decode(errors='ignore'))
     
     lines =patch.stdout.decode(errors="ignore")
     lines = lines.replace("@@",'').split("\n")
@@ -113,20 +111,16 @@ def get_file_contents(repo_name, commit, old_file, new_file,  repo, random_dir, 
     
     diff = defaultdict(list)
     
-    #pairs = ['-3,9 +3,11', '-15,6 +17,7', '-132,12 +135,13', '-255,12 +259,11', '-271,30 +274,53']
     for idx, pair in enumerate(line_pairs):
         line_num = pair.split(" ")
 
         old_line = line_num[0].replace("-","") 
         completed = run_in_shell("git checkout FETCH_HEAD^ -- " + old_file, cwd=cwd)
         file_path =  str(cwd) + "/" + old_file
-        # logging.info(f'old file path: {file_path}')
-        # logging.info(f'get old line numbers: {old_line}')
 
         old_line_start = old_line.split(",")[0]
         offset = old_line.split(",")[1]
-        # logging.info(f'old line start: {int(old_line_start)}')
-        # logging.info(f'old line end: {int(old_line_start) + int(offset)}')
+       
 
         old_contents_line= get_code_block(file_path, int(old_line_start), int(offset))
         logging.info(f'old file block: {old_contents_line}\n')
@@ -143,10 +137,11 @@ def get_file_contents(repo_name, commit, old_file, new_file,  repo, random_dir, 
         diff['diff_'+str(idx)] = [old_contents_line , new_contents_line]
 
     patch = run_in_shell(f'git diff {commit}^ {commit}' , cwd=cwd) #>  {str(random_dir)}/{repo_name}/diff.patch
-    logging.info(f'diff dict: {diff}')
-    logging.info(f'patch: {patch.stdout.decode(errors="ignore")}')
-    logging.info(f'current commit: {commit}, current repo: {repo}')
-    return (new_contents, old_contents, completed.returncode, completed.stderr.decode(errors='ignore'))
+    # logging.info(f'diff dict: {diff}')
+    # logging.info(f'patch: {patch.stdout.decode(errors="ignore")}')
+    # logging.info(f'current commit: {commit}, current repo: {repo}')
+    
+    return (new_contents, old_contents, diff, completed.returncode, completed.stderr.decode(errors='ignore'))
    
 
 def get_commit_diff(ex):
@@ -230,7 +225,13 @@ def get_diff(ex):
             run_in_shell("mkdir " + random_dir, timeout=300)
             completed = run_in_shell("git init", cwd=random_dir)
             completed = run_in_shell("git remote add origin " + repo, cwd=random_dir)
-            completed = run_in_shell("git clone " + repo, cwd=random_dir)
+            try:
+                completed = run_in_shell("git clone " + repo, cwd=random_dir)
+            except subprocess.TimeoutExpired:
+                logging.error(f'ERROR: Could not clone {repo}')
+                logging.info(f'removing {random_dir}')
+                run_in_shell("rm -rf " + str(Path(random_dir)))  # clean up again
+                return (ex)
             working_dir = random_dir + "/" + repo.split("/")[-1]
         commit_id = ex['commit']
 
@@ -257,7 +258,7 @@ def get_diff(ex):
 
                     new_file = file
                     old_file = file
-                    new_contents, old_contents ,_ , _ =  get_file_contents(repo_name,commit_id, old_file, new_file, repo, random_dir,  working_dir)
+                    new_contents, old_contents, code_diff ,_ , _ =  get_file_contents(repo_name,commit_id, old_file, new_file, repo, random_dir,  working_dir)
                     #get commit message
                     completed = run_in_shell("git show --format=%B -s " + commit_id, cwd=working_dir)
                     message = completed.stdout.decode(errors='ignore')
@@ -266,6 +267,13 @@ def get_diff(ex):
                     ex["old_contents"] = old_contents
                     ex["new_file"] = new_file
                     ex["old_file"] = old_file
+                    diff_block = {}
+                    for key, value in code_diff.items():
+                        diff_block.update({key: value})
+                    
+                    # logging.info(f'diff block: {diff_block}')
+                    # logging.info(f'ex code block diff: {ex["code_block_diff"]}')
+                    ex["code_block_diff"] = str(diff_block)
                     ex["commit"] =  commit_id
                     ex["message"] = message
                     methods2test_file.write(json.dumps(ex) + "\n")
@@ -293,9 +301,6 @@ def get_diff_multi_threaded_processed(batch):
         return {k: [dic[k] for dic in results] for k in results[0]}
 
 if __name__ == "__main__":
-
-
-   
     # Add basic logging to the root logger , and save it to a log file 
     logging.basicConfig(filename='runs.log', level=logging.INFO)
 
@@ -303,25 +308,21 @@ if __name__ == "__main__":
     ds = datasets.load_dataset("json", data_files=methods2test_path, num_proc=NUM_PROC)["train"]
      # Cleanup cache files
     ds.cleanup_cache_files()
-    
-   
-    
     # set all "test_cases" from the dataset to None,    
     ds = ds.map(lambda x: {"test_cases": {}})
-    ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "subject": "", "message": "", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
+    ds = ds.map(lambda x: ({"commit": "commit_id", "old_file": " ", "new_file": " ", "old_contents": "", "new_contents": " ", "code_block_diff": "", "subject": "", "message": "", "lang": "Java", "license": "", "repos": "","is_last_commit": False}))
     # # save the dataset
     # ds.to_json("dataset/methods2test/repos_testcases_none.jsonl", num_proc=NUM_PROC)
     
-
-    START = 12 # Modify for each instance (0 - 7)
-    samples_per_instance =  1 * 4 * 4 * 1   # 1 * 4 * 64 * 34 # 8_388_608
+    START = 16
+    samples_per_instance =  1 * 4 * 5 * 10   # 1 * 4 * 64 * 34 # 8_388_608
     select_start = START * samples_per_instance
     select_end = START * samples_per_instance + samples_per_instance
     ds = ds.select(range(select_start, select_end))
     logging.info(f"Going from {select_start} till {select_end}")
     
     
-    # Build commits
+    ## Build commits
     # logging.info("Building commits...")
     # start = time.time()
     # def build_commit_diff():
@@ -338,30 +339,10 @@ if __name__ == "__main__":
     # # Load ds after commits are processed
     ds  = datasets.load_dataset("json", data_files=commits_file_path, num_proc=NUM_PROC)["train"]
     
-    ### ALTERNATIVELY LOAD EXISTING SPLIT ###
-    """
-    path = "github-commits-diff/data/diffs_50331648_58720256.jsonl"
-    ds = datasets.load_dataset("json", data_files=path)
-    sub_ds = ds.filter(lambda x: x['stderr'].startswith("fatal: unable to acces"))
-    skipped_ds = ds.filter(lambda x: not(x['stderr'].startswith("fatal")))
-    
-    datasets.concatenate_datasets((
-        skipped_ds,
-        sub_ds.map(get_diff_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True),
-    )).to_json(path.replace(".", "_new."), num_proc=NUM_PROC)
-    exit()
-    """
+  
     ### END LOAD EXISTING ###
     def run_multi_processing_threading():
         ds.map(get_diff_multi_threaded_processed, num_proc=NUM_PROC, batch_size=NUM_THREADS, batched=True).to_json(f"diffs_{select_start}_{select_end}.jsonl", num_proc=NUM_PROC)
-
-    # Benchmarking
-    #NUM_TRIALS = 1
-    #print(f"Timing multithreading + multiprocessing using {NUM_THREADS} threads and {NUM_PROC} processes")
-    #time = timeit.timeit(stmt=run_multi_processing_threading, number=NUM_TRIALS)
-    #print("Time:", time)
-    #with open("mpt.txt", "w") as f:
-    #    f.write(str(time))
 
     # Running
     start = time.time()
