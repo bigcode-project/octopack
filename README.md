@@ -2,7 +2,7 @@
 
 ![](visuals/banner.png)
 
-This repository provides an overview of all components from the paper [OctoPack: Instruction Tuning Code Large Language Models](https://arxiv.org/abs/2308.07124).
+This repository provides an overview of all components from the paper [OctoPack: Instruction Tuning Code Large Language Models](https://arxiv.org/abs/2308.07124). [Link to 5-min video](https://www.youtube.com/watch?v=vtsQ294gkJ4&t=13s&ab_channel=NiklasMuennighoff) on the paper presented by Niklas Muennighoff.
 
 <!-- TOC -->
 
